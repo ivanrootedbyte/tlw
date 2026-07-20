@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Topics | The Last Word</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/arcade.css" />
+</head>
+<body>
+  <main class="screen">
+    <header class="topbar">
+      <div class="brand">THE LAST WORD<small>TOPIC SELECT</small></div>
+      <nav class="nav">
+        <a href="index.html">Personas</a>
+        <a href="account.html">Archive</a>
+      </nav>
+    </header>
+
+    <section class="panel grid-2">
+      <div>
+        <div class="kicker">Selected challenger</div>
+        <div id="selectedPersonaBox"></div>
+      </div>
+      <div class="daily-card panel" style="margin-top:0">
+        <div class="kicker">Daily challenge</div>
+        <h3 id="dailyTitle" style="margin:6px 0"></h3>
+        <p id="dailySummary" class="small"></p>
+        <button class="btn primary" id="playDailyBtn" type="button">Play Daily Challenge</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="topbar" style="padding:0 0 12px">
+        <div>
+          <div class="kicker">Debate scenarios</div>
+          <h2 style="margin:4px 0 0">Choose a topic</h2>
+        </div>
+      </div>
+      <div id="topicGrid" class="topic-grid"></div>
+    </section>
+  </main>
+  <script src="js/env.js"></script>
+  <script type="module" src="js/topics.js"></script>
+</body>
+</html>

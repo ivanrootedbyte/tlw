@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verdict | The Last Word</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/arcade.css" />
+</head>
+<body>
+  <main class="screen">
+    <header class="topbar">
+      <div class="brand">THE LAST WORD<small>VERDICT</small></div>
+      <nav class="nav">
+        <a href="topics.html">New Match</a>
+        <a href="account.html">Archive</a>
+      </nav>
+    </header>
+
+    <section class="result-hero">
+      <div class="result-card">
+        <div class="kicker">Last result</div>
+        <h1 id="endingTitle" style="font-size:2.1rem; margin-top:8px"></h1>
+        <p id="endingSummary" class="subhead"></p>
+        <div class="score-list" style="margin-top:16px">
+          <div class="score-row"><span>Logic</span><div class="meter"><span id="logicFill"></span></div><strong id="logicScore"></strong></div>
+          <div class="score-row"><span>Evidence</span><div class="meter"><span id="evidenceFill"></span></div><strong id="evidenceScore"></strong></div>
+          <div class="score-row"><span>Humanity</span><div class="meter"><span id="humanityFill"></span></div><strong id="humanityScore"></strong></div>
+          <div class="score-row"><span>Humility</span><div class="meter"><span id="humilityFill"></span></div><strong id="humilityScore"></strong></div>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="kicker">Share-ready summary</div>
+        <div class="copybox" id="shareBlock"></div>
+        <div class="hero-actions">
+          <button class="btn primary" id="copyShareBtn" type="button">Copy Summary</button>
+          <a class="btn" href="topics.html">Play Again</a>
+        </div>
+        <p class="footer-note" id="copyStatus"></p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="kicker">Professor L</div>
+      <div class="professor-bubble" id="professorFinal"></div>
+    </section>
+  </main>
+  <script src="js/env.js"></script>
+  <script type="module" src="js/verdict.js"></script>
+</body>
+</html>

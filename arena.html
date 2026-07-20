@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arena | The Last Word</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/arcade.css" />
+</head>
+<body>
+  <main class="screen">
+    <header class="topbar">
+      <div class="brand">THE LAST WORD<small>DEBATE ARENA</small></div>
+      <nav class="nav">
+        <a href="topics.html">Topics</a>
+        <button id="forfeitBtn" type="button">Forfeit</button>
+      </nav>
+    </header>
+
+    <section class="arena-grid">
+      <div class="panel">
+        <div class="stage">
+          <div class="stage-top">
+            <div>
+              <div class="kicker" id="sceneName"></div>
+              <h2 id="arenaTitle" style="margin:4px 0 0"></h2>
+              <p id="arenaSubtitle" class="small"></p>
+            </div>
+            <div class="badge">Round <strong id="roundNumber">1</strong>/6</div>
+          </div>
+          <div class="stage-fighters">
+            <div class="sprite-card">
+              <img id="playerPortrait" alt="Player portrait" />
+              <div>
+                <strong id="playerName"></strong>
+                <p id="playerTagline" class="small"></p>
+              </div>
+            </div>
+            <div class="vs">VS</div>
+            <div class="sprite-card">
+              <img src="assets/portraits/professor-l.svg" alt="Professor L portrait" />
+              <div>
+                <strong>Professor L</strong>
+                <p class="small">Mathematician, philosopher, tea defender, category-error enthusiast.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:16px; background:#151b28">
+          <div class="kicker">Professor's challenge</div>
+          <div class="professor-bubble" id="professorChallenge"></div>
+        </div>
+
+        <div class="panel" style="margin-top:16px; background:#151b28">
+          <div class="kicker">Prompt</div>
+          <h3 id="roundTitle" style="margin:6px 0"></h3>
+          <div class="prompt-bubble" id="roundPrompt"></div>
+        </div>
+
+        <div class="panel" style="margin-top:16px; background:#151b28">
+          <div class="kicker">Your optional custom line</div>
+          <textarea id="customAnswer" placeholder="Type a witty, serious, or outrageous line. The local game will save it and Professor L will react."></textarea>
+          <div class="stack-actions">
+            <button class="btn primary" id="submitPlayBtn" type="button">Play Selected Card</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel arena-controls">
+        <div class="kicker">Current scores</div>
+        <div class="score-list">
+          <div class="score-row"><span>Logic</span><div class="meter"><span id="logicFill"></span></div><strong id="logicScore"></strong></div>
+          <div class="score-row"><span>Evidence</span><div class="meter"><span id="evidenceFill"></span></div><strong id="evidenceScore"></strong></div>
+          <div class="score-row"><span>Humanity</span><div class="meter"><span id="humanityFill"></span></div><strong id="humanityScore"></strong></div>
+          <div class="score-row"><span>Humility</span><div class="meter"><span id="humilityFill"></span></div><strong id="humilityScore"></strong></div>
+        </div>
+
+        <div class="event-banner hidden" id="eventBanner"></div>
+
+        <div>
+          <div class="kicker">Your hand</div>
+          <div class="hand-grid" id="handGrid"></div>
+        </div>
+
+        <div>
+          <div class="kicker">Professor L responds</div>
+          <div class="response-bubble" id="professorResponse">Choose your first card.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="js/env.js"></script>
+  <script type="module" src="js/arena.js"></script>
+</body>
+</html>

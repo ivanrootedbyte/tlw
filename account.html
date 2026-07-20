@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Archive | The Last Word</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/arcade.css" />
+</head>
+<body>
+  <main class="screen">
+    <header class="topbar">
+      <div class="brand">THE LAST WORD<small>MATCH ARCHIVE</small></div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="topics.html">New Match</a>
+      </nav>
+    </header>
+
+    <section class="panel">
+      <div class="topbar" style="padding:0 0 12px">
+        <div>
+          <div class="kicker">Cloud saves</div>
+          <h2 style="margin:4px 0 0">Sign in with magic link</h2>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label class="small" for="emailInput">Email</label>
+          <input id="emailInput" type="email" placeholder="you@example.com" />
+          <div class="hero-actions" style="margin-top:12px">
+            <button class="btn primary" id="sendMagicBtn" type="button">Send Magic Link</button>
+            <button class="btn" id="signOutBtn" type="button" hidden>Sign Out</button>
+          </div>
+          <p class="footer-note" id="authStatus"></p>
+        </div>
+        <div class="panel" style="margin-top:0; background:#151b28">
+          <div class="kicker">Current mode</div>
+          <strong id="userEmail">Guest mode</strong>
+          <p class="small">Guest mode keeps matches in local storage. Signed-in mode also writes match summaries to Supabase.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="topbar" style="padding:0 0 12px">
+        <div>
+          <div class="kicker">Recent local history</div>
+          <h2 style="margin:4px 0 0">Saved matches</h2>
+        </div>
+        <button class="btn" id="clearHistoryBtn" type="button">Clear Local History</button>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+  </main>
+  <script src="js/env.js"></script>
+  <script type="module" src="js/account.js"></script>
+</body>
+</html>

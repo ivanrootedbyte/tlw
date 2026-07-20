@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Last Word | Retro Debate Arena</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/arcade.css" />
+</head>
+<body>
+  <main class="screen">
+    <header class="topbar">
+      <div class="brand">THE LAST WORD<small>RETRO DEBATE ARENA</small></div>
+      <nav class="nav">
+        <a href="topics.html">Topics</a>
+        <a href="account.html">Archive</a>
+        <button id="safeModeBtn" type="button">Safe Mode</button>
+      </nav>
+    </header>
+
+    <section class="hero hero-grid">
+      <div>
+        <p class="eyebrow">Retro satire · philosophy · technology · discernment</p>
+        <h1>CHOOSE A MIND.<br/>DEFEND A FUTURE.</h1>
+        <p class="subhead">A playable argument game where fictional tech archetypes battle Professor L across logic, evidence, human dignity, and inconvenient consequences.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="topics.html">Start Match</a>
+          <a class="btn" href="account.html">View Match Archive</a>
+        </div>
+        <p class="footer-note" id="safeStatus"></p>
+      </div>
+      <div class="hero-statbox">
+        <div class="kicker">How it plays</div>
+        <div class="metric-row"><span>Pick persona</span><div class="meter"><span style="width:100%"></span></div><strong>1</strong></div>
+        <div class="metric-row"><span>Choose topic</span><div class="meter"><span style="width:100%"></span></div><strong>2</strong></div>
+        <div class="metric-row"><span>Play 6 rounds</span><div class="meter"><span style="width:100%"></span></div><strong>3</strong></div>
+        <div class="metric-row"><span>Get verdict</span><div class="meter"><span style="width:100%"></span></div><strong>4</strong></div>
+        <p class="small">No API cost is required for the core loop. Custom AI cross-examination can be added later.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="topbar" style="padding:0 0 12px">
+        <div>
+          <div class="kicker">Playable personas</div>
+          <h2 style="margin:4px 0 0">Pick your technological worldview</h2>
+        </div>
+        <a class="btn" href="topics.html">Continue to topics</a>
+      </div>
+      <div id="personaGrid" class="persona-grid"></div>
+      <p class="footer-note">All characters are fictional technology archetypes created for satire, education, and entertainment. Not affiliated with or endorsed by any real person or company.</p>
+    </section>
+  </main>
+  <script src="js/env.js"></script>
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>

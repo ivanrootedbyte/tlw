@@ -1,0 +1,84 @@
+{
+  "topics": [
+    {
+      "id": "machine-authority",
+      "title": "Should smarter machines rule humans?",
+      "difficulty": "Medium",
+      "summary": "If a system consistently outperforms human experts, does capability become moral authority?",
+      "scene": "Parliament of Predictive Machines",
+      "hook": "The machine is brilliant. The question is whether brilliance deserves the throne.",
+      "rounds": [
+        {"title":"Opening Claim","prompt":"State the strongest version of your case for machine authority.","keyword":"authority","challenge":"Professor L suspects you are confusing accuracy with moral entitlement.","tags":["logic","ethics"]},
+        {"title":"Define the Word","prompt":"What do you mean by intelligence in this debate?","keyword":"intelligence","challenge":"A vague definition will cost coherence.","tags":["logic"]},
+        {"title":"Assumption Trap","prompt":"Which hidden assumption is doing the most work in your argument?","keyword":"assumption","challenge":"If intelligence creates value, what happens when humans score lower?","tags":["logic","humanity"]},
+        {"title":"System Test","prompt":"Apply your principle inside a hospital triage system.","keyword":"hospital","challenge":"The system is efficient. A family is horrified.","tags":["technology","humanity"]},
+        {"title":"Human Cost","prompt":"Your principle now affects a vulnerable person directly. Does it still hold?","keyword":"dignity","challenge":"Professor L asks whether people have worth beyond measurable performance.","tags":["humanity","theology"]},
+        {"title":"Last Word","prompt":"Keep, narrow, or reverse your position.","keyword":"revision","challenge":"The strongest ending often includes a narrower, more honest claim.","tags":["humility"]}
+      ]
+    },
+    {
+      "id": "death-technical-problem",
+      "title": "Is death primarily a technical problem?",
+      "difficulty": "Hard",
+      "summary": "Should humanity treat mortality as a defect to defeat, or does that confuse engineering with ultimate meaning?",
+      "scene": "Longevity Expo Cathedral",
+      "hook": "The startups are hopeful. The theologian has brought a red buzzer.",
+      "rounds": [
+        {"title":"Opening Claim","prompt":"Argue whether death is mainly a bug, a boundary, or something else.","keyword":"death","challenge":"Professor L asks whether extending life is the same thing as answering mortality.","tags":["theology","technology"]},
+        {"title":"Define the Goal","prompt":"What exactly would count as solving death?","keyword":"solve","challenge":"Suspending decline is not the same as abolishing mortality.","tags":["logic"]},
+        {"title":"Promise Audit","prompt":"Name the evidence supporting your confidence.","keyword":"evidence","challenge":"Optimism is not data, and branding is not a resurrection.","tags":["evidence"]},
+        {"title":"Civilization Test","prompt":"Apply your view to healthcare, aging, and access inequality.","keyword":"inequality","challenge":"The rich can upgrade. The poor can watch the keynote.","tags":["humanity","technology"]},
+        {"title":"Meaning Check","prompt":"What happens to hope, grief, and purpose if death becomes mostly technical?","keyword":"meaning","challenge":"Mechanism may describe the body without answering the person.","tags":["theology","humanity"]},
+        {"title":"Last Word","prompt":"Refine your final position.","keyword":"final","challenge":"Can you affirm medical progress without crowning technology as savior?","tags":["humility"]}
+      ]
+    },
+    {
+      "id": "privacy-vs-safety",
+      "title": "Should privacy be traded for near-perfect safety?",
+      "difficulty": "Medium",
+      "summary": "If continuous monitoring could stop most violent crime, should free societies accept it?",
+      "scene": "City Grid Control Room",
+      "hook": "Public safety has never looked so efficient or so invasive.",
+      "rounds": [
+        {"title":"Opening Claim","prompt":"Argue whether safety justifies continuous monitoring.","keyword":"safety","challenge":"Professor L asks whether security without freedom remains fully human.","tags":["ethics","technology"]},
+        {"title":"Term Definition","prompt":"Define privacy in a way that matters here.","keyword":"privacy","challenge":"If privacy means nothing but inconvenience, your case is too easy.","tags":["logic"]},
+        {"title":"Power Check","prompt":"Who controls the data, and what restrains them?","keyword":"power","challenge":"A benevolent system is still a system waiting for a worse ruler.","tags":["humanity","ethics"]},
+        {"title":"Failure Mode","prompt":"What happens when the monitoring system is wrong five percent of the time?","keyword":"failure","challenge":"Five percent sounds small until your name is in the five percent.","tags":["evidence","humanity"]},
+        {"title":"Human Cost","prompt":"Now imagine the policy affecting your family.","keyword":"family","challenge":"Many principles change when the watched person is someone you love.","tags":["humanity"]},
+        {"title":"Last Word","prompt":"Keep, narrow, or reverse your view.","keyword":"revision","challenge":"The honest answer may support both safety and meaningful limits.","tags":["humility"]}
+      ]
+    },
+    {
+      "id": "ai-companions-care",
+      "title": "Should AI companions replace major parts of human care?",
+      "difficulty": "Hard",
+      "summary": "AI care is cheaper and always available, but what kind of society does replacement build?",
+      "scene": "Care Facility of Automated Consolation",
+      "hook": "Efficiency is high. Human presence is negotiable.",
+      "rounds": [
+        {"title":"Opening Claim","prompt":"Defend or oppose large-scale replacement of human care with AI companions.","keyword":"care","challenge":"Professor L asks whether being available is the same thing as being present.","tags":["humanity","technology"]},
+        {"title":"Define Care","prompt":"What counts as real care in your view?","keyword":"care","challenge":"Attention can be simulated. Concern is harder.","tags":["logic","theology"]},
+        {"title":"Economic Pressure","prompt":"Respond to the claim that human care is simply too expensive.","keyword":"cost","challenge":"Cost matters. So does what money is allowed to replace.","tags":["evidence","ethics"]},
+        {"title":"System Test","prompt":"Apply your principle to seniors, teens, and low-income users.","keyword":"users","challenge":"Wealthier users still receive humans. Does that tell you anything?","tags":["humanity"]},
+        {"title":"Loneliness Check","prompt":"What sort of people are repeated AI companions training society to become?","keyword":"formation","challenge":"The question is not only what the tool does, but what it forms.","tags":["humanity","theology"]},
+        {"title":"Last Word","prompt":"State your final position.","keyword":"final","challenge":"A nuanced conclusion may preserve assistive AI without replacing irreplaceable presence.","tags":["humility"]}
+      ]
+    },
+    {
+      "id": "morality-without-god",
+      "title": "Can morality stand without any higher foundation?",
+      "difficulty": "Boss",
+      "summary": "Is objective morality possible without transcendence, or does the argument smuggle borrowed meaning into a godless frame?",
+      "scene": "Midnight Lecture Hall",
+      "hook": "The room is quiet. The assumptions are not.",
+      "rounds": [
+        {"title":"Opening Claim","prompt":"Make the strongest opening case for your position.","keyword":"morality","challenge":"Professor L asks whether moral obligation can survive after moral authority is dissolved.","tags":["theology","logic"]},
+        {"title":"Define Moral Obligation","prompt":"What do you mean by objective morality?","keyword":"objective","challenge":"Preference, consensus, and obligation are not interchangeable.","tags":["logic"]},
+        {"title":"Source Test","prompt":"What grounds your claim? Biology, consensus, utility, transcendence, or something else?","keyword":"grounding","challenge":"A description of moral feelings is not yet an account of moral truth.","tags":["logic","theology"]},
+        {"title":"Hard Case","prompt":"Apply your view to power, cruelty, and protecting the weak.","keyword":"weak","challenge":"If morality is negotiated, what secures the expendable?","tags":["humanity"]},
+        {"title":"Human Cost","prompt":"What happens when your framework judges you rather than your enemies?","keyword":"judgment","challenge":"Everyone wants justice until justice arrives personally.","tags":["theology","humanity"]},
+        {"title":"Last Word","prompt":"Deliver your final revision or defense.","keyword":"final","challenge":"Professor L cares less whether you win than whether you are coherent.","tags":["humility"]}
+      ]
+    }
+  ]
+}

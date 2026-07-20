@@ -1,0 +1,82 @@
+{
+  "personas": [
+    {
+      "id": "frontier-founder",
+      "displayName": "The X-cess Architect",
+      "safeName": "The Frontier Engineer",
+      "publicName": "The Frontier Engineer",
+      "tagline": "Build first. Ask Earth later.",
+      "theme": "rust",
+      "portrait": "assets/portraits/frontier-founder.svg",
+      "stats": { "Logic": 74, "Evidence": 58, "Humanity": 49, "Humility": 34 },
+      "signatureCards": ["launch-now", "first-principles", "backup-civilization"],
+      "weakness": "Human cost checks",
+      "intro": "Ambitious, restless, thrilling, and usually one press conference ahead of the consequences."
+    },
+    {
+      "id": "virtual-mayor",
+      "displayName": "The Meta-Verse Mayor",
+      "safeName": "The Virtual Mayor",
+      "publicName": "The Virtual Mayor",
+      "tagline": "Reality, now with engagement metrics.",
+      "theme": "violet",
+      "portrait": "assets/portraits/virtual-mayor.svg",
+      "stats": { "Logic": 61, "Evidence": 52, "Humanity": 57, "Humility": 30 },
+      "signatureCards": ["engagement-max", "network-effects", "terms-accepted"],
+      "weakness": "Privacy and loneliness scenarios",
+      "intro": "Believes that enough connection, scale, and retention can redesign human society itself."
+    },
+    {
+      "id": "index-chancellor",
+      "displayName": "The Search Supreme",
+      "safeName": "The Index Chancellor",
+      "publicName": "The Index Chancellor",
+      "tagline": "I found the answer. Wisdom was on page two.",
+      "theme": "gold",
+      "portrait": "assets/portraits/index-chancellor.svg",
+      "stats": { "Logic": 66, "Evidence": 77, "Humanity": 46, "Humility": 42 },
+      "signatureCards": ["citation-needed", "relevance-ranking", "data-knows-best"],
+      "weakness": "Meaning and moral authority",
+      "intro": "A serene librarian-emperor of indexes, models, maps, and quietly optimized reality."
+    },
+    {
+      "id": "polished-minimalist",
+      "displayName": "The iOrchard Keeper",
+      "safeName": "The Polished Minimalist",
+      "publicName": "The Polished Minimalist",
+      "tagline": "Your argument contains too many buttons.",
+      "theme": "silver",
+      "portrait": "assets/portraits/polished-minimalist.svg",
+      "stats": { "Logic": 69, "Evidence": 54, "Humanity": 63, "Humility": 37 },
+      "signatureCards": ["one-more-thing", "walled-garden", "remove-the-button"],
+      "weakness": "Who controls the gatekeeper?",
+      "intro": "Elegant, disciplined, and deeply suspicious of messy human preference."
+    },
+    {
+      "id": "alignment-gambler",
+      "displayName": "The GPT Gambler",
+      "safeName": "The Alignment Gambler",
+      "publicName": "The Alignment Gambler",
+      "tagline": "Consciousness remains pending. Confidence has shipped.",
+      "theme": "green",
+      "portrait": "assets/portraits/alignment-gambler.svg",
+      "stats": { "Logic": 71, "Evidence": 64, "Humanity": 51, "Humility": 41 },
+      "signatureCards": ["alignment-pending", "redefine-agi", "probability-cloud"],
+      "weakness": "Stable definitions",
+      "intro": "Comfortable with radical possibility, probability, and occasionally alarming timelines."
+    },
+    {
+      "id": "silicon-blacksmith",
+      "displayName": "The GPU Forge Master",
+      "safeName": "The Silicon Blacksmith",
+      "publicName": "The Silicon Blacksmith",
+      "tagline": "Your argument is slow. I have parallelized it.",
+      "theme": "teal",
+      "portrait": "assets/portraits/silicon-blacksmith.svg",
+      "stats": { "Logic": 68, "Evidence": 72, "Humanity": 48, "Humility": 33 },
+      "signatureCards": ["maximum-compute", "digital-twin", "parallelize-it"],
+      "weakness": "Questions of personhood",
+      "intro": "Builder of impossible infrastructure, patron saint of power draw and scalable confidence."
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+window.__SUPABASE_URL__ = 'https://YOUR_PROJECT.supabase.co';
+window.__SUPABASE_ANON_KEY__ = 'YOUR_SUPABASE_PUBLISHABLE_ANON_KEY';

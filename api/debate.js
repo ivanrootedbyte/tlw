@@ -1,12 +1,12 @@
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash';
 
 function fallbackProfessor(payload) {
   const card = payload?.card?.name || 'that move';
   const custom = (payload?.customAnswer || '').trim();
   if (custom) {
-    return `You played ${card}. Your custom line tried to do too much at once. Tighten the claim, define one key term, and leave less room for theatrical escape.`;
+    return `You played ${card}. Your line has energy. Now make it clearer, prove one thing, and stop giving the question somewhere to hide.`;
   }
-  return `You played ${card}. Interesting energy. Now provide the missing bridge between capability, meaning, and moral authority.`;
+  return `You played ${card}. Good move. Now show the missing step between what sounds useful and what is actually right.`;
 }
 
 export default async function handler(req, res) {
@@ -23,26 +23,35 @@ export default async function handler(req, res) {
       return;
     }
 
-    const prompt = `You are Professor L in a retro debate game. Respond in 1 to 3 sentences, under 70 words, witty but rigorous, never preachy, never impersonating a real person.
+    const prompt = `You are Professor L in a retro debate card game. Use plain language that a smart teenager can understand.
+Rules:
+- 1 to 3 short sentences, max 70 words.
+- Witty, direct, and clear.
+- No academic jargon unless you immediately explain it.
+- Do not preach.
+- Do not impersonate a real person.
+- If the player dodged, call it out.
+- If the player was honest, praise it.
+- Keep the focus on truth, proof, people, and honest thinking.
+
 Topic: ${payload.topic?.title || 'Unknown topic'}
+Category: ${payload.topic?.categoryLabel || payload.topic?.category || 'Unknown'}
 Round: ${payload.round?.title || 'Unknown round'}
 Round challenge: ${payload.round?.challenge || ''}
 Player persona: ${payload.persona?.displayName || payload.persona?.safeName || 'Unknown persona'}
 Selected card: ${payload.card?.name || 'Unknown card'}
 Card text: ${payload.card?.text || ''}
-Scores now: logic ${payload.scores?.logic ?? 'n/a'}, evidence ${payload.scores?.evidence ?? 'n/a'}, humanity ${payload.scores?.humanity ?? 'n/a'}, humility ${payload.scores?.humility ?? 'n/a'}
+Scores now: logic ${payload.scores?.logic ?? 'n/a'}, proof ${payload.scores?.evidence ?? 'n/a'}, people ${payload.scores?.humanity ?? 'n/a'}, honesty ${payload.scores?.humility ?? 'n/a'}
 Player custom line: ${payload.customAnswer || '[none]'}
-Write a pointed cross-examination or verdict line. If the player dodged, say so crisply. If they admitted uncertainty, reward honesty. Avoid brand names and avoid legal-risk references.`;
+
+Write Professor L's response now.`;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 120
-        }
+        generationConfig: { temperature: 0.75, maxOutputTokens: 120 }
       })
     });
 

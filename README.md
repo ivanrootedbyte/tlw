@@ -1,48 +1,81 @@
-# The Last Word: Retro Debate Arena Plus
+# The Last Word v2 — Production Current-Affairs MVP
 
-Production-style MVP for a retro debate game with:
-- 6 fictional tech-archetype personas
-- local-first gameplay
-- Vercel API route for live Professor L cross-examination
-- Supabase magic-link sign-in and cloud match history
+A retro debate-card game where fictional satire personas debate current topics against Professor L.
 
-## Run locally
-Use any static server:
+## What is new in v2
+
+- Plain-language rewrite across the game.
+- 140 playable topics: 7 categories with 20 topics each.
+- 115 playable cards.
+- Round-by-round pop-up briefing flow.
+- Result pop-up after each card play.
+- Broader categories beyond tech: culture, relationships, work, society, health, faith/meaning.
+- People-style PNG portraits are included in `assets/portraits/`.
+- Gemini route still works through `api/debate.js` when `GEMINI_API_KEY` is set.
+- Supabase remains optional and can be configured later.
+
+## Deploy on Vercel
+
+Use these Vercel settings for a static HTML/CSS/JS app with an API route:
+
+- Preset: Other
+- Root Directory: `./`
+- Build Command: leave blank
+- Output Directory: leave blank
+- Install Command: leave blank
+
+Required for AI responses:
+
+```text
+GEMINI_API_KEY=your_key_here
+GEMINI_MODEL=gemini-3.5-flash
+```
+
+Supabase can be added later. Without Supabase, the app still works in guest mode with local match history.
+
+## Local run
+
+Use a local static server instead of double-clicking `index.html`:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Then open:
 
-## Deploy to Vercel
-1. Push this folder to GitHub.
-2. Import the repo into Vercel.
-3. Add environment variables in Vercel:
-   - `GEMINI_API_KEY`
-   - `GEMINI_MODEL` (optional, defaults to `gemini-2.5-flash-lite`)
-4. Deploy.
+```text
+http://localhost:8000
+```
 
-Gemini 2.5 Flash-Lite is currently documented by Google as its most cost-efficient multimodal model, while Gemini 2.5 Flash is described as the better price-performance general model. This build defaults to Flash-Lite so Professor L cross-examination stays lightweight.
+This is needed because the browser fetches JSON files from `/data/` and uses module scripts.
 
-## Supabase setup
-1. Create a Supabase project.
-2. In Supabase SQL Editor, run `supabase/schema.sql`.
-3. Copy `js/env.example.js` to `js/env.js`.
-4. Fill in:
-   - `window.__SUPABASE_URL__`
-   - `window.__SUPABASE_ANON_KEY__`
-5. In Supabase Auth, enable email magic links. Supabase documents magic-link and OTP flows through `signInWithOtp`.
+## Optional Supabase setup
 
-## What changed from the previous zip
-- `api/debate.js` now calls Gemini when `GEMINI_API_KEY` is present, with local fallback if not.
-- `account.html` now includes magic-link login UI.
-- `js/supabase-client.js` handles auth, profile upsert, and cloud match saves.
-- `js/account.js` merges cloud history with local history.
-- `js/arena.js` now requests a live Professor L line every round and tries to sync results to Supabase.
-- `js/env.js` is included as a safe placeholder so the app runs without configuration.
+Update `js/env.js` later:
+
+```js
+window.__SUPABASE_URL__ = 'https://YOUR_PROJECT.supabase.co';
+window.__SUPABASE_ANON_KEY__ = 'YOUR_SUPABASE_ANON_KEY';
+```
+
+Then run `supabase/schema.sql` in your Supabase SQL editor.
+
+## Main changed files in v2
+
+- `data/topics.json`
+- `data/cards.json`
+- `data/personas.json`
+- `topics.html`
+- `arena.html`
+- `index.html`
+- `js/topics.js`
+- `js/arena.js`
+- `js/deck.js`
+- `js/game-engine.js`
+- `js/dialogue-engine.js`
+- `api/debate.js`
+- `css/arcade.css`
 
 ## Notes
-- The main loop still works without AI or Supabase.
-- Cloud save activates only after sign-in.
-- The game remains single-player and inexpensive to test because most gameplay is still static and local-first.
+
+All characters are fictional satire personas for education and entertainment. They are not affiliated with or endorsed by any real person or company.

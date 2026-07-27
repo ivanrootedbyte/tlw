@@ -1,38 +1,1614 @@
 {
   "cards": [
-    {"id":"launch-now","name":"Launch Now, Explain Later","type":"persona","category":"pressure","text":"Gain momentum by leaning into urgency.","effects":{"logic":-4,"evidence":-5,"humanity":-3,"humility":-2},"banner":"MAXIMUM HYPE"},
-    {"id":"first-principles","name":"First-Principles Reset","type":"persona","category":"logic","text":"Strip the argument to its bare assumptions.","effects":{"logic":9,"evidence":1,"humanity":0,"humility":1},"banner":"SYSTEM REBOOT"},
-    {"id":"backup-civilization","name":"Backup Civilization","type":"persona","category":"future","text":"Argue from long-term survival at civilization scale.","effects":{"logic":4,"evidence":2,"humanity":-2,"humility":-1},"banner":"MULTIPLANETARY PANIC"},
-    {"id":"engagement-max","name":"Engagement Multiplier","type":"persona","category":"social","text":"Optimize for connection, scale, and participation.","effects":{"logic":1,"evidence":0,"humanity":-1,"humility":-2},"banner":"AUDIENCE SPIKE"},
-    {"id":"network-effects","name":"Network Effects","type":"persona","category":"social","text":"A platform becomes more valuable because others use it.","effects":{"logic":4,"evidence":1,"humanity":-1,"humility":0},"banner":"EVERYONE JOINED"},
-    {"id":"terms-accepted","name":"Terms Accepted","type":"persona","category":"comedy","text":"Proceed without fully explaining the trade-offs.","effects":{"logic":-3,"evidence":-2,"humanity":-5,"humility":-2},"banner":"NOBODY READ THE FINE PRINT"},
-    {"id":"citation-needed","name":"Citation Needed","type":"persona","category":"evidence","text":"Demand support for a confident claim.","effects":{"logic":3,"evidence":8,"humanity":0,"humility":1},"banner":"RECEIPTS REQUESTED"},
-    {"id":"relevance-ranking","name":"Relevance Ranking","type":"persona","category":"data","text":"Sort competing claims by usefulness and evidence.","effects":{"logic":5,"evidence":4,"humanity":-1,"humility":0},"banner":"PAGE ONE PRIORITY"},
-    {"id":"data-knows-best","name":"Data Knows Best","type":"persona","category":"data","text":"Trust the scale of the model more than human intuition.","effects":{"logic":1,"evidence":5,"humanity":-4,"humility":-1},"banner":"STATISTICAL CONFIDENCE"},
-    {"id":"one-more-thing","name":"One More Thing","type":"persona","category":"style","text":"Reveal a cleaner version of your case at the perfect time.","effects":{"logic":4,"evidence":0,"humanity":1,"humility":0},"banner":"PERFECTLY TIMED"},
-    {"id":"walled-garden","name":"Walled Garden","type":"persona","category":"control","text":"Argue that restriction can protect quality and safety.","effects":{"logic":4,"evidence":1,"humanity":-1,"humility":0},"banner":"CONTROLLED EXPERIENCE"},
-    {"id":"remove-the-button","name":"Remove the Button","type":"persona","category":"design","text":"Simplify by taking the dangerous option away.","effects":{"logic":2,"evidence":0,"humanity":-1,"humility":0},"banner":"OPTION REDACTED"},
-    {"id":"alignment-pending","name":"Alignment Pending","type":"persona","category":"ai","text":"Acknowledge the risk but keep developing anyway.","effects":{"logic":2,"evidence":1,"humanity":-2,"humility":1},"banner":"SAFETY STILL LOADING"},
-    {"id":"redefine-agi","name":"Redefine AGI","type":"persona","category":"ai","text":"Quietly update the definition to keep your position alive.","effects":{"logic":-5,"evidence":-2,"humanity":0,"humility":-4},"banner":"GOALPOST MOVED"},
-    {"id":"probability-cloud","name":"Probability Cloud","type":"persona","category":"ai","text":"Speak in calibrated uncertainty and scenario ranges.","effects":{"logic":3,"evidence":1,"humanity":0,"humility":4},"banner":"CALIBRATED HAZE"},
-    {"id":"maximum-compute","name":"Maximum Compute","type":"persona","category":"compute","text":"Argue that scale itself unlocks the impossible.","effects":{"logic":2,"evidence":4,"humanity":-2,"humility":-1},"banner":"FANS AT FULL SPEED"},
-    {"id":"digital-twin","name":"Digital Twin","type":"persona","category":"compute","text":"Model the system to predict its future behavior.","effects":{"logic":5,"evidence":3,"humanity":-1,"humility":0},"banner":"SIMULATION ONLINE"},
-    {"id":"parallelize-it","name":"Parallelize It","type":"persona","category":"compute","text":"Turn complexity into scalable workloads.","effects":{"logic":3,"evidence":2,"humanity":-1,"humility":-1},"banner":"MORE CLUSTERS"},
-
-    {"id":"define-your-terms","name":"Define Your Terms","type":"neutral","category":"logic","text":"Clarify the key word before the argument collapses under ambiguity.","effects":{"logic":8,"evidence":0,"humanity":0,"humility":2},"banner":"DEFINITION STRIKE"},
-    {"id":"evidence-shield","name":"Evidence Shield","type":"neutral","category":"evidence","text":"Protect your argument with actual support.","effects":{"logic":2,"evidence":8,"humanity":0,"humility":1},"banner":"RECEIPTS DEPLOYED"},
-    {"id":"human-cost","name":"Human Cost","type":"neutral","category":"humanity","text":"Force the abstract principle to touch a real person.","effects":{"logic":1,"evidence":0,"humanity":9,"humility":2},"banner":"HUMAN BEING DETECTED"},
-    {"id":"admit-uncertainty","name":"Admit Uncertainty","type":"neutral","category":"humility","text":"Earn credibility by refusing fake certainty.","effects":{"logic":1,"evidence":0,"humanity":1,"humility":9},"banner":"INTELLECTUAL HONESTY"},
-    {"id":"category-error","name":"Category Error","type":"neutral","category":"logic","text":"Separate mechanism from meaning, power from authority, or data from wisdom.","effects":{"logic":9,"evidence":1,"humanity":2,"humility":1},"banner":"CATEGORY ERROR"},
-    {"id":"steelman","name":"Steelman Counter","type":"neutral","category":"logic","text":"Represent the strongest opposing case before answering it.","effects":{"logic":6,"evidence":2,"humanity":2,"humility":3},"banner":"FAIR REPRESENTATION"},
-    {"id":"burden-of-proof","name":"Burden of Proof","type":"neutral","category":"evidence","text":"Ask the bold claimant to do the heavy lifting.","effects":{"logic":4,"evidence":6,"humanity":0,"humility":2},"banner":"CLAIMANT SUMMONED"},
-    {"id":"moral-foundation","name":"Moral Foundation","type":"neutral","category":"theology","text":"Ask what grounds the moral conclusion.","effects":{"logic":6,"evidence":0,"humanity":3,"humility":1},"banner":"FOUNDATION CHECK"},
-    {"id":"created-value","name":"Created Value","type":"neutral","category":"theology","text":"Defend the idea that human worth is not earned by performance.","effects":{"logic":4,"evidence":0,"humanity":9,"humility":1},"banner":"INTRINSIC WORTH"},
-    {"id":"worship-check","name":"Worship Check","type":"neutral","category":"theology","text":"Ask whether a tool is being asked to save, define, or rule us.","effects":{"logic":5,"evidence":0,"humanity":4,"humility":2},"banner":"IDOL ALERT"},
-    {"id":"competing-hypothesis","name":"Competing Hypothesis","type":"neutral","category":"evidence","text":"Offer another explanation that still fits the facts.","effects":{"logic":5,"evidence":5,"humanity":0,"humility":1},"banner":"ALTERNATE MODEL"},
-    {"id":"direct-answer","name":"Direct Answer","type":"neutral","category":"humility","text":"Answer the actual question cleanly.","effects":{"logic":4,"evidence":1,"humanity":0,"humility":6},"banner":"QUESTION ANSWERED"},
-    {"id":"goalpost-move","name":"Move the Goalposts","type":"trap","category":"comedy","text":"Protect yourself by changing the standard mid-match.","effects":{"logic":-7,"evidence":-3,"humanity":0,"humility":-6},"banner":"GOALPOST MOVED"},
-    {"id":"impressive-vocabulary","name":"Impressive Vocabulary","type":"trap","category":"comedy","text":"Cover weakness with prestige wording.","effects":{"logic":-4,"evidence":-2,"humanity":0,"humility":-3},"banner":"VERBAL FOG"},
-    {"id":"pretend-that-was-my-point","name":"Pretend That Was My Point","type":"trap","category":"comedy","text":"Act as though the contradiction was always the plan.","effects":{"logic":-6,"evidence":-1,"humanity":0,"humility":-5},"banner":"POLITICAL INSTINCT"}
+    {
+      "id": "launch-now",
+      "name": "Launch Now, Explain Later",
+      "type": "persona",
+      "category": "pressure",
+      "text": "Move fast and hope the details forgive you.",
+      "effects": {
+        "logic": -4,
+        "evidence": -5,
+        "humanity": -3,
+        "humility": -2
+      },
+      "banner": "MAXIMUM HYPE"
+    },
+    {
+      "id": "first-principles",
+      "name": "Start From Scratch",
+      "type": "persona",
+      "category": "logic",
+      "text": "Break the claim down to its basic parts.",
+      "effects": {
+        "logic": 9,
+        "evidence": 1,
+        "humanity": 0,
+        "humility": 1
+      },
+      "banner": "SYSTEM REBOOT"
+    },
+    {
+      "id": "backup-civilization",
+      "name": "Backup Planets",
+      "type": "persona",
+      "category": "future",
+      "text": "Argue from long-term survival.",
+      "effects": {
+        "logic": 4,
+        "evidence": 2,
+        "humanity": -2,
+        "humility": -1
+      },
+      "banner": "BACKUP PLANET"
+    },
+    {
+      "id": "engagement-max",
+      "name": "Make It Addictive",
+      "type": "persona",
+      "category": "social",
+      "text": "Argue that scale and attention make the system work.",
+      "effects": {
+        "logic": 1,
+        "evidence": 0,
+        "humanity": -3,
+        "humility": -2
+      },
+      "banner": "AUDIENCE SPIKE"
+    },
+    {
+      "id": "network-effects",
+      "name": "Everyone Is Already There",
+      "type": "persona",
+      "category": "social",
+      "text": "Say the platform matters because people depend on it.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": -1,
+        "humility": 0
+      },
+      "banner": "NETWORK LOCKED"
+    },
+    {
+      "id": "terms-accepted",
+      "name": "Nobody Read the Terms",
+      "type": "persona",
+      "category": "comedy",
+      "text": "Slide past the trade-off and hope nobody notices.",
+      "effects": {
+        "logic": -3,
+        "evidence": -2,
+        "humanity": -5,
+        "humility": -2
+      },
+      "banner": "FINE PRINT ATTACK"
+    },
+    {
+      "id": "citation-needed",
+      "name": "Show the Receipts",
+      "type": "persona",
+      "category": "evidence",
+      "text": "Demand proof for a confident claim.",
+      "effects": {
+        "logic": 3,
+        "evidence": 8,
+        "humanity": 0,
+        "humility": 1
+      },
+      "banner": "RECEIPTS REQUESTED"
+    },
+    {
+      "id": "relevance-ranking",
+      "name": "Rank the Answers",
+      "type": "persona",
+      "category": "data",
+      "text": "Sort the options by usefulness and support.",
+      "effects": {
+        "logic": 5,
+        "evidence": 4,
+        "humanity": -1,
+        "humility": 0
+      },
+      "banner": "PAGE ONE PRIORITY"
+    },
+    {
+      "id": "data-knows-best",
+      "name": "Trust the Data",
+      "type": "persona",
+      "category": "data",
+      "text": "Trust large-scale data over instinct.",
+      "effects": {
+        "logic": 1,
+        "evidence": 5,
+        "humanity": -4,
+        "humility": -1
+      },
+      "banner": "DATA HAS SPOKEN"
+    },
+    {
+      "id": "one-more-thing",
+      "name": "One More Thing",
+      "type": "persona",
+      "category": "style",
+      "text": "Reveal a cleaner version of your case at the perfect time.",
+      "effects": {
+        "logic": 4,
+        "evidence": 0,
+        "humanity": 1,
+        "humility": 0
+      },
+      "banner": "PERFECT TIMING"
+    },
+    {
+      "id": "walled-garden",
+      "name": "Keep It Controlled",
+      "type": "persona",
+      "category": "control",
+      "text": "Argue that fewer choices can protect people.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": -1,
+        "humility": 0
+      },
+      "banner": "CONTROLLED EXPERIENCE"
+    },
+    {
+      "id": "remove-the-button",
+      "name": "Remove the Button",
+      "type": "persona",
+      "category": "design",
+      "text": "Take away the risky option.",
+      "effects": {
+        "logic": 2,
+        "evidence": 0,
+        "humanity": -1,
+        "humility": 0
+      },
+      "banner": "OPTION REMOVED"
+    },
+    {
+      "id": "alignment-pending",
+      "name": "Safety Is Still Loading",
+      "type": "persona",
+      "category": "ai",
+      "text": "Admit risk while still pushing forward.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": -2,
+        "humility": 1
+      },
+      "banner": "SAFETY LOADING"
+    },
+    {
+      "id": "redefine-agi",
+      "name": "Change the Definition",
+      "type": "persona",
+      "category": "ai",
+      "text": "Quietly move the meaning to protect your claim.",
+      "effects": {
+        "logic": -5,
+        "evidence": -2,
+        "humanity": 0,
+        "humility": -4
+      },
+      "banner": "GOALPOST MOVED"
+    },
+    {
+      "id": "probability-cloud",
+      "name": "Maybe, Probably, Sort Of",
+      "type": "persona",
+      "category": "ai",
+      "text": "Use careful probability instead of fake certainty.",
+      "effects": {
+        "logic": 3,
+        "evidence": 1,
+        "humanity": 0,
+        "humility": 4
+      },
+      "banner": "MAYBE CLOUD"
+    },
+    {
+      "id": "maximum-compute",
+      "name": "Add More Compute",
+      "type": "persona",
+      "category": "compute",
+      "text": "Argue that more power can solve the hard part.",
+      "effects": {
+        "logic": 2,
+        "evidence": 4,
+        "humanity": -2,
+        "humility": -1
+      },
+      "banner": "FANS AT FULL SPEED"
+    },
+    {
+      "id": "digital-twin",
+      "name": "Run the Simulation",
+      "type": "persona",
+      "category": "compute",
+      "text": "Model the future before making the call.",
+      "effects": {
+        "logic": 5,
+        "evidence": 3,
+        "humanity": -1,
+        "humility": 0
+      },
+      "banner": "SIMULATION ONLINE"
+    },
+    {
+      "id": "parallelize-it",
+      "name": "Parallelize It",
+      "type": "persona",
+      "category": "compute",
+      "text": "Turn complexity into a machine problem.",
+      "effects": {
+        "logic": 3,
+        "evidence": 2,
+        "humanity": -1,
+        "humility": -1
+      },
+      "banner": "MORE SERVERS"
+    },
+    {
+      "id": "define-your-terms",
+      "name": "Define That Word",
+      "type": "neutral",
+      "category": "logic",
+      "text": "Ask what the key word actually means.",
+      "effects": {
+        "logic": 8,
+        "evidence": 0,
+        "humanity": 0,
+        "humility": 2
+      },
+      "banner": "DEFINE THAT"
+    },
+    {
+      "id": "evidence-shield",
+      "name": "Bring Proof",
+      "type": "neutral",
+      "category": "evidence",
+      "text": "Use real support, not confidence.",
+      "effects": {
+        "logic": 2,
+        "evidence": 8,
+        "humanity": 0,
+        "humility": 1
+      },
+      "banner": "PROOF DEPLOYED"
+    },
+    {
+      "id": "human-cost",
+      "name": "Who Gets Hurt?",
+      "type": "neutral",
+      "category": "humanity",
+      "text": "Ask who pays the price if this idea wins.",
+      "effects": {
+        "logic": 1,
+        "evidence": 0,
+        "humanity": 9,
+        "humility": 2
+      },
+      "banner": "HUMAN BEING DETECTED"
+    },
+    {
+      "id": "admit-uncertainty",
+      "name": "Say \u201cI Might Be Wrong\u201d",
+      "type": "neutral",
+      "category": "humility",
+      "text": "Gain trust by not pretending.",
+      "effects": {
+        "logic": 1,
+        "evidence": 0,
+        "humanity": 1,
+        "humility": 9
+      },
+      "banner": "HONESTY BONUS"
+    },
+    {
+      "id": "category-error",
+      "name": "Wrong Kind of Answer",
+      "type": "neutral",
+      "category": "logic",
+      "text": "Point out that \u201ccan\u201d is not the same as \u201cshould.\u201d",
+      "effects": {
+        "logic": 9,
+        "evidence": 1,
+        "humanity": 2,
+        "humility": 1
+      },
+      "banner": "CATEGORY ERROR"
+    },
+    {
+      "id": "steelman",
+      "name": "Make Their Best Case",
+      "type": "neutral",
+      "category": "logic",
+      "text": "Explain the other side fairly before answering.",
+      "effects": {
+        "logic": 6,
+        "evidence": 2,
+        "humanity": 2,
+        "humility": 3
+      },
+      "banner": "FAIR PLAY"
+    },
+    {
+      "id": "burden-of-proof",
+      "name": "You Prove It",
+      "type": "neutral",
+      "category": "evidence",
+      "text": "The bold claim has to carry the evidence.",
+      "effects": {
+        "logic": 4,
+        "evidence": 6,
+        "humanity": 0,
+        "humility": 2
+      },
+      "banner": "PROVE IT"
+    },
+    {
+      "id": "moral-foundation",
+      "name": "Why Is That Right?",
+      "type": "neutral",
+      "category": "theology",
+      "text": "Ask what makes the moral rule true.",
+      "effects": {
+        "logic": 6,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 1
+      },
+      "banner": "MORAL CHECK"
+    },
+    {
+      "id": "created-value",
+      "name": "People Are Not Scores",
+      "type": "neutral",
+      "category": "theology",
+      "text": "Defend human worth beyond performance.",
+      "effects": {
+        "logic": 4,
+        "evidence": 0,
+        "humanity": 9,
+        "humility": 1
+      },
+      "banner": "WORTH CHECK"
+    },
+    {
+      "id": "worship-check",
+      "name": "Is This Your Savior?",
+      "type": "neutral",
+      "category": "theology",
+      "text": "Ask if a tool is being treated like ultimate hope.",
+      "effects": {
+        "logic": 5,
+        "evidence": 0,
+        "humanity": 4,
+        "humility": 2
+      },
+      "banner": "IDOL ALERT"
+    },
+    {
+      "id": "competing-hypothesis",
+      "name": "Another Explanation",
+      "type": "neutral",
+      "category": "evidence",
+      "text": "Offer a different reason that fits the facts.",
+      "effects": {
+        "logic": 5,
+        "evidence": 5,
+        "humanity": 0,
+        "humility": 1
+      },
+      "banner": "OTHER OPTION"
+    },
+    {
+      "id": "direct-answer",
+      "name": "Answer the Question",
+      "type": "neutral",
+      "category": "humility",
+      "text": "Stop circling and answer plainly.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 0,
+        "humility": 6
+      },
+      "banner": "ACTUAL ANSWER"
+    },
+    {
+      "id": "real-life-test",
+      "name": "Try It in Real Life",
+      "type": "neutral",
+      "category": "humanity",
+      "text": "Move from slogan to daily life.",
+      "effects": {
+        "logic": 3,
+        "evidence": 1,
+        "humanity": 6,
+        "humility": 1
+      },
+      "banner": "REAL LIFE TEST"
+    },
+    {
+      "id": "who-decides",
+      "name": "Who Gets Power?",
+      "type": "neutral",
+      "category": "humanity",
+      "text": "Ask who controls the rule and who cannot appeal.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 6,
+        "humility": 1
+      },
+      "banner": "POWER CHECK"
+    },
+    {
+      "id": "follow-the-money",
+      "name": "Follow the Money",
+      "type": "neutral",
+      "category": "evidence",
+      "text": "Ask who profits from the idea.",
+      "effects": {
+        "logic": 3,
+        "evidence": 5,
+        "humanity": 2,
+        "humility": 0
+      },
+      "banner": "MONEY TRAIL"
+    },
+    {
+      "id": "slow-down",
+      "name": "Slow Down",
+      "type": "neutral",
+      "category": "humility",
+      "text": "Refuse the rush and check the cost.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "SLOW DOWN"
+    },
+    {
+      "id": "name-the-tradeoff",
+      "name": "Name the Trade-Off",
+      "type": "neutral",
+      "category": "logic",
+      "text": "Say what you gain and what you lose.",
+      "effects": {
+        "logic": 5,
+        "evidence": 1,
+        "humanity": 3,
+        "humility": 2
+      },
+      "banner": "TRADE-OFF NAMED"
+    },
+    {
+      "id": "protect-the-weak",
+      "name": "Protect the Weak",
+      "type": "neutral",
+      "category": "humanity",
+      "text": "Test the idea by how it treats vulnerable people.",
+      "effects": {
+        "logic": 2,
+        "evidence": 0,
+        "humanity": 10,
+        "humility": 2
+      },
+      "banner": "WEAK PROTECTED"
+    },
+    {
+      "id": "what-if-wrong",
+      "name": "What If You Are Wrong?",
+      "type": "neutral",
+      "category": "humility",
+      "text": "Ask what damage happens if your side is mistaken.",
+      "effects": {
+        "logic": 3,
+        "evidence": 2,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "WRONG TEST"
+    },
+    {
+      "id": "short-term-long-term",
+      "name": "Short Term vs Long Term",
+      "type": "neutral",
+      "category": "logic",
+      "text": "Separate quick wins from long consequences.",
+      "effects": {
+        "logic": 5,
+        "evidence": 2,
+        "humanity": 2,
+        "humility": 1
+      },
+      "banner": "TIME JUMP"
+    },
+    {
+      "id": "ordinary-person",
+      "name": "Ask an Ordinary Person",
+      "type": "neutral",
+      "category": "humanity",
+      "text": "Bring in someone outside the expert bubble.",
+      "effects": {
+        "logic": 1,
+        "evidence": 1,
+        "humanity": 7,
+        "humility": 3
+      },
+      "banner": "NORMAL HUMAN SUMMONED"
+    },
+    {
+      "id": "does-this-scale",
+      "name": "Does It Scale?",
+      "type": "neutral",
+      "category": "evidence",
+      "text": "Check if the idea works beyond one example.",
+      "effects": {
+        "logic": 4,
+        "evidence": 5,
+        "humanity": 0,
+        "humility": 1
+      },
+      "banner": "SCALE CHECK"
+    },
+    {
+      "id": "define-success",
+      "name": "Define Success",
+      "type": "neutral",
+      "category": "logic",
+      "text": "Ask what winning actually means.",
+      "effects": {
+        "logic": 6,
+        "evidence": 1,
+        "humanity": 1,
+        "humility": 2
+      },
+      "banner": "SUCCESS DEFINED"
+    },
+    {
+      "id": "spot-the-fear",
+      "name": "Spot the Fear",
+      "type": "neutral",
+      "category": "humility",
+      "text": "Name the fear driving the argument.",
+      "effects": {
+        "logic": 2,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 7
+      },
+      "banner": "FEAR SPOTTED"
+    },
+    {
+      "id": "check-the-fruit",
+      "name": "Check the Fruit",
+      "type": "neutral",
+      "category": "theology",
+      "text": "Ask what kind of people this idea forms.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 6,
+        "humility": 2
+      },
+      "banner": "FRUIT CHECK"
+    },
+    {
+      "id": "truth-vs-tribe",
+      "name": "Truth Over Tribe",
+      "type": "neutral",
+      "category": "humility",
+      "text": "Choose what is true over what your side likes.",
+      "effects": {
+        "logic": 4,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 7
+      },
+      "banner": "TRIBE DETECTED"
+    },
+    {
+      "id": "not-a-vibe",
+      "name": "Not a Vibe",
+      "type": "neutral",
+      "category": "evidence",
+      "text": "Feelings matter, but they are not proof.",
+      "effects": {
+        "logic": 3,
+        "evidence": 7,
+        "humanity": 1,
+        "humility": 1
+      },
+      "banner": "VIBE DENIED"
+    },
+    {
+      "id": "humans-not-content",
+      "name": "Humans Are Not Content",
+      "type": "neutral",
+      "category": "humanity",
+      "text": "Remind the room that attention is not the same as care.",
+      "effects": {
+        "logic": 2,
+        "evidence": 0,
+        "humanity": 9,
+        "humility": 2
+      },
+      "banner": "CONTENT WARNING"
+    },
+    {
+      "id": "forgive-and-repair",
+      "name": "Repair the Claim",
+      "type": "neutral",
+      "category": "humility",
+      "text": "Fix your argument instead of defending the broken part.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 1,
+        "humility": 8
+      },
+      "banner": "CLAIM REPAIRED"
+    },
+    {
+      "id": "limit-the-claim",
+      "name": "Make It Smaller",
+      "type": "neutral",
+      "category": "logic",
+      "text": "Narrow the claim until it is honest.",
+      "effects": {
+        "logic": 6,
+        "evidence": 2,
+        "humanity": 1,
+        "humility": 5
+      },
+      "banner": "CLAIM SHRUNK"
+    },
+    {
+      "id": "ask-what-matters",
+      "name": "What Matters Most?",
+      "type": "neutral",
+      "category": "theology",
+      "text": "Ask what the idea treats as ultimate.",
+      "effects": {
+        "logic": 4,
+        "evidence": 0,
+        "humanity": 5,
+        "humility": 2
+      },
+      "banner": "ULTIMATE CHECK"
+    },
+    {
+      "id": "goalpost-move",
+      "name": "Move the Goalposts",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Change the standard mid-match.",
+      "effects": {
+        "logic": -7,
+        "evidence": -3,
+        "humanity": 0,
+        "humility": -6
+      },
+      "banner": "GOALPOST MOVED"
+    },
+    {
+      "id": "impressive-vocabulary",
+      "name": "Use Fancy Words",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Make a weak answer sound expensive.",
+      "effects": {
+        "logic": -4,
+        "evidence": -2,
+        "humanity": 0,
+        "humility": -3
+      },
+      "banner": "VERBAL FOG"
+    },
+    {
+      "id": "pretend-that-was-my-point",
+      "name": "Pretend That Was My Point",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Act like the correction was your plan.",
+      "effects": {
+        "logic": -6,
+        "evidence": -1,
+        "humanity": 0,
+        "humility": -5
+      },
+      "banner": "NICE TRY"
+    },
+    {
+      "id": "quote-the-internet",
+      "name": "Quote the Internet",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Use a viral phrase as if it settled the issue.",
+      "effects": {
+        "logic": -3,
+        "evidence": -3,
+        "humanity": 0,
+        "humility": -2
+      },
+      "banner": "MEME CITED"
+    },
+    {
+      "id": "whataboutism",
+      "name": "What About Them?",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Dodge by pointing at another problem.",
+      "effects": {
+        "logic": -5,
+        "evidence": -1,
+        "humanity": 0,
+        "humility": -4
+      },
+      "banner": "DODGE ROLL"
+    },
+    {
+      "id": "too-long-didnt-answer",
+      "name": "Too Long, Did Not Answer",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Talk so much the question gets tired.",
+      "effects": {
+        "logic": -4,
+        "evidence": -1,
+        "humanity": 0,
+        "humility": -3
+      },
+      "banner": "QUESTION STILL ALIVE"
+    },
+    {
+      "id": "appeal-to-future",
+      "name": "The Future Will Fix It",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Promise that tomorrow will solve what today cannot explain.",
+      "effects": {
+        "logic": -4,
+        "evidence": -4,
+        "humanity": -1,
+        "humility": -2
+      },
+      "banner": "FUTURE IOU"
+    },
+    {
+      "id": "everyone-knows",
+      "name": "Everyone Knows",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Treat popularity as proof.",
+      "effects": {
+        "logic": -5,
+        "evidence": -5,
+        "humanity": 0,
+        "humility": -3
+      },
+      "banner": "CROWD NOISE"
+    },
+    {
+      "id": "vibes-based-policy",
+      "name": "Vibes-Based Policy",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Build a rule on emotional weather.",
+      "effects": {
+        "logic": -5,
+        "evidence": -6,
+        "humanity": -1,
+        "humility": -2
+      },
+      "banner": "VIBE GOVERNMENT"
+    },
+    {
+      "id": "skip-the-person",
+      "name": "Skip the Person",
+      "type": "trap",
+      "category": "comedy",
+      "text": "Ignore the person affected by the rule.",
+      "effects": {
+        "logic": -2,
+        "evidence": 0,
+        "humanity": -8,
+        "humility": -2
+      },
+      "banner": "HUMAN MISSING"
+    },
+    {
+      "id": "tech-01-privacy-check",
+      "name": "Privacy Check",
+      "type": "neutral",
+      "category": "tech",
+      "text": "Use a plain-language privacy check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "PRIVACY CHECK"
+    },
+    {
+      "id": "tech-02-bot-or-person",
+      "name": "Bot or Person?",
+      "type": "neutral",
+      "category": "tech",
+      "text": "Use a plain-language bot or person? to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "BOT OR PERSON?"
+    },
+    {
+      "id": "tech-03-algorithm-audit",
+      "name": "Algorithm Audit",
+      "type": "neutral",
+      "category": "tech",
+      "text": "Use a plain-language algorithm audit to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "ALGORITHM AUDIT"
+    },
+    {
+      "id": "tech-04-tool-not-master",
+      "name": "Tool Not Master",
+      "type": "neutral",
+      "category": "tech",
+      "text": "Use a plain-language tool not master to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "TOOL NOT MASTER"
+    },
+    {
+      "id": "tech-05-safety-test",
+      "name": "Safety Test",
+      "type": "neutral",
+      "category": "tech",
+      "text": "Use a plain-language safety test to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "SAFETY TEST"
+    },
+    {
+      "id": "tech-06-screen-time-alarm",
+      "name": "Screen Time Alarm",
+      "type": "neutral",
+      "category": "tech",
+      "text": "Use a plain-language screen time alarm to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "SCREEN TIME ALARM"
+    },
+    {
+      "id": "tech-07-deepfake-doubt",
+      "name": "Deepfake Doubt",
+      "type": "neutral",
+      "category": "tech",
+      "text": "Use a plain-language deepfake doubt to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "DEEPFAKE DOUBT"
+    },
+    {
+      "id": "tech-08-automation-cost",
+      "name": "Automation Cost",
+      "type": "neutral",
+      "category": "tech",
+      "text": "Use a plain-language automation cost to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "AUTOMATION COST"
+    },
+    {
+      "id": "culture-01-trend-check",
+      "name": "Trend Check",
+      "type": "neutral",
+      "category": "culture",
+      "text": "Use a plain-language trend check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "TREND CHECK"
+    },
+    {
+      "id": "culture-02-outrage-meter",
+      "name": "Outrage Meter",
+      "type": "neutral",
+      "category": "culture",
+      "text": "Use a plain-language outrage meter to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "OUTRAGE METER"
+    },
+    {
+      "id": "culture-03-fame-filter",
+      "name": "Fame Filter",
+      "type": "neutral",
+      "category": "culture",
+      "text": "Use a plain-language fame filter to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "FAME FILTER"
+    },
+    {
+      "id": "culture-04-clip-context",
+      "name": "Clip Context",
+      "type": "neutral",
+      "category": "culture",
+      "text": "Use a plain-language clip context to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "CLIP CONTEXT"
+    },
+    {
+      "id": "culture-05-audience-bait",
+      "name": "Audience Bait",
+      "type": "neutral",
+      "category": "culture",
+      "text": "Use a plain-language audience bait to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "AUDIENCE BAIT"
+    },
+    {
+      "id": "culture-06-authenticity-test",
+      "name": "Authenticity Test",
+      "type": "neutral",
+      "category": "culture",
+      "text": "Use a plain-language authenticity test to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "AUTHENTICITY TEST"
+    },
+    {
+      "id": "culture-07-cancel-pause",
+      "name": "Cancel Pause",
+      "type": "neutral",
+      "category": "culture",
+      "text": "Use a plain-language cancel pause to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "CANCEL PAUSE"
+    },
+    {
+      "id": "culture-08-nostalgia-trap",
+      "name": "Nostalgia Trap",
+      "type": "neutral",
+      "category": "culture",
+      "text": "Use a plain-language nostalgia trap to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "NOSTALGIA TRAP"
+    },
+    {
+      "id": "family-01-dinner-table-test",
+      "name": "Dinner Table Test",
+      "type": "neutral",
+      "category": "family",
+      "text": "Use a plain-language dinner table test to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "DINNER TABLE TEST"
+    },
+    {
+      "id": "family-02-commitment-check",
+      "name": "Commitment Check",
+      "type": "neutral",
+      "category": "family",
+      "text": "Use a plain-language commitment check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "COMMITMENT CHECK"
+    },
+    {
+      "id": "family-03-kid-test",
+      "name": "Kid Test",
+      "type": "neutral",
+      "category": "family",
+      "text": "Use a plain-language kid test to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "KID TEST"
+    },
+    {
+      "id": "family-04-loneliness-check",
+      "name": "Loneliness Check",
+      "type": "neutral",
+      "category": "family",
+      "text": "Use a plain-language loneliness check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "LONELINESS CHECK"
+    },
+    {
+      "id": "family-05-boundary-or-avoidance",
+      "name": "Boundary or Avoidance?",
+      "type": "neutral",
+      "category": "family",
+      "text": "Use a plain-language boundary or avoidance? to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "BOUNDARY OR AVOIDANCE?"
+    },
+    {
+      "id": "family-06-love-costs-something",
+      "name": "Love Costs Something",
+      "type": "neutral",
+      "category": "family",
+      "text": "Use a plain-language love costs something to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "LOVE COSTS SOMETHING"
+    },
+    {
+      "id": "family-07-grandparent-wisdom",
+      "name": "Grandparent Wisdom",
+      "type": "neutral",
+      "category": "family",
+      "text": "Use a plain-language grandparent wisdom to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "GRANDPARENT WISDOM"
+    },
+    {
+      "id": "family-08-phone-down",
+      "name": "Phone Down",
+      "type": "neutral",
+      "category": "family",
+      "text": "Use a plain-language phone down to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "PHONE DOWN"
+    },
+    {
+      "id": "work-01-burnout-alarm",
+      "name": "Burnout Alarm",
+      "type": "neutral",
+      "category": "work",
+      "text": "Use a plain-language burnout alarm to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "BURNOUT ALARM"
+    },
+    {
+      "id": "work-02-status-check",
+      "name": "Status Check",
+      "type": "neutral",
+      "category": "work",
+      "text": "Use a plain-language status check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "STATUS CHECK"
+    },
+    {
+      "id": "work-03-purpose-test",
+      "name": "Purpose Test",
+      "type": "neutral",
+      "category": "work",
+      "text": "Use a plain-language purpose test to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "PURPOSE TEST"
+    },
+    {
+      "id": "work-04-layoff-human-cost",
+      "name": "Layoff Human Cost",
+      "type": "neutral",
+      "category": "work",
+      "text": "Use a plain-language layoff human cost to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "LAYOFF HUMAN COST"
+    },
+    {
+      "id": "work-05-money-mirror",
+      "name": "Money Mirror",
+      "type": "neutral",
+      "category": "work",
+      "text": "Use a plain-language money mirror to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "MONEY MIRROR"
+    },
+    {
+      "id": "work-06-hustle-hangover",
+      "name": "Hustle Hangover",
+      "type": "neutral",
+      "category": "work",
+      "text": "Use a plain-language hustle hangover to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "HUSTLE HANGOVER"
+    },
+    {
+      "id": "work-07-boss-power-check",
+      "name": "Boss Power Check",
+      "type": "neutral",
+      "category": "work",
+      "text": "Use a plain-language boss power check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "BOSS POWER CHECK"
+    },
+    {
+      "id": "work-08-freedom-or-exhaustion",
+      "name": "Freedom or Exhaustion?",
+      "type": "neutral",
+      "category": "work",
+      "text": "Use a plain-language freedom or exhaustion? to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "FREEDOM OR EXHAUSTION?"
+    },
+    {
+      "id": "society-01-power-audit",
+      "name": "Power Audit",
+      "type": "neutral",
+      "category": "society",
+      "text": "Use a plain-language power audit to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "POWER AUDIT"
+    },
+    {
+      "id": "society-02-fear-check",
+      "name": "Fear Check",
+      "type": "neutral",
+      "category": "society",
+      "text": "Use a plain-language fear check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "FEAR CHECK"
+    },
+    {
+      "id": "society-03-freedom-cost",
+      "name": "Freedom Cost",
+      "type": "neutral",
+      "category": "society",
+      "text": "Use a plain-language freedom cost to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "FREEDOM COST"
+    },
+    {
+      "id": "society-04-law-is-not-enough",
+      "name": "Law Is Not Enough",
+      "type": "neutral",
+      "category": "society",
+      "text": "Use a plain-language law is not enough to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "LAW IS NOT ENOUGH"
+    },
+    {
+      "id": "society-05-tribe-alarm",
+      "name": "Tribe Alarm",
+      "type": "neutral",
+      "category": "society",
+      "text": "Use a plain-language tribe alarm to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "TRIBE ALARM"
+    },
+    {
+      "id": "society-06-censorship-test",
+      "name": "Censorship Test",
+      "type": "neutral",
+      "category": "society",
+      "text": "Use a plain-language censorship test to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "CENSORSHIP TEST"
+    },
+    {
+      "id": "society-07-public-trust-check",
+      "name": "Public Trust Check",
+      "type": "neutral",
+      "category": "society",
+      "text": "Use a plain-language public trust check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "PUBLIC TRUST CHECK"
+    },
+    {
+      "id": "society-08-leader-character",
+      "name": "Leader Character",
+      "type": "neutral",
+      "category": "society",
+      "text": "Use a plain-language leader character to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "LEADER CHARACTER"
+    },
+    {
+      "id": "health-01-comfort-check",
+      "name": "Comfort Check",
+      "type": "neutral",
+      "category": "health",
+      "text": "Use a plain-language comfort check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "COMFORT CHECK"
+    },
+    {
+      "id": "health-02-discipline-card",
+      "name": "Discipline Card",
+      "type": "neutral",
+      "category": "health",
+      "text": "Use a plain-language discipline card to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "DISCIPLINE CARD"
+    },
+    {
+      "id": "health-03-body-is-not-a-brand",
+      "name": "Body Is Not a Brand",
+      "type": "neutral",
+      "category": "health",
+      "text": "Use a plain-language body is not a brand to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "BODY IS NOT A BRAND"
+    },
+    {
+      "id": "health-04-wellness-hype",
+      "name": "Wellness Hype",
+      "type": "neutral",
+      "category": "health",
+      "text": "Use a plain-language wellness hype to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "WELLNESS HYPE"
+    },
+    {
+      "id": "health-05-aging-honesty",
+      "name": "Aging Honesty",
+      "type": "neutral",
+      "category": "health",
+      "text": "Use a plain-language aging honesty to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "AGING HONESTY"
+    },
+    {
+      "id": "health-06-rest-is-allowed",
+      "name": "Rest Is Allowed",
+      "type": "neutral",
+      "category": "health",
+      "text": "Use a plain-language rest is allowed to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "REST IS ALLOWED"
+    },
+    {
+      "id": "health-07-suffering-question",
+      "name": "Suffering Question",
+      "type": "neutral",
+      "category": "health",
+      "text": "Use a plain-language suffering question to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "SUFFERING QUESTION"
+    },
+    {
+      "id": "health-08-self-care-audit",
+      "name": "Self-Care Audit",
+      "type": "neutral",
+      "category": "health",
+      "text": "Use a plain-language self-care audit to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "SELF-CARE AUDIT"
+    },
+    {
+      "id": "faith-01-meaning-test",
+      "name": "Meaning Test",
+      "type": "neutral",
+      "category": "faith",
+      "text": "Use a plain-language meaning test to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "MEANING TEST"
+    },
+    {
+      "id": "faith-02-hope-check",
+      "name": "Hope Check",
+      "type": "neutral",
+      "category": "faith",
+      "text": "Use a plain-language hope check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "HOPE CHECK"
+    },
+    {
+      "id": "faith-03-soul-question",
+      "name": "Soul Question",
+      "type": "neutral",
+      "category": "faith",
+      "text": "Use a plain-language soul question to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "SOUL QUESTION"
+    },
+    {
+      "id": "faith-04-progress-idol",
+      "name": "Progress Idol",
+      "type": "neutral",
+      "category": "faith",
+      "text": "Use a plain-language progress idol to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "PROGRESS IDOL"
+    },
+    {
+      "id": "faith-05-truth-not-comfort",
+      "name": "Truth Not Comfort",
+      "type": "neutral",
+      "category": "faith",
+      "text": "Use a plain-language truth not comfort to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 2,
+        "evidence": 1,
+        "humanity": 5,
+        "humility": 3
+      },
+      "banner": "TRUTH NOT COMFORT"
+    },
+    {
+      "id": "faith-06-human-worth-check",
+      "name": "Human Worth Check",
+      "type": "neutral",
+      "category": "faith",
+      "text": "Use a plain-language human worth check to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 0,
+        "humanity": 3,
+        "humility": 5
+      },
+      "banner": "HUMAN WORTH CHECK"
+    },
+    {
+      "id": "faith-07-follow-your-heart",
+      "name": "Follow Your Heart?",
+      "type": "neutral",
+      "category": "faith",
+      "text": "Use a plain-language follow your heart? to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 4,
+        "evidence": 1,
+        "humanity": 4,
+        "humility": 1
+      },
+      "banner": "FOLLOW YOUR HEART?"
+    },
+    {
+      "id": "faith-08-ultimate-authority",
+      "name": "Ultimate Authority",
+      "type": "neutral",
+      "category": "faith",
+      "text": "Use a plain-language ultimate authority to test the idea before it becomes a rule.",
+      "effects": {
+        "logic": 3,
+        "evidence": 3,
+        "humanity": 2,
+        "humility": 2
+      },
+      "banner": "ULTIMATE AUTHORITY"
+    }
   ]
 }

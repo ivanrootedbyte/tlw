@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="css/arcade.css" />
 </head>
 <body>
-  <main class="screen">
-    <header class="topbar">
+  <main class="screen arcade-screen">
+    <header class="topbar arcade-topbar">
       <div class="brand">THE LAST WORD<small>TOPIC SELECT</small></div>
       <nav class="nav">
         <a href="index.html">Personas</a>
@@ -17,27 +17,43 @@
       </nav>
     </header>
 
-    <section class="panel grid-2">
+    <section class="panel arcade-panel topic-hero">
       <div>
-        <div class="kicker">Selected challenger</div>
+        <div class="kicker">Current player</div>
         <div id="selectedPersonaBox"></div>
       </div>
-      <div class="daily-card panel" style="margin-top:0">
-        <div class="kicker">Daily challenge</div>
-        <h3 id="dailyTitle" style="margin:6px 0"></h3>
+      <div class="daily-card mini-cabinet">
+        <div class="kicker">Daily argument</div>
+        <h3 id="dailyTitle"></h3>
         <p id="dailySummary" class="small"></p>
-        <button class="btn primary" id="playDailyBtn" type="button">Play Daily Challenge</button>
+        <button class="btn primary" id="playDailyBtn" type="button">Play Today</button>
       </div>
     </section>
 
-    <section class="panel">
-      <div class="topbar" style="padding:0 0 12px">
-        <div>
-          <div class="kicker">Debate scenarios</div>
-          <h2 style="margin:4px 0 0">Choose a topic</h2>
-        </div>
+    <section class="panel arcade-panel topic-selector-shell">
+      <div class="topic-sidebar">
+        <div class="kicker">Categories</div>
+        <div id="categoryTabs" class="category-tabs"></div>
       </div>
-      <div id="topicGrid" class="topic-grid"></div>
+      <div class="topic-main">
+        <div class="topic-main-head">
+          <div>
+            <div class="kicker">140 current debate prompts</div>
+            <h2>Choose a topic</h2>
+            <p class="small">Plain-language debates across tech, culture, relationships, work, society, health, and meaning.</p>
+          </div>
+          <input id="topicSearch" class="search-input" type="search" placeholder="Search topics..." />
+        </div>
+        <div id="topicGrid" class="topic-list"></div>
+      </div>
+      <aside class="topic-preview arcade-monitor">
+        <div class="monitor-glow"></div>
+        <div class="kicker">Selected topic</div>
+        <h3 id="previewTitle">Pick a topic</h3>
+        <p id="previewSummary">The setup will appear here.</p>
+        <div class="preview-art">?</div>
+        <button class="btn primary" id="previewPlayBtn" type="button" disabled>Enter Round 1</button>
+      </aside>
     </section>
   </main>
   <script src="js/env.js"></script>

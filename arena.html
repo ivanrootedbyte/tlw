@@ -8,88 +8,106 @@
   <link rel="stylesheet" href="css/arcade.css" />
 </head>
 <body>
-  <main class="screen">
-    <header class="topbar">
-      <div class="brand">THE LAST WORD<small>DEBATE ARENA</small></div>
+  <main class="screen arcade-screen">
+    <header class="topbar arcade-topbar">
+      <div class="brand">THE LAST WORD<small>ROUND ARENA</small></div>
       <nav class="nav">
         <a href="topics.html">Topics</a>
-        <button id="forfeitBtn" type="button">Forfeit</button>
+        <button id="forfeitBtn" type="button">End Match</button>
       </nav>
     </header>
 
-    <section class="arena-grid">
-      <div class="panel">
-        <div class="stage">
-          <div class="stage-top">
-            <div>
-              <div class="kicker" id="sceneName"></div>
-              <h2 id="arenaTitle" style="margin:4px 0 0"></h2>
-              <p id="arenaSubtitle" class="small"></p>
-            </div>
-            <div class="badge">Round <strong id="roundNumber">1</strong>/6</div>
+    <section class="arena-cabinet">
+      <div class="arena-stage-panel">
+        <div class="stage-top arcade-stage-top">
+          <div>
+            <div class="kicker" id="sceneName"></div>
+            <h2 id="arenaTitle"></h2>
+            <p id="arenaSubtitle" class="small"></p>
           </div>
-          <div class="stage-fighters">
-            <div class="sprite-card">
-              <img id="playerPortrait" alt="Player portrait" />
-              <div>
-                <strong id="playerName"></strong>
-                <p id="playerTagline" class="small"></p>
-              </div>
-            </div>
-            <div class="vs">VS</div>
-            <div class="sprite-card">
-              <img src="assets/portraits/professor-l.svg" alt="Professor L portrait" />
-              <div>
-                <strong>Professor L</strong>
-                <p class="small">Mathematician, philosopher, tea defender, category-error enthusiast.</p>
-              </div>
-            </div>
+          <div class="round-chip">Round <strong id="roundNumber">1</strong>/6</div>
+        </div>
+
+        <div class="fight-stage">
+          <div class="fighter-panel player-side">
+            <div class="fighter-label">YOU</div>
+            <img id="playerPortrait" alt="Player portrait" />
+            <strong id="playerName"></strong>
+            <p id="playerTagline" class="small"></p>
           </div>
-        </div>
 
-        <div class="panel" style="margin-top:16px; background:#151b28">
-          <div class="kicker">Professor's challenge</div>
-          <div class="professor-bubble" id="professorChallenge"></div>
-        </div>
+          <div class="center-stage">
+            <div id="eventBanner" class="event-banner big hidden"></div>
+            <div class="speech-stack">
+              <div class="speech-bubble professor" id="professorChallenge">Professor L is waiting.</div>
+              <div class="speech-bubble player" id="roundPrompt">Choose a card to begin.</div>
+            </div>
+            <button class="btn secondary round-info-btn" id="openRoundBtn" type="button">Open Round Briefing</button>
+          </div>
 
-        <div class="panel" style="margin-top:16px; background:#151b28">
-          <div class="kicker">Prompt</div>
-          <h3 id="roundTitle" style="margin:6px 0"></h3>
-          <div class="prompt-bubble" id="roundPrompt"></div>
-        </div>
-
-        <div class="panel" style="margin-top:16px; background:#151b28">
-          <div class="kicker">Your optional custom line</div>
-          <textarea id="customAnswer" placeholder="Type a witty, serious, or outrageous line. The local game will save it and Professor L will react."></textarea>
-          <div class="stack-actions">
-            <button class="btn primary" id="submitPlayBtn" type="button">Play Selected Card</button>
+          <div class="fighter-panel professor-side">
+            <div class="fighter-label">PROFESSOR L</div>
+            <img src="assets/portraits/professor-l.png" alt="Professor L portrait" />
+            <strong>Professor L</strong>
+            <p class="small">Plain words. Hard questions. Tea protected.</p>
           </div>
         </div>
       </div>
 
-      <div class="panel arena-controls">
-        <div class="kicker">Current scores</div>
-        <div class="score-list">
-          <div class="score-row"><span>Logic</span><div class="meter"><span id="logicFill"></span></div><strong id="logicScore"></strong></div>
-          <div class="score-row"><span>Evidence</span><div class="meter"><span id="evidenceFill"></span></div><strong id="evidenceScore"></strong></div>
-          <div class="score-row"><span>Humanity</span><div class="meter"><span id="humanityFill"></span></div><strong id="humanityScore"></strong></div>
-          <div class="score-row"><span>Humility</span><div class="meter"><span id="humilityFill"></span></div><strong id="humilityScore"></strong></div>
+      <aside class="arena-side-panel">
+        <div class="score-card arcade-mini-panel">
+          <div class="kicker">Current score</div>
+          <div class="score-list">
+            <div class="score-row"><span>Logic</span><div class="meter"><span id="logicFill"></span></div><strong id="logicScore"></strong></div>
+            <div class="score-row"><span>Proof</span><div class="meter"><span id="evidenceFill"></span></div><strong id="evidenceScore"></strong></div>
+            <div class="score-row"><span>People</span><div class="meter"><span id="humanityFill"></span></div><strong id="humanityScore"></strong></div>
+            <div class="score-row"><span>Honesty</span><div class="meter"><span id="humilityFill"></span></div><strong id="humilityScore"></strong></div>
+          </div>
         </div>
 
-        <div class="event-banner hidden" id="eventBanner"></div>
+        <div class="arcade-mini-panel">
+          <div class="kicker">Professor L responds</div>
+          <div class="response-bubble" id="professorResponse">Start the round briefing.</div>
+        </div>
+      </aside>
+    </section>
 
+    <section class="card-dock panel arcade-panel">
+      <div class="card-dock-head">
         <div>
           <div class="kicker">Your hand</div>
-          <div class="hand-grid" id="handGrid"></div>
+          <h3 id="roundTitle">Round loading...</h3>
         </div>
-
-        <div>
-          <div class="kicker">Professor L responds</div>
-          <div class="response-bubble" id="professorResponse">Choose your first card.</div>
-        </div>
+        <button class="btn primary" id="submitPlayBtn" type="button">Play Selected Card</button>
       </div>
+      <div class="hand-grid five-card-hand" id="handGrid"></div>
+      <label class="custom-line-label">
+        <span>Optional one-liner</span>
+        <textarea id="customAnswer" placeholder="Example: 'If this rule hurts normal people, maybe it is not wisdom yet.'"></textarea>
+      </label>
     </section>
   </main>
+
+  <div class="round-modal" id="roundModal" role="dialog" aria-modal="true" aria-labelledby="modalRoundTitle">
+    <div class="round-window">
+      <button class="modal-close" id="closeRoundBtn" type="button" aria-label="Close">×</button>
+      <div class="kicker">New round</div>
+      <h2 id="modalRoundTitle">Round</h2>
+      <p id="modalRoundPrompt"></p>
+      <div class="modal-tip" id="modalRoundTwist"></div>
+      <button class="btn primary" id="startRoundBtn" type="button">Start This Round</button>
+    </div>
+  </div>
+
+  <div class="round-modal hidden" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+    <div class="round-window result-window">
+      <div class="event-banner big" id="resultBanner">ROUND PLAYED</div>
+      <h2 id="resultTitle">Professor L responds</h2>
+      <p id="resultText"></p>
+      <button class="btn primary" id="nextRoundBtn" type="button">Next Round</button>
+    </div>
+  </div>
+
   <script src="js/env.js"></script>
   <script type="module" src="js/arena.js"></script>
 </body>

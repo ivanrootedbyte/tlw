@@ -30,7 +30,19 @@ const els = {
   logicFill: document.getElementById('logicFill'),
   evidenceFill: document.getElementById('evidenceFill'),
   humanityFill: document.getElementById('humanityFill'),
-  humilityFill: document.getElementById('humilityFill')
+  humilityFill: document.getElementById('humilityFill'),
+  openRoundBtn: document.getElementById('openRoundBtn'),
+  roundModal: document.getElementById('roundModal'),
+  closeRoundBtn: document.getElementById('closeRoundBtn'),
+  startRoundBtn: document.getElementById('startRoundBtn'),
+  modalRoundTitle: document.getElementById('modalRoundTitle'),
+  modalRoundPrompt: document.getElementById('modalRoundPrompt'),
+  modalRoundTwist: document.getElementById('modalRoundTwist'),
+  resultModal: document.getElementById('resultModal'),
+  resultBanner: document.getElementById('resultBanner'),
+  resultTitle: document.getElementById('resultTitle'),
+  resultText: document.getElementById('resultText'),
+  nextRoundBtn: document.getElementById('nextRoundBtn')
 };
 
 const state = {
@@ -41,8 +53,12 @@ const state = {
   scores: null,
   roundIndex: 0,
   selectedCard: null,
-  customAnswers: []
+  customAnswers: [],
+  waitingForNext: false
 };
+
+function showModal(modal) { modal.classList.remove('hidden'); }
+function hideModal(modal) { modal.classList.add('hidden'); }
 
 function renderScores() {
   ['logic', 'evidence', 'humanity', 'humility'].forEach((key) => {
@@ -57,20 +73,18 @@ function renderHand() {
   els.handGrid.innerHTML = '';
   hand.forEach((card) => {
     const article = document.createElement('article');
-    article.className = 'play-card';
+    article.className = `play-card arcade-card ${state.selectedCard?.id === card.id ? 'selected' : ''}`;
     article.innerHTML = `
-      <div class="card-type">${card.category}</div>
+      <div class="card-top"><span class="card-type">${card.category}</span><span class="card-cost">${Math.max(1, Math.abs(Object.values(card.effects).reduce((a,b)=>a+b,0)) % 4 + 1)}</span></div>
       <h3>${card.name}</h3>
       <p>${card.text}</p>
       <div class="effects">
-        ${Object.entries(card.effects).map(([k, v]) => `<span class="effect-chip">${k} ${v > 0 ? '+' : ''}${v}</span>`).join('')}
+        ${Object.entries(card.effects).map(([k, v]) => `<span class="effect-chip">${k === 'evidence' ? 'proof' : k} ${v > 0 ? '+' : ''}${v}</span>`).join('')}
       </div>
       <button class="btn ${state.selectedCard?.id === card.id ? 'primary' : 'secondary'}" type="button">${state.selectedCard?.id === card.id ? 'Selected' : 'Select'}</button>
     `;
-    article.querySelector('button').addEventListener('click', () => {
-      state.selectedCard = card;
-      renderHand();
-    });
+    article.addEventListener('click', () => { state.selectedCard = card; renderHand(); });
+    article.querySelector('button').addEventListener('click', (event) => { event.stopPropagation(); state.selectedCard = card; renderHand(); });
     els.handGrid.appendChild(article);
   });
 }
@@ -79,12 +93,23 @@ function currentRound() {
   return state.topic.rounds[state.roundIndex];
 }
 
+function openRoundBriefing() {
+  const round = currentRound();
+  if (!round) return;
+  els.modalRoundTitle.textContent = `Round ${state.roundIndex + 1}: ${round.title}`;
+  els.modalRoundPrompt.textContent = round.prompt;
+  els.modalRoundTwist.textContent = round.twist || round.challenge;
+  showModal(els.roundModal);
+}
+
 function renderRound() {
   const round = currentRound();
   if (!round) {
     finishMatch();
     return;
   }
+  state.waitingForNext = false;
+  state.selectedCard = null;
   els.roundNumber.textContent = String(state.roundIndex + 1);
   els.roundTitle.textContent = round.title;
   els.roundPrompt.textContent = round.prompt;
@@ -92,7 +117,9 @@ function renderRound() {
   els.eventBanner.classList.add('hidden');
   els.customAnswer.value = '';
   els.submitPlayBtn.disabled = false;
+  els.professorResponse.textContent = 'Open the round briefing, then choose a card.';
   renderHand();
+  openRoundBriefing();
 }
 
 async function fetchProfessorLine(round, customAnswer) {
@@ -128,17 +155,14 @@ async function finishMatch() {
     customAnswers: state.customAnswers
   };
   setLastResult(result);
-  try {
-    await saveCloudMatch(result);
-  } catch (err) {
-    console.warn('Cloud save failed', err.message);
-  }
+  try { await saveCloudMatch(result); } catch (err) { console.warn('Cloud save failed', err.message); }
   location.href = 'verdict.html';
 }
 
 async function playCard() {
   const round = currentRound();
-  if (!state.selectedCard || !round) return;
+  if (!state.selectedCard || !round || state.waitingForNext) return;
+  state.waitingForNext = true;
   els.submitPlayBtn.disabled = true;
   const customAnswer = els.customAnswer.value.trim();
   state.customAnswers.push({ round: round.title, customAnswer, card: state.selectedCard.name });
@@ -149,10 +173,14 @@ async function playCard() {
     els.eventBanner.textContent = banner;
     els.eventBanner.classList.remove('hidden');
   }
-  els.professorResponse.textContent = 'Professor L is sharpening chalk...';
-  els.professorResponse.textContent = await fetchProfessorLine(round, customAnswer);
-  state.roundIndex += 1;
-  setTimeout(renderRound, 900);
+  els.professorResponse.textContent = 'Professor L is checking the bridge...';
+  const line = await fetchProfessorLine(round, customAnswer);
+  els.professorResponse.textContent = line;
+  els.resultBanner.textContent = banner || 'ROUND PLAYED';
+  els.resultTitle.textContent = `${state.selectedCard.name}`;
+  els.resultText.textContent = line;
+  els.nextRoundBtn.textContent = state.roundIndex >= 5 ? 'Go to Verdict' : 'Next Round';
+  showModal(els.resultModal);
 }
 
 async function init() {
@@ -183,7 +211,13 @@ async function init() {
 
 els.submitPlayBtn.addEventListener('click', playCard);
 els.forfeitBtn.addEventListener('click', finishMatch);
-
-init().catch((err) => {
-  els.professorResponse.textContent = err.message;
+els.openRoundBtn.addEventListener('click', openRoundBriefing);
+els.closeRoundBtn.addEventListener('click', () => hideModal(els.roundModal));
+els.startRoundBtn.addEventListener('click', () => hideModal(els.roundModal));
+els.nextRoundBtn.addEventListener('click', () => {
+  hideModal(els.resultModal);
+  state.roundIndex += 1;
+  renderRound();
 });
+
+init().catch((err) => { els.professorResponse.textContent = err.message; });

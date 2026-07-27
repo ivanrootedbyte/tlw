@@ -1,32 +1,38 @@
 const FALLBACK_LINES = [
-  "You have described what the system can do. You have not yet shown why that grants it moral authority.",
-  "Interesting. That answers a nearby question, which is not always the same thing as answering this one.",
-  "I detect confidence. Evidence remains under review.",
-  "Your proposal is elegant until a real person is required to live beneath it.",
-  "You may keep the ambition. Kindly stop smuggling certainty into the sentence."
+  "You explained what it can do. You still have to show why it should be trusted.",
+  "That answered a nearby question. This one is still standing here, waving politely.",
+  "I hear confidence. I am still waiting for proof.",
+  "This idea looks neat until a real person has to live under it.",
+  "You can keep the dream. Please stop smuggling certainty into it.",
+  "That sounds brave. It may also be unpaid risk for someone else.",
+  "Strong claim. Tiny bridge. Let us inspect the bridge."
 ];
 
 const BANNER_LINES = {
   "CATEGORY ERROR": "CATEGORY ERROR",
   "GOALPOST MOVED": "GOALPOST MOVED",
   "HUMAN BEING DETECTED": "HUMAN BEING DETECTED",
-  "INTELLECTUAL HONESTY": "INTELLECTUAL HONESTY"
+  "HONESTY BONUS": "HONESTY BONUS",
+  "ACTUAL ANSWER": "ACTUAL ANSWER",
+  "PROOF DEPLOYED": "PROOF DEPLOYED",
+  "FEAR SPOTTED": "FEAR SPOTTED",
+  "TRIBE DETECTED": "TRIBE DETECTED"
 };
 
 export function getProfessorReaction(card, round, customAnswer = "") {
-  const name = card?.name || "Silence";
-  if (card?.id === "redefine-agi") return "You have not answered the challenge. You have simply updated the vocabulary until it became more polite.";
-  if (card?.id === "human-cost") return "Excellent. Abstract systems are often most persuasive until someone you love is forced to stand inside them.";
-  if (card?.id === "admit-uncertainty") return "A startlingly advanced move: refusing to fake omniscience.";
-  if (card?.id === "category-error") return "Quite so. A mechanism may explain operation without explaining meaning, worth, or obligation.";
-  if (card?.id === "goalpost-move") return "Your position appears to be escaping on wheels.";
-  if (card?.id === "citation-needed") return "Good. Civilizations should not be governed by vibes wearing a spreadsheet.";
-  if (customAnswer.trim()) return `Your custom line was noted: “${customAnswer.trim().slice(0, 120)}${customAnswer.trim().length > 120 ? "…" : ""}” Now then, can you defend it under pressure?`;
+  if (card?.id === "human-cost") return "Good. Ideas grow up when they are forced to meet the person affected by them.";
+  if (card?.id === "admit-uncertainty") return "Excellent. You admitted you might be wrong and the ceiling did not collapse.";
+  if (card?.id === "category-error") return "Correct. ‘It can’ is not the same as ‘it should.’ That little gap has swallowed empires.";
+  if (card?.id === "goalpost-move") return "Your position appears to have wheels. Kindly stop rolling it away from the question.";
+  if (card?.id === "citation-needed" || card?.id === "evidence-shield") return "Good. Big claims need receipts. Vibes are not invoices.";
+  if (card?.id === "define-your-terms") return "Yes. Define the word before it changes costume halfway through the argument.";
+  if (card?.id === "truth-vs-tribe") return "Brave move. Your side may be annoyed. Truth has survived worse.";
+  if (customAnswer.trim()) return `You said: “${customAnswer.trim().slice(0, 130)}${customAnswer.trim().length > 130 ? "…" : "”"} Now defend it without hiding behind fog.`;
   return FALLBACK_LINES[round % FALLBACK_LINES.length];
 }
 
 export function getBanner(card) {
-  return BANNER_LINES[card?.banner] || card?.banner || "";
+  return BANNER_LINES[card?.banner] || card?.banner || "ROUND PLAYED";
 }
 
 export function buildShareBlock(result) {
@@ -39,9 +45,9 @@ export function buildShareBlock(result) {
     result.ending.summary,
     "",
     `LOGIC ${result.scores.logic}`,
-    `EVIDENCE ${result.scores.evidence}`,
-    `HUMANITY ${result.scores.humanity}`,
-    `HUMILITY ${result.scores.humility}`,
+    `PROOF ${result.scores.evidence}`,
+    `PEOPLE ${result.scores.humanity}`,
+    `HONESTY ${result.scores.humility}`,
     "",
     `PROFESSOR L: ${result.ending.professor}`
   ].join("\n");

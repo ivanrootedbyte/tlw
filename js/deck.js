@@ -11,12 +11,18 @@ export function buildDeck(persona, cards) {
   const signature = cards.filter((c) => persona.signatureCards.includes(c.id));
   const neutrals = cards.filter((c) => c.type === "neutral");
   const traps = cards.filter((c) => c.type === "trap");
-  return shuffle([...signature, ...shuffle(neutrals).slice(0, 8), ...shuffle(traps).slice(0, 3)]);
+  const broadDeck = [
+    ...signature,
+    ...shuffle(neutrals).slice(0, 24),
+    ...shuffle(traps).slice(0, 6)
+  ];
+  return shuffle(broadDeck);
 }
 
 export function drawHand(deck, roundIndex) {
-  const start = roundIndex * 3;
-  const slice = deck.slice(start, start + 3);
-  if (slice.length === 3) return slice;
-  return [...slice, ...deck.slice(0, 3 - slice.length)];
+  const handSize = 5;
+  const start = roundIndex * handSize;
+  const slice = deck.slice(start, start + handSize);
+  if (slice.length === handSize) return slice;
+  return [...slice, ...deck.slice(0, handSize - slice.length)];
 }

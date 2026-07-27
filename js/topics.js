@@ -7,6 +7,14 @@ const topicGrid = document.getElementById("topicGrid");
 const dailyTitle = document.getElementById("dailyTitle");
 const dailySummary = document.getElementById("dailySummary");
 const playDailyBtn = document.getElementById("playDailyBtn");
+const categoryTabs = document.getElementById("categoryTabs");
+const topicSearch = document.getElementById("topicSearch");
+const previewTitle = document.getElementById("previewTitle");
+const previewSummary = document.getElementById("previewSummary");
+const previewPlayBtn = document.getElementById("previewPlayBtn");
+const previewArt = document.querySelector(".preview-art");
+
+const state = { topics: [], categories: [], activeCategory: "all", selectedTopic: null, query: "" };
 
 function getDailyIndex(length) {
   const today = new Date();
@@ -14,16 +22,86 @@ function getDailyIndex(length) {
   return seed % length;
 }
 
+function selectTopic(topic) {
+  state.selectedTopic = topic;
+  previewTitle.textContent = topic.title;
+  previewSummary.textContent = `${topic.summary} Scene: ${topic.scene}.`;
+  previewArt.textContent = topic.categoryLabel.split(" ")[0].slice(0, 4).toUpperCase();
+  previewPlayBtn.disabled = false;
+  document.querySelectorAll(".topic-row").forEach((row) => {
+    row.classList.toggle("selected", row.dataset.topicId === topic.id);
+  });
+}
+
+function play(topic) {
+  setSelectedTopic(topic.id);
+  location.href = "arena.html";
+}
+
+function renderCategories() {
+  const tabs = [{ id: "all", label: "All" }, ...state.categories];
+  categoryTabs.innerHTML = "";
+  tabs.forEach((category) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `category-tab ${state.activeCategory === category.id ? "active" : ""}`;
+    button.textContent = category.label;
+    button.addEventListener("click", () => {
+      state.activeCategory = category.id;
+      renderCategories();
+      renderTopics();
+    });
+    categoryTabs.appendChild(button);
+  });
+}
+
+function filteredTopics() {
+  return state.topics.filter((topic) => {
+    const categoryMatch = state.activeCategory === "all" || topic.category === state.activeCategory;
+    const q = state.query.trim().toLowerCase();
+    const textMatch = !q || `${topic.title} ${topic.summary} ${topic.categoryLabel}`.toLowerCase().includes(q);
+    return categoryMatch && textMatch;
+  });
+}
+
+function renderTopics() {
+  const topics = filteredTopics();
+  topicGrid.innerHTML = "";
+  topics.forEach((topic, index) => {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "topic-row";
+    row.dataset.topicId = topic.id;
+    row.innerHTML = `
+      <span class="topic-number">${index + 1}</span>
+      <span class="topic-row-copy">
+        <strong>${topic.title}</strong>
+        <small>${topic.categoryLabel} · ${topic.difficulty} · ${topic.scene}</small>
+      </span>
+      <span class="topic-arrow">›</span>
+    `;
+    row.addEventListener("click", () => selectTopic(topic));
+    row.addEventListener("dblclick", () => play(topic));
+    topicGrid.appendChild(row);
+  });
+  if (!topics.length) {
+    topicGrid.innerHTML = `<div class="history-item"><strong>No topics found.</strong><p class="small">Try a broader search.</p></div>`;
+  }
+  if (!state.selectedTopic && topics[0]) selectTopic(topics[0]);
+}
+
 async function init() {
   const personaId = getSelectedPersona();
-  const [{ personas }, { topics }] = await Promise.all([
+  const [{ personas }, topicData] = await Promise.all([
     loadJson("data/personas.json"),
     loadJson("data/topics.json")
   ]);
+  state.topics = topicData.topics;
+  state.categories = topicData.categories || [];
   const persona = personas.find((p) => p.id === personaId) || personas[0];
 
   selectedPersonaBox.innerHTML = `
-    <article class="persona-card theme-${persona.theme}">
+    <article class="persona-card compact theme-${persona.theme}">
       <div class="persona-head">
         <div class="portrait-wrap"><img src="${persona.portrait}" alt="${resolvePersonaName(persona)} portrait" /></div>
         <div>
@@ -31,36 +109,22 @@ async function init() {
           <p>${persona.tagline}</p>
         </div>
       </div>
-      <p>${persona.intro}</p>
     </article>
   `;
 
-  topicGrid.innerHTML = "";
-  topics.forEach((topic) => {
-    const card = document.createElement("article");
-    card.className = "topic-card";
-    card.innerHTML = `
-      <div class="badge difficulty">${topic.difficulty}</div>
-      <h3>${topic.title}</h3>
-      <p>${topic.summary}</p>
-      <p class="small"><strong>Scene:</strong> ${topic.scene}</p>
-      <p class="small">${topic.hook}</p>
-      <button class="btn primary" type="button">Enter Arena</button>
-    `;
-    card.querySelector("button").addEventListener("click", () => {
-      setSelectedTopic(topic.id);
-      location.href = "arena.html";
-    });
-    topicGrid.appendChild(card);
-  });
-
-  const dailyTopic = topics[getDailyIndex(topics.length)];
+  const dailyTopic = state.topics[getDailyIndex(state.topics.length)];
   dailyTitle.textContent = dailyTopic.title;
-  dailySummary.textContent = `${dailyTopic.summary} Scene: ${dailyTopic.scene}.`;
-  playDailyBtn.addEventListener("click", () => {
-    setSelectedTopic(dailyTopic.id);
-    location.href = "arena.html";
+  dailySummary.textContent = `${dailyTopic.categoryLabel} · ${dailyTopic.hook}`;
+  playDailyBtn.addEventListener("click", () => play(dailyTopic));
+  previewPlayBtn.addEventListener("click", () => state.selectedTopic && play(state.selectedTopic));
+  topicSearch.addEventListener("input", () => {
+    state.query = topicSearch.value;
+    state.selectedTopic = null;
+    previewPlayBtn.disabled = true;
+    renderTopics();
   });
+  renderCategories();
+  renderTopics();
 }
 
 init().catch((err) => {

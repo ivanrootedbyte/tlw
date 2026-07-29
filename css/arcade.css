@@ -474,23 +474,23 @@ textarea {
 */
 .title-new-game {
   left: 35.1% !important;
-  top: 67.0% !important;
+  top: 72.2% !important;
   width: 36.0% !important;
-  height: 11.6% !important;
+  height: 10.4% !important;
 }
 
 .title-load-game {
   left: 33.2% !important;
-  top: 81.1% !important;
+  top: 87.0% !important;
   width: 22.7% !important;
-  height: 9.6% !important;
+  height: 8.8% !important;
 }
 
 .title-account {
   left: 56.3% !important;
-  top: 81.1% !important;
+  top: 87.0% !important;
   width: 22.9% !important;
-  height: 9.6% !important;
+  height: 8.8% !important;
 }
 
 /* Do not draw a huge translucent block over the artwork; use a tight glow only. */

@@ -1,62 +1,76 @@
-import { loadJson } from "./data-loader.js";
-import { getSelectedPersona, isSafeMode, setSafeMode, setSelectedPersona } from "./storage.js";
-import { resolvePersonaName } from "./persona-resolver.js";
+import {
+  clearActiveGame,
+  clearCurrentSelection,
+  getActiveGame,
+  hasActiveGame
+} from "./storage.js";
 
-const grid = document.getElementById("personaGrid");
-const safeModeBtn = document.getElementById("safeModeBtn");
-const safeStatus = document.getElementById("safeStatus");
+const newGameBtn = document.getElementById("newGameBtn");
+const loadGameBtn = document.getElementById("loadGameBtn");
+const saveStatus = document.getElementById("saveStatus");
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsPanel = document.getElementById("settingsPanel");
+const soundBtn = document.getElementById("soundBtn");
 
-function renderStats(stats) {
-  return Object.entries(stats).map(([label, value]) => `
-    <div class="statline">
-      <span>${label}</span>
-      <div class="bar"><span style="width:${value}%"></span></div>
-      <strong>${value}</strong>
-    </div>
-  `).join("");
+function timeAgo(iso) {
+  if (!iso) return "";
+  const diff = Math.max(0, Date.now() - new Date(iso).getTime());
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "Saved just now";
+  if (mins === 1) return "Saved 1 minute ago";
+  if (mins < 60) return `Saved ${mins} minutes ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs === 1) return "Saved 1 hour ago";
+  if (hrs < 24) return `Saved ${hrs} hours ago`;
+  return "Saved earlier";
 }
 
-function updateSafeStatus() {
-  safeStatus.textContent = isSafeMode()
-    ? "Safe Mode is on. Public-friendly persona names are active."
-    : "Prototype Mode is on. Satirical display names are active.";
+function updateLoadState() {
+  const active = getActiveGame();
+  if (!active) {
+    loadGameBtn.disabled = true;
+    loadGameBtn.classList.add("disabled");
+    loadGameBtn.setAttribute("aria-disabled", "true");
+    saveStatus.textContent = "No saved Star Trial found.";
+    return;
+  }
+
+  loadGameBtn.disabled = false;
+  loadGameBtn.classList.remove("disabled");
+  loadGameBtn.removeAttribute("aria-disabled");
+  const round = Number(active.roundIndex ?? 0) + 1;
+  const stars = Number(active.stars ?? 5);
+  saveStatus.textContent = `Load saved game — Round ${round}, ${stars}/10 stars. ${timeAgo(active.savedAt)}.`;
 }
 
-async function init() {
-  const { personas } = await loadJson("data/personas.json");
-  const selected = getSelectedPersona();
-  grid.innerHTML = "";
-  personas.forEach((persona) => {
-    const card = document.createElement("article");
-    card.className = `persona-card theme-${persona.theme}`;
-    card.innerHTML = `
-      <div class="persona-head">
-        <div class="portrait-wrap"><img src="${persona.portrait}" alt="${resolvePersonaName(persona)} portrait" /></div>
-        <div>
-          <div class="badge">${persona.type || persona.weakness}</div>
-          <h3 style="margin-top:10px">${resolvePersonaName(persona)}</h3>
-          <p>${persona.tagline}</p>
-        </div>
-      </div>
-      <p>${persona.intro}</p>
-      <p class="small"><strong>Wise path:</strong> ${persona.wisePath || "Find the human cost before Professor L does."}</p>
-      <div class="persona-stats">${renderStats(persona.stats)}</div>
-      <button class="btn ${selected === persona.id ? "primary" : "secondary"}" type="button">${selected === persona.id ? "Preselected" : "Practice This Persona"}</button>
-    `;
-    card.querySelector("button").addEventListener("click", () => {
-      setSelectedPersona(persona.id);
-      location.href = "topics.html";
-    });
-    grid.appendChild(card);
-  });
-  updateSafeStatus();
-}
-
-safeModeBtn?.addEventListener("click", () => {
-  setSafeMode(!isSafeMode());
-  location.reload();
+newGameBtn?.addEventListener("click", () => {
+  if (hasActiveGame()) {
+    const ok = window.confirm("Start a new game? This will replace your unfinished Star Trial in this browser.");
+    if (!ok) return;
+  }
+  clearActiveGame();
+  clearCurrentSelection();
+  window.location.href = "topics.html";
 });
 
-init().catch((err) => {
-  safeStatus.textContent = err.message;
+loadGameBtn?.addEventListener("click", () => {
+  if (!hasActiveGame()) {
+    updateLoadState();
+    return;
+  }
+  window.location.href = "arena.html?resume=1";
 });
+
+settingsBtn?.addEventListener("click", () => {
+  if (!settingsPanel) return;
+  settingsPanel.hidden = !settingsPanel.hidden;
+});
+
+soundBtn?.addEventListener("click", () => {
+  const muted = soundBtn.dataset.muted === "true";
+  soundBtn.dataset.muted = String(!muted);
+  soundBtn.textContent = muted ? "▮▮" : "×";
+  soundBtn.setAttribute("aria-label", muted ? "Sound on" : "Sound off");
+});
+
+updateLoadState();

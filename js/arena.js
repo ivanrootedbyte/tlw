@@ -1,6 +1,6 @@
 import { loadJson } from './data-loader.js';
 import { resolvePersonaName } from './persona-resolver.js';
-import { getSelectedPersona, getSelectedTopic, setLastResult, setSelectedPersona } from './storage.js';
+import { clearActiveGame, getActiveGame, getSelectedPersona, getSelectedTopic, saveActiveGame, setLastResult, setSelectedPersona } from './storage.js';
 import { saveCloudMatch } from './supabase-client.js';
 import {
   STARTING_STARS,
@@ -72,6 +72,20 @@ function currentRound() {
   return buildProfessorQuestion(state.topic, state.trialData, state.roundIndex);
 }
 
+function saveCurrentGame() {
+  if (!state.topic || !state.trialData) return;
+  saveActiveGame({
+    mode: 'star-trial',
+    topicId: state.topic.id,
+    personaId: state.persona?.id || null,
+    stars: state.stars,
+    roundIndex: state.roundIndex,
+    swapCount: state.swapCount,
+    history: state.history,
+    badAnswers: state.badAnswers
+  });
+}
+
 function renderPersonaRail() {
   els.personaRail.innerHTML = '';
   state.personas.forEach((persona) => {
@@ -135,6 +149,7 @@ function choosePersona(persona) {
   renderSwapChip();
   renderStars();
   renderRound();
+  saveCurrentGame();
   if (state.stars <= 0) finishTrial();
 }
 
@@ -189,6 +204,7 @@ function chooseAnswer(answer) {
     starsAfter: state.stars
   });
   renderStars();
+  saveCurrentGame();
   els.resultEvent.textContent = `${answer.event || 'STAR CHANGE'} · ${changeText}`;
   els.resultTitle.textContent = state.stars <= 0 ? 'Argument collapsed' : answer.stars >= 3 ? 'Professor L approves' : answer.stars < 0 ? 'Professor L pushes back' : 'Professor L responds';
   els.resultResponse.textContent = answer.professor;
@@ -224,13 +240,22 @@ async function finishTrial() {
     ending
   };
   setLastResult(result);
+  clearActiveGame();
   try { await saveCloudMatch(result); } catch (err) { console.warn('Cloud save failed', err.message); }
   location.href = 'verdict.html';
 }
 
 async function init() {
-  const topicId = getSelectedTopic();
-  const personaId = getSelectedPersona();
+  const params = new URLSearchParams(window.location.search);
+  const resumeRequested = params.get('resume') === '1';
+  const activeGame = resumeRequested ? getActiveGame() : null;
+  if (resumeRequested && !activeGame) {
+    location.href = 'topics.html';
+    return;
+  }
+
+  const topicId = activeGame?.topicId || getSelectedTopic();
+  const personaId = activeGame?.personaId || getSelectedPersona();
   const [{ personas }, { topics }, trialData] = await Promise.all([
     loadJson('data/personas.json'),
     loadJson('data/topics.json'),
@@ -239,7 +264,11 @@ async function init() {
   state.personas = personas;
   state.topic = topics.find((t) => t.id === topicId) || topics[0];
   state.trialData = trialData;
-  state.stars = trialData.startingStars || STARTING_STARS;
+  state.stars = activeGame ? Number(activeGame.stars ?? STARTING_STARS) : (trialData.startingStars || STARTING_STARS);
+  state.roundIndex = activeGame ? Number(activeGame.roundIndex ?? 0) : 0;
+  state.swapCount = activeGame ? Number(activeGame.swapCount ?? 0) : 0;
+  state.history = Array.isArray(activeGame?.history) ? activeGame.history : [];
+  state.badAnswers = Array.isArray(activeGame?.badAnswers) ? activeGame.badAnswers : [];
 
   els.categoryLabel.textContent = `${state.topic.categoryLabel} · Star Trial`;
   els.topicTitle.textContent = state.topic.title;
@@ -250,10 +279,20 @@ async function init() {
   renderActivePersona();
   renderSwapChip();
   renderRound();
+
   if (personaId) {
     const startingPersona = personas.find((p) => p.id === personaId);
-    if (startingPersona) choosePersona(startingPersona);
+    if (startingPersona) {
+      state.persona = startingPersona;
+      setSelectedPersona(startingPersona.id);
+      renderPersonaRail();
+      renderActivePersona();
+      renderSwapChip();
+      renderRound();
+    }
   }
+
+  saveCurrentGame();
   showModal(els.roundIntroModal);
 }
 
@@ -268,6 +307,7 @@ els.nextRoundBtn.addEventListener('click', () => {
   }
   state.roundIndex += 1;
   state.locked = false;
+  saveCurrentGame();
   renderSwapChip();
   renderRound();
   showModal(els.roundIntroModal);

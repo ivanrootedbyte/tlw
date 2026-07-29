@@ -7,50 +7,38 @@
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/arcade.css" />
 </head>
-<body>
-  <main class="screen arcade-screen">
-    <header class="topbar arcade-topbar">
-      <div class="brand">THE LAST WORD<small>STAR TRIAL</small></div>
-      <nav class="nav">
-        <a href="topics.html">Questions</a>
-        <a href="account.html">Archive</a>
-        <button id="safeModeBtn" type="button">Safe Mode</button>
-      </nav>
-    </header>
+<body class="title-page-body">
+  <main class="title-screen-page" aria-labelledby="gameTitle">
+    <section class="title-cabinet" aria-label="The Last Word title screen">
+      <img class="title-art" src="assets/ui/home-title-screen.png" alt="The Last Word retro game title screen with Professor L" />
 
-    <section class="hero hero-grid">
-      <div>
-        <p class="eyebrow">Retro satire · current affairs · Christian-shaped wisdom</p>
-        <h1>PICK A QUESTION.<br/>CHOOSE A PERSONA.<br/>WIN PROFESSOR L'S STARS.</h1>
-        <p class="subhead">A short arcade debate game where clever answers are not enough. Earn stars by keeping truth clear, power limited, and people protected.</p>
-        <div class="hero-actions">
-          <a class="btn primary" href="topics.html">Start Star Trial</a>
-          <a class="btn" href="account.html">View Archive</a>
-        </div>
-        <p class="footer-note" id="safeStatus"></p>
-      </div>
-      <div class="hero-statbox">
-        <div class="kicker">How it plays</div>
-        <div class="metric-row"><span>Choose question</span><div class="meter"><span style="width:100%"></span></div><strong>1</strong></div>
-        <div class="metric-row"><span>Pick persona</span><div class="meter"><span style="width:100%"></span></div><strong>2</strong></div>
-        <div class="metric-row"><span>Answer Professor L</span><div class="meter"><span style="width:100%"></span></div><strong>3</strong></div>
-        <div class="metric-row"><span>Reach 10 stars</span><div class="meter"><span style="width:100%"></span></div><strong>4</strong></div>
-        <p class="small">You can swap personas between rounds, but it costs stars. Every persona can win if you guide its strength toward wisdom.</p>
+      <div class="title-hotspots" aria-hidden="false">
+        <button class="title-icon-btn title-settings" type="button" id="settingsBtn" aria-label="Settings">⚙</button>
+        <button class="title-icon-btn title-sound" type="button" id="soundBtn" aria-label="Toggle sound">▮▮</button>
+
+        <h1 id="gameTitle" class="sr-only">The Last Word</h1>
+
+        <button class="title-hit title-new-game" type="button" id="newGameBtn">
+          <span>New Game</span>
+        </button>
+        <button class="title-hit title-load-game" type="button" id="loadGameBtn">
+          <span>Load Game</span>
+        </button>
+        <a class="title-hit title-account" href="account.html">
+          <span>Account</span>
+        </a>
+
+        <p class="title-status" id="saveStatus">Checking saved game...</p>
       </div>
     </section>
 
-    <section class="panel arcade-panel">
-      <div class="topbar" style="padding:0 0 12px">
-        <div>
-          <div class="kicker">Playable personas</div>
-          <h2 style="margin:4px 0 0">Different minds. Different blind spots.</h2>
-        </div>
-        <a class="btn" href="topics.html">Choose a question</a>
-      </div>
-      <div id="personaGrid" class="persona-grid"></div>
-      <p class="footer-note">All characters are fictional satire personas for education and entertainment. They are not affiliated with or endorsed by any real person or company.</p>
+    <section class="title-help-panel" id="settingsPanel" hidden>
+      <h2>How it plays</h2>
+      <p>Pick a question, choose a persona, answer Professor L, and try to reach 10 stars.</p>
+      <p>Load Game resumes an unfinished Star Trial saved in this browser.</p>
     </section>
   </main>
+
   <script src="js/env.js"></script>
   <script type="module" src="js/home.js"></script>
 </body>

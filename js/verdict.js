@@ -1,6 +1,7 @@
-import { getLastResult } from "./storage.js";
+import { clearActiveGame, getLastResult } from "./storage.js";
 import { buildShareBlock } from "./dialogue-engine.js";
 
+clearActiveGame();
 const result = getLastResult();
 const endingTitle = document.getElementById("endingTitle");
 const endingSummary = document.getElementById("endingSummary");

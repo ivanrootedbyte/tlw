@@ -36,6 +36,22 @@ export function getBanner(card) {
 }
 
 export function buildShareBlock(result) {
+  if (result?.mode === "star-trial") {
+    return [
+      "THE LAST WORD · STAR TRIAL",
+      `${result.personaName} vs Professor L`,
+      `QUESTION: ${result.topicTitle}`,
+      "",
+      `STARS: ${result.stars}/${result.maxStars || 10}`,
+      `ENDING: ${result.ending.title.toUpperCase()}`,
+      result.ending.summary,
+      "",
+      `SWAPS: ${result.swaps || 0}`,
+      `NEXT: ${result.nextHook || "Try another persona."}`,
+      "",
+      `PROFESSOR L: ${result.ending.professor}`
+    ].join("\n");
+  }
   return [
     "THE LAST WORD",
     `${result.personaName} vs Professor L`,

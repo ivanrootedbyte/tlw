@@ -3,8 +3,8 @@
     {
       "id": "frontier-founder",
       "displayName": "The X-cess Architect",
-      "safeName": "The Frontier Engineer",
-      "publicName": "The Frontier Engineer",
+      "safeName": "The X-cess Architect",
+      "publicName": "The X-cess Architect",
       "tagline": "Build first. Apologize from orbit.",
       "theme": "rust",
       "portrait": "assets/portraits/frontier-founder.png",
@@ -20,13 +20,16 @@
         "backup-civilization"
       ],
       "weakness": "Risk hits real people.",
-      "intro": "Fast, bold, and allergic to waiting rooms."
+      "intro": "Fast, bold, and allergic to waiting rooms.",
+      "type": "Builder / Risk",
+      "wisePath": "Build boldly, but never treat people as fuel.",
+      "blindSpot": "The mission can become more important than mercy."
     },
     {
       "id": "virtual-mayor",
       "displayName": "The Meta-Verse Mayor",
-      "safeName": "The Virtual Mayor",
-      "publicName": "The Virtual Mayor",
+      "safeName": "The Meta-Verse Mayor",
+      "publicName": "The Meta-Verse Mayor",
       "tagline": "Reality, now with likes.",
       "theme": "violet",
       "portrait": "assets/portraits/virtual-mayor.png",
@@ -42,13 +45,16 @@
         "terms-accepted"
       ],
       "weakness": "Privacy and loneliness.",
-      "intro": "Thinks connection can be engineered if the dashboard is big enough."
+      "intro": "Thinks connection can be engineered if the dashboard is big enough.",
+      "type": "Network / Influence",
+      "wisePath": "Use connection to serve real people, not just engagement.",
+      "blindSpot": "Likes can pretend to be love."
     },
     {
       "id": "index-chancellor",
       "displayName": "The Search Supreme",
-      "safeName": "The Index Chancellor",
-      "publicName": "The Index Chancellor",
+      "safeName": "The Search Supreme",
+      "publicName": "The Search Supreme",
       "tagline": "I found the answer. Wisdom was on page two.",
       "theme": "gold",
       "portrait": "assets/portraits/index-chancellor.png",
@@ -64,13 +70,16 @@
         "data-knows-best"
       ],
       "weakness": "Meaning, not just information.",
-      "intro": "Knows every result and still has to ask what matters."
+      "intro": "Knows every result and still has to ask what matters.",
+      "type": "Knowledge / Data",
+      "wisePath": "Use information as a servant of wisdom.",
+      "blindSpot": "A search result can look like truth without becoming wisdom."
     },
     {
       "id": "polished-minimalist",
       "displayName": "The iOrchard Keeper",
-      "safeName": "The Polished Minimalist",
-      "publicName": "The Polished Minimalist",
+      "safeName": "The iOrchard Keeper",
+      "publicName": "The iOrchard Keeper",
       "tagline": "Your argument has too many buttons.",
       "theme": "silver",
       "portrait": "assets/portraits/polished-minimalist.png",
@@ -86,13 +95,16 @@
         "remove-the-button"
       ],
       "weakness": "Who controls the gate?",
-      "intro": "Clean, controlled, beautiful, and very suspicious of user choice."
+      "intro": "Clean, controlled, beautiful, and very suspicious of user choice.",
+      "type": "Design / Control",
+      "wisePath": "Protect people without taking responsibility away from them.",
+      "blindSpot": "Control can disguise itself as care."
     },
     {
       "id": "alignment-gambler",
       "displayName": "The GPT Gambler",
-      "safeName": "The Alignment Gambler",
-      "publicName": "The Alignment Gambler",
+      "safeName": "The GPT Gambler",
+      "publicName": "The GPT Gambler",
       "tagline": "Probably safe. Maybe. Define safe.",
       "theme": "green",
       "portrait": "assets/portraits/alignment-gambler.png",
@@ -108,13 +120,16 @@
         "probability-cloud"
       ],
       "weakness": "Stable words.",
-      "intro": "Calm about wild futures and very flexible with definitions."
+      "intro": "Calm about wild futures and very flexible with definitions.",
+      "type": "Prediction / AI",
+      "wisePath": "Let AI advise, while humans keep moral responsibility.",
+      "blindSpot": "Confidence scores can start sounding like commandments."
     },
     {
       "id": "silicon-blacksmith",
       "displayName": "The GPU Forge Master",
-      "safeName": "The Silicon Blacksmith",
-      "publicName": "The Silicon Blacksmith",
+      "safeName": "The GPU Forge Master",
+      "publicName": "The GPU Forge Master",
       "tagline": "Your problem is slow. I added GPUs.",
       "theme": "teal",
       "portrait": "assets/portraits/silicon-blacksmith.png",
@@ -130,7 +145,10 @@
         "parallelize-it"
       ],
       "weakness": "People are not workloads.",
-      "intro": "Turns everything into compute, speed, and power bills."
+      "intro": "Turns everything into compute, speed, and power bills.",
+      "type": "Compute / Power",
+      "wisePath": "Use power only after asking what the power is for.",
+      "blindSpot": "Not every human problem is a workload."
     }
   ]
 }

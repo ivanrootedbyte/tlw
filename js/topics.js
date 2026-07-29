@@ -1,8 +1,6 @@
 import { loadJson } from "./data-loader.js";
-import { getSelectedPersona, setSelectedTopic } from "./storage.js";
-import { resolvePersonaName } from "./persona-resolver.js";
+import { setSelectedTopic } from "./storage.js";
 
-const selectedPersonaBox = document.getElementById("selectedPersonaBox");
 const topicGrid = document.getElementById("topicGrid");
 const dailyTitle = document.getElementById("dailyTitle");
 const dailySummary = document.getElementById("dailySummary");
@@ -22,11 +20,15 @@ function getDailyIndex(length) {
   return seed % length;
 }
 
+function categoryCode(label = "") {
+  return label.split(/[ +]/).filter(Boolean).map((part) => part[0]).join("").slice(0, 4).toUpperCase() || "TLW";
+}
+
 function selectTopic(topic) {
   state.selectedTopic = topic;
   previewTitle.textContent = topic.title;
-  previewSummary.textContent = `${topic.summary} Scene: ${topic.scene}.`;
-  previewArt.textContent = topic.categoryLabel.split(" ")[0].slice(0, 4).toUpperCase();
+  previewSummary.textContent = `${topic.summary} Professor L will ask 5 rounds and score your answers with stars.`;
+  previewArt.textContent = categoryCode(topic.categoryLabel);
   previewPlayBtn.disabled = false;
   document.querySelectorAll(".topic-row").forEach((row) => {
     row.classList.toggle("selected", row.dataset.topicId === topic.id);
@@ -48,6 +50,8 @@ function renderCategories() {
     button.textContent = category.label;
     button.addEventListener("click", () => {
       state.activeCategory = category.id;
+      state.selectedTopic = null;
+      previewPlayBtn.disabled = true;
       renderCategories();
       renderTopics();
     });
@@ -76,7 +80,7 @@ function renderTopics() {
       <span class="topic-number">${index + 1}</span>
       <span class="topic-row-copy">
         <strong>${topic.title}</strong>
-        <small>${topic.categoryLabel} · ${topic.difficulty} · ${topic.scene}</small>
+        <small>${topic.categoryLabel} · ${topic.difficulty} · 10-star trial</small>
       </span>
       <span class="topic-arrow">›</span>
     `;
@@ -85,36 +89,19 @@ function renderTopics() {
     topicGrid.appendChild(row);
   });
   if (!topics.length) {
-    topicGrid.innerHTML = `<div class="history-item"><strong>No topics found.</strong><p class="small">Try a broader search.</p></div>`;
+    topicGrid.innerHTML = `<div class="history-item"><strong>No questions found.</strong><p class="small">Try a broader search.</p></div>`;
   }
   if (!state.selectedTopic && topics[0]) selectTopic(topics[0]);
 }
 
 async function init() {
-  const personaId = getSelectedPersona();
-  const [{ personas }, topicData] = await Promise.all([
-    loadJson("data/personas.json"),
-    loadJson("data/topics.json")
-  ]);
+  const topicData = await loadJson("data/topics.json");
   state.topics = topicData.topics;
   state.categories = topicData.categories || [];
-  const persona = personas.find((p) => p.id === personaId) || personas[0];
-
-  selectedPersonaBox.innerHTML = `
-    <article class="persona-card compact theme-${persona.theme}">
-      <div class="persona-head">
-        <div class="portrait-wrap"><img src="${persona.portrait}" alt="${resolvePersonaName(persona)} portrait" /></div>
-        <div>
-          <h3>${resolvePersonaName(persona)}</h3>
-          <p>${persona.tagline}</p>
-        </div>
-      </div>
-    </article>
-  `;
 
   const dailyTopic = state.topics[getDailyIndex(state.topics.length)];
   dailyTitle.textContent = dailyTopic.title;
-  dailySummary.textContent = `${dailyTopic.categoryLabel} · ${dailyTopic.hook}`;
+  dailySummary.textContent = `${dailyTopic.categoryLabel} · Can you reach 10 stars today?`;
   playDailyBtn.addEventListener("click", () => play(dailyTopic));
   previewPlayBtn.addEventListener("click", () => state.selectedTopic && play(state.selectedTopic));
   topicSearch.addEventListener("input", () => {
@@ -128,5 +115,5 @@ async function init() {
 }
 
 init().catch((err) => {
-  selectedPersonaBox.textContent = err.message;
+  topicGrid.textContent = err.message;
 });

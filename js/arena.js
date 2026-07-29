@@ -1,223 +1,279 @@
 import { loadJson } from './data-loader.js';
 import { resolvePersonaName } from './persona-resolver.js';
-import { getSelectedPersona, getSelectedTopic, setLastResult } from './storage.js';
-import { applyEffects, calculateEnding, createInitialScores } from './game-engine.js';
-import { getProfessorReaction, getBanner } from './dialogue-engine.js';
-import { buildDeck, drawHand } from './deck.js';
+import { getSelectedPersona, getSelectedTopic, setLastResult, setSelectedPersona } from './storage.js';
 import { saveCloudMatch } from './supabase-client.js';
+import {
+  STARTING_STARS,
+  applyStarChange,
+  buildProfessorQuestion,
+  calculateStarEnding,
+  getPersonaAnswers,
+  getSwapCost,
+  nextHook,
+  scoreToMeters,
+  starLabel
+} from './star-trial-engine.js';
 
 const els = {
-  sceneName: document.getElementById('sceneName'),
-  arenaTitle: document.getElementById('arenaTitle'),
-  arenaSubtitle: document.getElementById('arenaSubtitle'),
-  playerPortrait: document.getElementById('playerPortrait'),
-  playerName: document.getElementById('playerName'),
-  playerTagline: document.getElementById('playerTagline'),
-  roundNumber: document.getElementById('roundNumber'),
-  professorChallenge: document.getElementById('professorChallenge'),
-  roundTitle: document.getElementById('roundTitle'),
-  roundPrompt: document.getElementById('roundPrompt'),
-  customAnswer: document.getElementById('customAnswer'),
-  submitPlayBtn: document.getElementById('submitPlayBtn'),
-  eventBanner: document.getElementById('eventBanner'),
-  professorResponse: document.getElementById('professorResponse'),
-  handGrid: document.getElementById('handGrid'),
+  personaRail: document.getElementById('personaRail'),
+  activePersonaCard: document.getElementById('activePersonaCard'),
+  swapChip: document.getElementById('swapChip'),
+  categoryLabel: document.getElementById('categoryLabel'),
+  topicTitle: document.getElementById('topicTitle'),
+  topicHook: document.getElementById('topicHook'),
+  starsDisplay: document.getElementById('starsDisplay'),
+  starNumber: document.getElementById('starNumber'),
+  roundCounter: document.getElementById('roundCounter'),
+  challengeType: document.getElementById('challengeType'),
+  professorQuestion: document.getElementById('professorQuestion'),
+  roundHint: document.getElementById('roundHint'),
+  answerList: document.getElementById('answerList'),
+  patienceFill: document.getElementById('patienceFill'),
   forfeitBtn: document.getElementById('forfeitBtn'),
-  logicScore: document.getElementById('logicScore'),
-  evidenceScore: document.getElementById('evidenceScore'),
-  humanityScore: document.getElementById('humanityScore'),
-  humilityScore: document.getElementById('humilityScore'),
-  logicFill: document.getElementById('logicFill'),
-  evidenceFill: document.getElementById('evidenceFill'),
-  humanityFill: document.getElementById('humanityFill'),
-  humilityFill: document.getElementById('humilityFill'),
-  openRoundBtn: document.getElementById('openRoundBtn'),
-  roundModal: document.getElementById('roundModal'),
-  closeRoundBtn: document.getElementById('closeRoundBtn'),
+  roundIntroModal: document.getElementById('roundIntroModal'),
+  closeIntroBtn: document.getElementById('closeIntroBtn'),
   startRoundBtn: document.getElementById('startRoundBtn'),
-  modalRoundTitle: document.getElementById('modalRoundTitle'),
-  modalRoundPrompt: document.getElementById('modalRoundPrompt'),
-  modalRoundTwist: document.getElementById('modalRoundTwist'),
+  introTitle: document.getElementById('introTitle'),
+  introPrompt: document.getElementById('introPrompt'),
+  introTip: document.getElementById('introTip'),
   resultModal: document.getElementById('resultModal'),
-  resultBanner: document.getElementById('resultBanner'),
+  resultEvent: document.getElementById('resultEvent'),
   resultTitle: document.getElementById('resultTitle'),
-  resultText: document.getElementById('resultText'),
+  resultResponse: document.getElementById('resultResponse'),
+  resultLesson: document.getElementById('resultLesson'),
   nextRoundBtn: document.getElementById('nextRoundBtn')
 };
 
 const state = {
-  persona: null,
+  personas: [],
   topic: null,
-  cards: [],
-  deck: [],
-  scores: null,
+  trialData: null,
+  persona: null,
+  stars: STARTING_STARS,
   roundIndex: 0,
-  selectedCard: null,
-  customAnswers: [],
-  waitingForNext: false
+  swapCount: 0,
+  history: [],
+  badAnswers: [],
+  locked: false
 };
 
 function showModal(modal) { modal.classList.remove('hidden'); }
 function hideModal(modal) { modal.classList.add('hidden'); }
 
-function renderScores() {
-  ['logic', 'evidence', 'humanity', 'humility'].forEach((key) => {
-    els[`${key}Score`].textContent = state.scores[key];
-    els[`${key}Fill`].style.width = `${state.scores[key]}%`;
-  });
-}
-
-function renderHand() {
-  const hand = drawHand(state.deck, state.roundIndex);
-  state.selectedCard = hand.find((card) => card.id === state.selectedCard?.id) || hand[0] || null;
-  els.handGrid.innerHTML = '';
-  hand.forEach((card) => {
-    const article = document.createElement('article');
-    article.className = `play-card arcade-card ${state.selectedCard?.id === card.id ? 'selected' : ''}`;
-    article.innerHTML = `
-      <div class="card-top"><span class="card-type">${card.category}</span><span class="card-cost">${Math.max(1, Math.abs(Object.values(card.effects).reduce((a,b)=>a+b,0)) % 4 + 1)}</span></div>
-      <h3>${card.name}</h3>
-      <p>${card.text}</p>
-      <div class="effects">
-        ${Object.entries(card.effects).map(([k, v]) => `<span class="effect-chip">${k === 'evidence' ? 'proof' : k} ${v > 0 ? '+' : ''}${v}</span>`).join('')}
-      </div>
-      <button class="btn ${state.selectedCard?.id === card.id ? 'primary' : 'secondary'}" type="button">${state.selectedCard?.id === card.id ? 'Selected' : 'Select'}</button>
-    `;
-    article.addEventListener('click', () => { state.selectedCard = card; renderHand(); });
-    article.querySelector('button').addEventListener('click', (event) => { event.stopPropagation(); state.selectedCard = card; renderHand(); });
-    els.handGrid.appendChild(article);
-  });
+function renderStars() {
+  const filled = Math.max(0, Math.min(10, state.stars));
+  els.starsDisplay.textContent = `${'★'.repeat(filled)}${'☆'.repeat(10 - filled)}`;
+  els.starNumber.textContent = `${filled} / 10`;
+  const patience = Math.max(12, Math.min(100, 30 + filled * 7));
+  els.patienceFill.style.width = `${patience}%`;
 }
 
 function currentRound() {
-  return state.topic.rounds[state.roundIndex];
+  return buildProfessorQuestion(state.topic, state.trialData, state.roundIndex);
 }
 
-function openRoundBriefing() {
-  const round = currentRound();
-  if (!round) return;
-  els.modalRoundTitle.textContent = `Round ${state.roundIndex + 1}: ${round.title}`;
-  els.modalRoundPrompt.textContent = round.prompt;
-  els.modalRoundTwist.textContent = round.twist || round.challenge;
-  showModal(els.roundModal);
+function renderPersonaRail() {
+  els.personaRail.innerHTML = '';
+  state.personas.forEach((persona) => {
+    const isActive = state.persona?.id === persona.id;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `rail-persona theme-${persona.theme} ${isActive ? 'active' : ''}`;
+    button.innerHTML = `
+      <img src="${persona.portrait}" alt="${resolvePersonaName(persona)} portrait" />
+      <span><strong>${resolvePersonaName(persona)}</strong><small>${persona.weakness}</small></span>
+      <em>${isActive ? 'ACTIVE' : 'PICK'}</em>
+    `;
+    button.addEventListener('click', () => choosePersona(persona));
+    els.personaRail.appendChild(button);
+  });
+}
+
+function renderActivePersona() {
+  if (!state.persona) {
+    els.activePersonaCard.innerHTML = '<div class="empty-persona">Pick a persona from the left before answering.</div>';
+    return;
+  }
+  els.activePersonaCard.innerHTML = `
+    <div class="fighter-label">YOUR PERSONA</div>
+    <img src="${state.persona.portrait}" alt="${resolvePersonaName(state.persona)} portrait" />
+    <h2>${resolvePersonaName(state.persona)}</h2>
+    <p>${state.persona.tagline}</p>
+    <div class="persona-mini-stats">
+      ${Object.entries(state.persona.stats || {}).map(([key, value]) => `
+        <span>${key}</span><div class="meter"><span style="width:${value}%"></span></div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderSwapChip() {
+  const cost = state.persona && state.roundIndex > 0 ? getSwapCost(state.swapCount) : 0;
+  els.swapChip.textContent = `Swap cost: ${cost ? `-${cost} star${cost === 1 ? '' : 's'}` : '0'}`;
+}
+
+function choosePersona(persona) {
+  if (state.locked) return;
+  const hadPersona = Boolean(state.persona);
+  const isSwap = hadPersona && state.persona.id !== persona.id && state.roundIndex > 0;
+  if (isSwap) {
+    const cost = getSwapCost(state.swapCount);
+    state.stars = applyStarChange(state.stars, -cost);
+    state.swapCount += 1;
+    state.history.push({
+      round: state.roundIndex + 1,
+      type: 'swap',
+      from: resolvePersonaName(state.persona),
+      to: resolvePersonaName(persona),
+      cost: -cost
+    });
+  }
+  state.persona = persona;
+  setSelectedPersona(persona.id);
+  renderPersonaRail();
+  renderActivePersona();
+  renderSwapChip();
+  renderStars();
+  renderRound();
+  if (state.stars <= 0) finishTrial();
 }
 
 function renderRound() {
   const round = currentRound();
-  if (!round) {
-    finishMatch();
+  els.roundCounter.textContent = `Round ${state.roundIndex + 1} of ${state.trialData.roundsPerTrial || 5}`;
+  els.challengeType.textContent = round.title;
+  els.professorQuestion.textContent = round.professor;
+  els.roundHint.textContent = round.hint;
+  els.introTitle.textContent = `Round ${state.roundIndex + 1}: ${round.title}`;
+  els.introPrompt.textContent = round.prompt;
+  els.introTip.textContent = round.hint;
+
+  if (!state.persona) {
+    els.answerList.innerHTML = '<div class="answer-card disabled-answer"><strong>Choose a persona first.</strong><p>Different personas give different answers. Pick the one that fits this question.</p></div>';
     return;
   }
-  state.waitingForNext = false;
-  state.selectedCard = null;
-  els.roundNumber.textContent = String(state.roundIndex + 1);
-  els.roundTitle.textContent = round.title;
-  els.roundPrompt.textContent = round.prompt;
-  els.professorChallenge.textContent = round.challenge;
-  els.eventBanner.classList.add('hidden');
-  els.customAnswer.value = '';
-  els.submitPlayBtn.disabled = false;
-  els.professorResponse.textContent = 'Open the round briefing, then choose a card.';
-  renderHand();
-  openRoundBriefing();
+  const answers = getPersonaAnswers(state.persona, round, state.trialData, state.topic);
+  els.answerList.innerHTML = '';
+  answers.forEach((answer, index) => {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'answer-card';
+    card.innerHTML = `
+      <span class="answer-letter">${String.fromCharCode(65 + index)}</span>
+      <strong>${answer.text}</strong>
+      <small>${resolvePersonaName(state.persona)} answer path</small>
+    `;
+    card.addEventListener('click', () => chooseAnswer(answer));
+    els.answerList.appendChild(card);
+  });
 }
 
-async function fetchProfessorLine(round, customAnswer) {
-  try {
-    const response = await fetch('/api/debate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        persona: state.persona,
-        topic: state.topic,
-        round,
-        card: state.selectedCard,
-        customAnswer,
-        scores: state.scores
-      })
-    });
-    const json = await response.json();
-    return json.professorResponse || getProfessorReaction(state.selectedCard, state.roundIndex, customAnswer);
-  } catch {
-    return getProfessorReaction(state.selectedCard, state.roundIndex, customAnswer);
+function chooseAnswer(answer) {
+  if (!state.persona || state.locked) return;
+  state.locked = true;
+  const before = state.stars;
+  state.stars = applyStarChange(state.stars, answer.stars);
+  const round = currentRound();
+  const changeText = starLabel(state.stars - before);
+  if (answer.stars < 0) {
+    state.badAnswers.push({ topic: state.topic.title, persona: resolvePersonaName(state.persona), answer: answer.text, professor: answer.professor });
   }
-}
-
-async function finishMatch() {
-  const ending = calculateEnding(state.scores);
-  const result = {
+  state.history.push({
+    round: state.roundIndex + 1,
+    roundTitle: round.title,
+    roundType: round.type,
     personaId: state.persona.id,
     personaName: resolvePersonaName(state.persona),
+    answer,
+    starsBefore: before,
+    starsAfter: state.stars
+  });
+  renderStars();
+  els.resultEvent.textContent = `${answer.event || 'STAR CHANGE'} · ${changeText}`;
+  els.resultTitle.textContent = state.stars <= 0 ? 'Argument collapsed' : answer.stars >= 3 ? 'Professor L approves' : answer.stars < 0 ? 'Professor L pushes back' : 'Professor L responds';
+  els.resultResponse.textContent = answer.professor;
+  els.resultLesson.textContent = answer.lesson || 'Lesson: smart answers still need wisdom.';
+  const lastRound = state.roundIndex >= (state.trialData.roundsPerTrial || 5) - 1;
+  els.nextRoundBtn.textContent = state.stars <= 0 || state.stars >= 10 || lastRound ? 'Go to Verdict' : 'Next Question';
+  showModal(els.resultModal);
+}
+
+async function finishTrial() {
+  const scores = scoreToMeters(state.stars);
+  const personaName = state.persona ? resolvePersonaName(state.persona) : 'No persona';
+  const ending = calculateStarEnding({
+    stars: state.stars,
+    history: state.history,
+    personaName,
+    topicTitle: state.topic.title,
+    swaps: state.swapCount
+  });
+  const result = {
+    mode: 'star-trial',
+    personaId: state.persona?.id || null,
+    personaName,
     topicId: state.topic.id,
     topicTitle: state.topic.title,
-    scores: state.scores,
-    ending,
-    customAnswers: state.customAnswers
+    stars: state.stars,
+    maxStars: 10,
+    swaps: state.swapCount,
+    history: state.history,
+    badAnswers: state.badAnswers,
+    nextHook: nextHook({ stars: state.stars, swaps: state.swapCount }),
+    scores,
+    ending
   };
   setLastResult(result);
   try { await saveCloudMatch(result); } catch (err) { console.warn('Cloud save failed', err.message); }
   location.href = 'verdict.html';
 }
 
-async function playCard() {
-  const round = currentRound();
-  if (!state.selectedCard || !round || state.waitingForNext) return;
-  state.waitingForNext = true;
-  els.submitPlayBtn.disabled = true;
-  const customAnswer = els.customAnswer.value.trim();
-  state.customAnswers.push({ round: round.title, customAnswer, card: state.selectedCard.name });
-  state.scores = applyEffects(state.scores, state.selectedCard.effects);
-  renderScores();
-  const banner = getBanner(state.selectedCard);
-  if (banner) {
-    els.eventBanner.textContent = banner;
-    els.eventBanner.classList.remove('hidden');
-  }
-  els.professorResponse.textContent = 'Professor L is checking the bridge...';
-  const line = await fetchProfessorLine(round, customAnswer);
-  els.professorResponse.textContent = line;
-  els.resultBanner.textContent = banner || 'ROUND PLAYED';
-  els.resultTitle.textContent = `${state.selectedCard.name}`;
-  els.resultText.textContent = line;
-  els.nextRoundBtn.textContent = state.roundIndex >= 5 ? 'Go to Verdict' : 'Next Round';
-  showModal(els.resultModal);
-}
-
 async function init() {
-  const personaId = getSelectedPersona();
   const topicId = getSelectedTopic();
-  const [{ personas }, { topics }, { cards }] = await Promise.all([
+  const personaId = getSelectedPersona();
+  const [{ personas }, { topics }, trialData] = await Promise.all([
     loadJson('data/personas.json'),
     loadJson('data/topics.json'),
-    loadJson('data/cards.json')
+    loadJson('data/star-trials.json')
   ]);
-
-  state.persona = personas.find((p) => p.id === personaId) || personas[0];
+  state.personas = personas;
   state.topic = topics.find((t) => t.id === topicId) || topics[0];
-  state.cards = cards;
-  state.deck = buildDeck(state.persona, cards);
-  state.scores = createInitialScores(state.persona);
+  state.trialData = trialData;
+  state.stars = trialData.startingStars || STARTING_STARS;
 
-  els.sceneName.textContent = state.topic.scene;
-  els.arenaTitle.textContent = state.topic.title;
-  els.arenaSubtitle.textContent = state.topic.hook;
-  els.playerPortrait.src = state.persona.portrait;
-  els.playerPortrait.alt = `${resolvePersonaName(state.persona)} portrait`;
-  els.playerName.textContent = resolvePersonaName(state.persona);
-  els.playerTagline.textContent = state.persona.tagline;
-  renderScores();
+  els.categoryLabel.textContent = `${state.topic.categoryLabel} · Star Trial`;
+  els.topicTitle.textContent = state.topic.title;
+  els.topicHook.textContent = state.topic.hook || state.topic.summary;
+
+  renderStars();
+  renderPersonaRail();
+  renderActivePersona();
+  renderSwapChip();
   renderRound();
+  if (personaId) {
+    const startingPersona = personas.find((p) => p.id === personaId);
+    if (startingPersona) choosePersona(startingPersona);
+  }
+  showModal(els.roundIntroModal);
 }
 
-els.submitPlayBtn.addEventListener('click', playCard);
-els.forfeitBtn.addEventListener('click', finishMatch);
-els.openRoundBtn.addEventListener('click', openRoundBriefing);
-els.closeRoundBtn.addEventListener('click', () => hideModal(els.roundModal));
-els.startRoundBtn.addEventListener('click', () => hideModal(els.roundModal));
+els.closeIntroBtn.addEventListener('click', () => hideModal(els.roundIntroModal));
+els.startRoundBtn.addEventListener('click', () => hideModal(els.roundIntroModal));
+els.forfeitBtn.addEventListener('click', finishTrial);
 els.nextRoundBtn.addEventListener('click', () => {
   hideModal(els.resultModal);
+  if (state.stars <= 0 || state.stars >= 10 || state.roundIndex >= (state.trialData.roundsPerTrial || 5) - 1) {
+    finishTrial();
+    return;
+  }
   state.roundIndex += 1;
+  state.locked = false;
+  renderSwapChip();
   renderRound();
+  showModal(els.roundIntroModal);
 });
 
-init().catch((err) => { els.professorResponse.textContent = err.message; });
+init().catch((err) => {
+  els.topicTitle.textContent = 'Could not start Star Trial';
+  els.topicHook.textContent = err.message;
+});

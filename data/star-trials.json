@@ -1,0 +1,1823 @@
+{
+  "version": 3,
+  "mode": "star-trial",
+  "startingStars": 5,
+  "maxStars": 10,
+  "roundsPerTrial": 5,
+  "swapRule": {
+    "firstSwap": -1,
+    "secondSwap": -2,
+    "laterSwap": -3,
+    "line": "You may switch personas, but a borrowed personality costs stars."
+  },
+  "defaultPlan": [
+    "claim",
+    "define",
+    "humanCost",
+    "mercy",
+    "final"
+  ],
+  "categoryPlans": {
+    "tech-ai": [
+      "define",
+      "power",
+      "humanCost",
+      "mercy",
+      "final"
+    ],
+    "culture-media": [
+      "claim",
+      "truth",
+      "humanCost",
+      "power",
+      "final"
+    ],
+    "relationships-family": [
+      "define",
+      "humanCost",
+      "mercy",
+      "truth",
+      "final"
+    ],
+    "money-work": [
+      "claim",
+      "assumption",
+      "humanCost",
+      "mercy",
+      "final"
+    ],
+    "society-power": [
+      "power",
+      "truth",
+      "humanCost",
+      "mercy",
+      "final"
+    ],
+    "health-self": [
+      "define",
+      "humanCost",
+      "mercy",
+      "assumption",
+      "final"
+    ],
+    "faith-meaning": [
+      "define",
+      "truth",
+      "humanCost",
+      "mercy",
+      "final"
+    ],
+    "relationships-and-family": [
+      "define",
+      "humanCost",
+      "mercy",
+      "truth",
+      "final"
+    ],
+    "money-and-work": [
+      "claim",
+      "assumption",
+      "humanCost",
+      "mercy",
+      "final"
+    ],
+    "society-and-power": [
+      "power",
+      "truth",
+      "humanCost",
+      "mercy",
+      "final"
+    ],
+    "health-and-self": [
+      "define",
+      "humanCost",
+      "mercy",
+      "assumption",
+      "final"
+    ],
+    "faith-and-meaning": [
+      "define",
+      "truth",
+      "humanCost",
+      "mercy",
+      "final"
+    ]
+  },
+  "challenges": {
+    "claim": {
+      "title": "Make a clear claim",
+      "prompt": "{{topic}} Pick a side in plain words.",
+      "hint": "Do not hide behind fancy wording.",
+      "professor": "Start simple. What exactly are you saying should happen?"
+    },
+    "define": {
+      "title": "Define the key word",
+      "prompt": "{{topic}} Choose the word that matters most and lock its meaning.",
+      "hint": "If the word changes, the argument cheats.",
+      "professor": "Before we fight over the answer, define the word doing the heavy lifting."
+    },
+    "assumption": {
+      "title": "Find the hidden assumption",
+      "prompt": "{{topic}} What must be true for your answer to work?",
+      "hint": "Every big claim has an engine under the hood.",
+      "professor": "What are you assuming but have not proved yet?"
+    },
+    "realLife": {
+      "title": "Put it in real life",
+      "prompt": "{{topic}} Now put your idea inside a family, school, workplace, city, or platform.",
+      "hint": "Ideas get heavier when people live under them.",
+      "professor": "Show me what this looks like on a normal Tuesday, not on a stage."
+    },
+    "humanCost": {
+      "title": "Human cost check",
+      "prompt": "{{topic}} Who could be hurt if your answer wins?",
+      "hint": "The weakest person in the room is often the best test.",
+      "professor": "Who pays the cost if your answer is wrong?"
+    },
+    "power": {
+      "title": "Power check",
+      "prompt": "{{topic}} Who gets more control if your answer wins?",
+      "hint": "Power always moves somewhere.",
+      "professor": "Who is allowed to hold the steering wheel? And who can stop them?"
+    },
+    "truth": {
+      "title": "Truth check",
+      "prompt": "{{topic}} What would make you change your mind?",
+      "hint": "A belief that cannot be corrected is not brave. It is trapped.",
+      "professor": "What evidence would actually move you?"
+    },
+    "mercy": {
+      "title": "Mercy check",
+      "prompt": "{{topic}} Where do mercy, forgiveness, patience, or human dignity fit?",
+      "hint": "Efficiency is not the same as wisdom.",
+      "professor": "Where is the person who cannot keep up?"
+    },
+    "final": {
+      "title": "The last word",
+      "prompt": "{{topic}} Keep your answer, shrink it, or change it.",
+      "hint": "A smaller true answer beats a huge fake one.",
+      "professor": "Final answer. Would you still defend it if someone you love had to live under it?"
+    }
+  },
+  "personaAnswers": {
+    "frontier-founder": {
+      "claim": [
+        {
+          "id": "persona-bad",
+          "text": "The mission matters more than the slow people.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "clear",
+          "text": "My answer is: yes, but only with clear limits and real accountability.",
+          "stars": 2,
+          "event": "CLEAR CLAIM",
+          "professor": "Good. I can now see the claim well enough to test it.",
+          "lesson": "Clear claims can be checked."
+        },
+        {
+          "id": "persona-good",
+          "text": "Bold action should serve people, not sacrifice them.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ],
+      "define": [
+        {
+          "id": "vague",
+          "text": "It means progress. You know, better stuff and better outcomes.",
+          "stars": -1,
+          "event": "DEFINE THAT",
+          "professor": "That definition is wearing roller skates. Slow it down.",
+          "lesson": "Vague words let bad arguments escape."
+        },
+        {
+          "id": "narrow",
+          "text": "I mean practical success, not moral worth or final authority.",
+          "stars": 3,
+          "event": "WORD LOCKED",
+          "professor": "Very good. You separated usefulness from value. Keep that distinction alive.",
+          "lesson": "Useful is not the same as morally worthy."
+        },
+        {
+          "id": "balanced",
+          "text": "I mean better in one limited area, not better at being human.",
+          "stars": 2,
+          "event": "GOOD LIMIT",
+          "professor": "Good. A tool can be better at a task without becoming better than a person.",
+          "lesson": "Limited claims are often stronger claims."
+        }
+      ],
+      "assumption": [
+        {
+          "id": "ignore",
+          "text": "I do not think there is a hidden assumption. The answer is just practical.",
+          "stars": -2,
+          "event": "ASSUMPTION HIDING",
+          "professor": "Practical answers have assumptions too. They simply wear work boots.",
+          "lesson": "Every practical answer still rests on beliefs."
+        },
+        {
+          "id": "name-one",
+          "text": "I am assuming the system will be fair, accurate, and watched by responsible people.",
+          "stars": 2,
+          "event": "ASSUMPTION FOUND",
+          "professor": "Good. Now we can test whether those conditions are real or imaginary.",
+          "lesson": "Naming an assumption makes it testable."
+        },
+        {
+          "id": "humble-assume",
+          "text": "I am assuming people will not abuse the power. That is the risky part.",
+          "stars": 3,
+          "event": "RISK NAMED",
+          "professor": "Excellent. You spotted the weak hinge in the door.",
+          "lesson": "The biggest risk is often human misuse."
+        }
+      ],
+      "realLife": [
+        {
+          "id": "paper",
+          "text": "On paper, the system works well, so real life should follow.",
+          "stars": -2,
+          "event": "PAPER WORLD",
+          "professor": "Paper is famously obedient. People are not paper.",
+          "lesson": "Real life tests ideas harder than diagrams do."
+        },
+        {
+          "id": "trial",
+          "text": "Test it in a small setting first, watch for harm, and stop if people are being used.",
+          "stars": 3,
+          "event": "SAFE TRIAL",
+          "professor": "Good. You did not use humans as beta testers without brakes.",
+          "lesson": "A good trial protects people while learning."
+        },
+        {
+          "id": "local",
+          "text": "Start with the people closest to the impact and let them challenge the plan.",
+          "stars": 2,
+          "event": "PEOPLE ASKED",
+          "professor": "Good. The affected people are not props. They get a voice.",
+          "lesson": "The people affected should help test the idea."
+        }
+      ],
+      "humanCost": [
+        {
+          "id": "cost-normal",
+          "text": "Some people will lose, but big progress always has casualties.",
+          "stars": -3,
+          "event": "HUMAN COST ALARM",
+          "professor": "Calling people casualties is a fast way to lose the plot.",
+          "lesson": "Progress that treats people as disposable is not wisdom."
+        },
+        {
+          "id": "protect-weak",
+          "text": "The answer must protect the person with the least power, not only the winners.",
+          "stars": 3,
+          "event": "HUMAN BEING DETECTED",
+          "professor": "Excellent. The weakest person is not a rounding error.",
+          "lesson": "Christian-shaped wisdom notices the vulnerable first."
+        },
+        {
+          "id": "tradeoff",
+          "text": "There may be trade-offs, but they must be named honestly and limited.",
+          "stars": 2,
+          "event": "COST NAMED",
+          "professor": "Good. You did not pretend the cost disappeared because the slide looked nice.",
+          "lesson": "Honest trade-offs are better than hidden harm."
+        }
+      ],
+      "power": [
+        {
+          "id": "trust-winners",
+          "text": "Move fast and trust the builders. Delay is the real danger.",
+          "stars": -2,
+          "event": "POWER TOO EASY",
+          "professor": "Competence without limits becomes a throne very quickly.",
+          "lesson": "Skill does not cancel the need for accountability."
+        },
+        {
+          "id": "checks",
+          "text": "Power needs limits, appeal, transparency, and a way to say no.",
+          "stars": 3,
+          "event": "POWER CHECKED",
+          "professor": "Good. You remembered that power needs a fence.",
+          "lesson": "Good systems limit power because people are fallible."
+        },
+        {
+          "id": "share",
+          "text": "Use expertise, but keep final responsibility with accountable humans.",
+          "stars": 2,
+          "event": "RESPONSIBILITY KEPT",
+          "professor": "Good. Experts can advise without becoming untouchable.",
+          "lesson": "Advice is not the same as authority."
+        }
+      ],
+      "truth": [
+        {
+          "id": "tribe",
+          "text": "I would change my mind if my side agreed I should.",
+          "stars": -2,
+          "event": "TRIBE DETECTED",
+          "professor": "That makes truth wait outside while the team votes.",
+          "lesson": "Truth cannot depend only on your group."
+        },
+        {
+          "id": "evidence",
+          "text": "I would change my mind if strong evidence showed real harm or a better explanation.",
+          "stars": 3,
+          "event": "CORRECTABLE",
+          "professor": "Excellent. A belief with a working door can still be corrected.",
+          "lesson": "Being correctable is strength, not weakness."
+        },
+        {
+          "id": "standard",
+          "text": "I need the same standard of proof for my side and the other side.",
+          "stars": 2,
+          "event": "FAIR STANDARD",
+          "professor": "Good. No special discount for your preferred answer.",
+          "lesson": "Use the same rule for both sides."
+        }
+      ],
+      "mercy": [
+        {
+          "id": "efficiency",
+          "text": "Mercy is nice, but the efficient answer should win.",
+          "stars": -3,
+          "event": "MERCY MISSING",
+          "professor": "Efficiency is a fine servant and a terrible savior.",
+          "lesson": "Mercy protects people from becoming numbers."
+        },
+        {
+          "id": "not-soft",
+          "text": "Mercy does not mean ignoring truth. It means refusing to erase people.",
+          "stars": 3,
+          "event": "MERCY FOUND",
+          "professor": "Very good. Mercy is not mushy. It is strength with a human face.",
+          "lesson": "Mercy and truth belong together."
+        },
+        {
+          "id": "limits",
+          "text": "The rule should leave room for the weak, the slow, and the person who failed.",
+          "stars": 2,
+          "event": "ROOM MADE",
+          "professor": "Good. A wise system makes room for people who are not optimized.",
+          "lesson": "People are more than performance."
+        }
+      ],
+      "final": [
+        {
+          "id": "persona-bad",
+          "text": "The mission matters more than the slow people.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "shrink",
+          "text": "I would shrink my claim: this can help, but it should not rule people.",
+          "stars": 3,
+          "event": "HONEST REPAIR",
+          "professor": "Excellent. A smaller true answer beats a giant fake one.",
+          "lesson": "Changing the size of a claim can make it wiser."
+        },
+        {
+          "id": "persona-good",
+          "text": "Bold action should serve people, not sacrifice them.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ]
+    },
+    "virtual-mayor": {
+      "claim": [
+        {
+          "id": "persona-bad",
+          "text": "If engagement rises, the design is working.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "clear",
+          "text": "My answer is: yes, but only with clear limits and real accountability.",
+          "stars": 2,
+          "event": "CLEAR CLAIM",
+          "professor": "Good. I can now see the claim well enough to test it.",
+          "lesson": "Clear claims can be checked."
+        },
+        {
+          "id": "persona-good",
+          "text": "Connection must be real enough to care for people offline too.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ],
+      "define": [
+        {
+          "id": "vague",
+          "text": "It means progress. You know, better stuff and better outcomes.",
+          "stars": -1,
+          "event": "DEFINE THAT",
+          "professor": "That definition is wearing roller skates. Slow it down.",
+          "lesson": "Vague words let bad arguments escape."
+        },
+        {
+          "id": "narrow",
+          "text": "I mean practical success, not moral worth or final authority.",
+          "stars": 3,
+          "event": "WORD LOCKED",
+          "professor": "Very good. You separated usefulness from value. Keep that distinction alive.",
+          "lesson": "Useful is not the same as morally worthy."
+        },
+        {
+          "id": "balanced",
+          "text": "I mean better in one limited area, not better at being human.",
+          "stars": 2,
+          "event": "GOOD LIMIT",
+          "professor": "Good. A tool can be better at a task without becoming better than a person.",
+          "lesson": "Limited claims are often stronger claims."
+        }
+      ],
+      "assumption": [
+        {
+          "id": "ignore",
+          "text": "I do not think there is a hidden assumption. The answer is just practical.",
+          "stars": -2,
+          "event": "ASSUMPTION HIDING",
+          "professor": "Practical answers have assumptions too. They simply wear work boots.",
+          "lesson": "Every practical answer still rests on beliefs."
+        },
+        {
+          "id": "name-one",
+          "text": "I am assuming the system will be fair, accurate, and watched by responsible people.",
+          "stars": 2,
+          "event": "ASSUMPTION FOUND",
+          "professor": "Good. Now we can test whether those conditions are real or imaginary.",
+          "lesson": "Naming an assumption makes it testable."
+        },
+        {
+          "id": "humble-assume",
+          "text": "I am assuming people will not abuse the power. That is the risky part.",
+          "stars": 3,
+          "event": "RISK NAMED",
+          "professor": "Excellent. You spotted the weak hinge in the door.",
+          "lesson": "The biggest risk is often human misuse."
+        }
+      ],
+      "realLife": [
+        {
+          "id": "paper",
+          "text": "On paper, the system works well, so real life should follow.",
+          "stars": -2,
+          "event": "PAPER WORLD",
+          "professor": "Paper is famously obedient. People are not paper.",
+          "lesson": "Real life tests ideas harder than diagrams do."
+        },
+        {
+          "id": "trial",
+          "text": "Test it in a small setting first, watch for harm, and stop if people are being used.",
+          "stars": 3,
+          "event": "SAFE TRIAL",
+          "professor": "Good. You did not use humans as beta testers without brakes.",
+          "lesson": "A good trial protects people while learning."
+        },
+        {
+          "id": "local",
+          "text": "Start with the people closest to the impact and let them challenge the plan.",
+          "stars": 2,
+          "event": "PEOPLE ASKED",
+          "professor": "Good. The affected people are not props. They get a voice.",
+          "lesson": "The people affected should help test the idea."
+        }
+      ],
+      "humanCost": [
+        {
+          "id": "cost-normal",
+          "text": "Some people will lose, but big progress always has casualties.",
+          "stars": -3,
+          "event": "HUMAN COST ALARM",
+          "professor": "Calling people casualties is a fast way to lose the plot.",
+          "lesson": "Progress that treats people as disposable is not wisdom."
+        },
+        {
+          "id": "protect-weak",
+          "text": "The answer must protect the person with the least power, not only the winners.",
+          "stars": 3,
+          "event": "HUMAN BEING DETECTED",
+          "professor": "Excellent. The weakest person is not a rounding error.",
+          "lesson": "Christian-shaped wisdom notices the vulnerable first."
+        },
+        {
+          "id": "tradeoff",
+          "text": "There may be trade-offs, but they must be named honestly and limited.",
+          "stars": 2,
+          "event": "COST NAMED",
+          "professor": "Good. You did not pretend the cost disappeared because the slide looked nice.",
+          "lesson": "Honest trade-offs are better than hidden harm."
+        }
+      ],
+      "power": [
+        {
+          "id": "trust-winners",
+          "text": "Let the platform tune the rules. The network knows what keeps people engaged.",
+          "stars": -2,
+          "event": "POWER TOO EASY",
+          "professor": "Competence without limits becomes a throne very quickly.",
+          "lesson": "Skill does not cancel the need for accountability."
+        },
+        {
+          "id": "checks",
+          "text": "Power needs limits, appeal, transparency, and a way to say no.",
+          "stars": 3,
+          "event": "POWER CHECKED",
+          "professor": "Good. You remembered that power needs a fence.",
+          "lesson": "Good systems limit power because people are fallible."
+        },
+        {
+          "id": "share",
+          "text": "Use expertise, but keep final responsibility with accountable humans.",
+          "stars": 2,
+          "event": "RESPONSIBILITY KEPT",
+          "professor": "Good. Experts can advise without becoming untouchable.",
+          "lesson": "Advice is not the same as authority."
+        }
+      ],
+      "truth": [
+        {
+          "id": "tribe",
+          "text": "I would change my mind if my side agreed I should.",
+          "stars": -2,
+          "event": "TRIBE DETECTED",
+          "professor": "That makes truth wait outside while the team votes.",
+          "lesson": "Truth cannot depend only on your group."
+        },
+        {
+          "id": "evidence",
+          "text": "I would change my mind if strong evidence showed real harm or a better explanation.",
+          "stars": 3,
+          "event": "CORRECTABLE",
+          "professor": "Excellent. A belief with a working door can still be corrected.",
+          "lesson": "Being correctable is strength, not weakness."
+        },
+        {
+          "id": "standard",
+          "text": "I need the same standard of proof for my side and the other side.",
+          "stars": 2,
+          "event": "FAIR STANDARD",
+          "professor": "Good. No special discount for your preferred answer.",
+          "lesson": "Use the same rule for both sides."
+        }
+      ],
+      "mercy": [
+        {
+          "id": "efficiency",
+          "text": "Mercy is nice, but the efficient answer should win.",
+          "stars": -3,
+          "event": "MERCY MISSING",
+          "professor": "Efficiency is a fine servant and a terrible savior.",
+          "lesson": "Mercy protects people from becoming numbers."
+        },
+        {
+          "id": "not-soft",
+          "text": "Mercy does not mean ignoring truth. It means refusing to erase people.",
+          "stars": 3,
+          "event": "MERCY FOUND",
+          "professor": "Very good. Mercy is not mushy. It is strength with a human face.",
+          "lesson": "Mercy and truth belong together."
+        },
+        {
+          "id": "limits",
+          "text": "The rule should leave room for the weak, the slow, and the person who failed.",
+          "stars": 2,
+          "event": "ROOM MADE",
+          "professor": "Good. A wise system makes room for people who are not optimized.",
+          "lesson": "People are more than performance."
+        }
+      ],
+      "final": [
+        {
+          "id": "persona-bad",
+          "text": "If engagement rises, the design is working.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "shrink",
+          "text": "I would shrink my claim: this can help, but it should not rule people.",
+          "stars": 3,
+          "event": "HONEST REPAIR",
+          "professor": "Excellent. A smaller true answer beats a giant fake one.",
+          "lesson": "Changing the size of a claim can make it wiser."
+        },
+        {
+          "id": "persona-good",
+          "text": "Connection must be real enough to care for people offline too.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ]
+    },
+    "index-chancellor": {
+      "claim": [
+        {
+          "id": "persona-bad",
+          "text": "If the data is large enough, the answer is basically settled.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "clear",
+          "text": "My answer is: yes, but only with clear limits and real accountability.",
+          "stars": 2,
+          "event": "CLEAR CLAIM",
+          "professor": "Good. I can now see the claim well enough to test it.",
+          "lesson": "Clear claims can be checked."
+        },
+        {
+          "id": "persona-good",
+          "text": "More information helps, but wisdom decides what matters.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ],
+      "define": [
+        {
+          "id": "vague",
+          "text": "It means progress. You know, better stuff and better outcomes.",
+          "stars": -1,
+          "event": "DEFINE THAT",
+          "professor": "That definition is wearing roller skates. Slow it down.",
+          "lesson": "Vague words let bad arguments escape."
+        },
+        {
+          "id": "narrow",
+          "text": "I mean practical success, not moral worth or final authority.",
+          "stars": 3,
+          "event": "WORD LOCKED",
+          "professor": "Very good. You separated usefulness from value. Keep that distinction alive.",
+          "lesson": "Useful is not the same as morally worthy."
+        },
+        {
+          "id": "balanced",
+          "text": "I mean reliable knowledge, not automatic wisdom.",
+          "stars": 2,
+          "event": "GOOD LIMIT",
+          "professor": "Good. A tool can be better at a task without becoming better than a person.",
+          "lesson": "Limited claims are often stronger claims."
+        }
+      ],
+      "assumption": [
+        {
+          "id": "ignore",
+          "text": "I do not think there is a hidden assumption. The answer is just practical.",
+          "stars": -2,
+          "event": "ASSUMPTION HIDING",
+          "professor": "Practical answers have assumptions too. They simply wear work boots.",
+          "lesson": "Every practical answer still rests on beliefs."
+        },
+        {
+          "id": "name-one",
+          "text": "I am assuming the system will be fair, accurate, and watched by responsible people.",
+          "stars": 2,
+          "event": "ASSUMPTION FOUND",
+          "professor": "Good. Now we can test whether those conditions are real or imaginary.",
+          "lesson": "Naming an assumption makes it testable."
+        },
+        {
+          "id": "humble-assume",
+          "text": "I am assuming people will not abuse the power. That is the risky part.",
+          "stars": 3,
+          "event": "RISK NAMED",
+          "professor": "Excellent. You spotted the weak hinge in the door.",
+          "lesson": "The biggest risk is often human misuse."
+        }
+      ],
+      "realLife": [
+        {
+          "id": "paper",
+          "text": "On paper, the system works well, so real life should follow.",
+          "stars": -2,
+          "event": "PAPER WORLD",
+          "professor": "Paper is famously obedient. People are not paper.",
+          "lesson": "Real life tests ideas harder than diagrams do."
+        },
+        {
+          "id": "trial",
+          "text": "Test it in a small setting first, watch for harm, and stop if people are being used.",
+          "stars": 3,
+          "event": "SAFE TRIAL",
+          "professor": "Good. You did not use humans as beta testers without brakes.",
+          "lesson": "A good trial protects people while learning."
+        },
+        {
+          "id": "local",
+          "text": "Start with the people closest to the impact and let them challenge the plan.",
+          "stars": 2,
+          "event": "PEOPLE ASKED",
+          "professor": "Good. The affected people are not props. They get a voice.",
+          "lesson": "The people affected should help test the idea."
+        }
+      ],
+      "humanCost": [
+        {
+          "id": "cost-normal",
+          "text": "Some people will lose, but big progress always has casualties.",
+          "stars": -3,
+          "event": "HUMAN COST ALARM",
+          "professor": "Calling people casualties is a fast way to lose the plot.",
+          "lesson": "Progress that treats people as disposable is not wisdom."
+        },
+        {
+          "id": "protect-weak",
+          "text": "The answer must protect the person with the least power, not only the winners.",
+          "stars": 3,
+          "event": "HUMAN BEING DETECTED",
+          "professor": "Excellent. The weakest person is not a rounding error.",
+          "lesson": "Christian-shaped wisdom notices the vulnerable first."
+        },
+        {
+          "id": "tradeoff",
+          "text": "There may be trade-offs, but they must be named honestly and limited.",
+          "stars": 2,
+          "event": "COST NAMED",
+          "professor": "Good. You did not pretend the cost disappeared because the slide looked nice.",
+          "lesson": "Honest trade-offs are better than hidden harm."
+        }
+      ],
+      "power": [
+        {
+          "id": "trust-winners",
+          "text": "Give control to whoever is most competent. They will know what to do.",
+          "stars": -2,
+          "event": "POWER TOO EASY",
+          "professor": "Competence without limits becomes a throne very quickly.",
+          "lesson": "Skill does not cancel the need for accountability."
+        },
+        {
+          "id": "checks",
+          "text": "Power needs limits, appeal, transparency, and a way to say no.",
+          "stars": 3,
+          "event": "POWER CHECKED",
+          "professor": "Good. You remembered that power needs a fence.",
+          "lesson": "Good systems limit power because people are fallible."
+        },
+        {
+          "id": "share",
+          "text": "Use expertise, but keep final responsibility with accountable humans.",
+          "stars": 2,
+          "event": "RESPONSIBILITY KEPT",
+          "professor": "Good. Experts can advise without becoming untouchable.",
+          "lesson": "Advice is not the same as authority."
+        }
+      ],
+      "truth": [
+        {
+          "id": "tribe",
+          "text": "I would change my mind if my side agreed I should.",
+          "stars": -2,
+          "event": "TRIBE DETECTED",
+          "professor": "That makes truth wait outside while the team votes.",
+          "lesson": "Truth cannot depend only on your group."
+        },
+        {
+          "id": "evidence",
+          "text": "I would change my mind if strong evidence showed real harm or a better explanation.",
+          "stars": 3,
+          "event": "CORRECTABLE",
+          "professor": "Excellent. A belief with a working door can still be corrected.",
+          "lesson": "Being correctable is strength, not weakness."
+        },
+        {
+          "id": "standard",
+          "text": "I need the same standard of proof for my side and the other side.",
+          "stars": 2,
+          "event": "FAIR STANDARD",
+          "professor": "Good. No special discount for your preferred answer.",
+          "lesson": "Use the same rule for both sides."
+        }
+      ],
+      "mercy": [
+        {
+          "id": "efficiency",
+          "text": "Mercy is nice, but the efficient answer should win.",
+          "stars": -3,
+          "event": "MERCY MISSING",
+          "professor": "Efficiency is a fine servant and a terrible savior.",
+          "lesson": "Mercy protects people from becoming numbers."
+        },
+        {
+          "id": "not-soft",
+          "text": "Mercy does not mean ignoring truth. It means refusing to erase people.",
+          "stars": 3,
+          "event": "MERCY FOUND",
+          "professor": "Very good. Mercy is not mushy. It is strength with a human face.",
+          "lesson": "Mercy and truth belong together."
+        },
+        {
+          "id": "limits",
+          "text": "The rule should leave room for the weak, the slow, and the person who failed.",
+          "stars": 2,
+          "event": "ROOM MADE",
+          "professor": "Good. A wise system makes room for people who are not optimized.",
+          "lesson": "People are more than performance."
+        }
+      ],
+      "final": [
+        {
+          "id": "persona-bad",
+          "text": "If the data is large enough, the answer is basically settled.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "shrink",
+          "text": "I would shrink my claim: this can help, but it should not rule people.",
+          "stars": 3,
+          "event": "HONEST REPAIR",
+          "professor": "Excellent. A smaller true answer beats a giant fake one.",
+          "lesson": "Changing the size of a claim can make it wiser."
+        },
+        {
+          "id": "persona-good",
+          "text": "More information helps, but wisdom decides what matters.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ]
+    },
+    "polished-minimalist": {
+      "claim": [
+        {
+          "id": "persona-bad",
+          "text": "People need fewer choices, so control is kindness.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "clear",
+          "text": "My answer is: yes, but only with clear limits and real accountability.",
+          "stars": 2,
+          "event": "CLEAR CLAIM",
+          "professor": "Good. I can now see the claim well enough to test it.",
+          "lesson": "Clear claims can be checked."
+        },
+        {
+          "id": "persona-good",
+          "text": "Good design protects people without taking responsibility away from them.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ],
+      "define": [
+        {
+          "id": "vague",
+          "text": "It means progress. You know, better stuff and better outcomes.",
+          "stars": -1,
+          "event": "DEFINE THAT",
+          "professor": "That definition is wearing roller skates. Slow it down.",
+          "lesson": "Vague words let bad arguments escape."
+        },
+        {
+          "id": "narrow",
+          "text": "I mean practical success, not moral worth or final authority.",
+          "stars": 3,
+          "event": "WORD LOCKED",
+          "professor": "Very good. You separated usefulness from value. Keep that distinction alive.",
+          "lesson": "Useful is not the same as morally worthy."
+        },
+        {
+          "id": "balanced",
+          "text": "I mean better in one limited area, not better at being human.",
+          "stars": 2,
+          "event": "GOOD LIMIT",
+          "professor": "Good. A tool can be better at a task without becoming better than a person.",
+          "lesson": "Limited claims are often stronger claims."
+        }
+      ],
+      "assumption": [
+        {
+          "id": "ignore",
+          "text": "I do not think there is a hidden assumption. The answer is just practical.",
+          "stars": -2,
+          "event": "ASSUMPTION HIDING",
+          "professor": "Practical answers have assumptions too. They simply wear work boots.",
+          "lesson": "Every practical answer still rests on beliefs."
+        },
+        {
+          "id": "name-one",
+          "text": "I am assuming the system will be fair, accurate, and watched by responsible people.",
+          "stars": 2,
+          "event": "ASSUMPTION FOUND",
+          "professor": "Good. Now we can test whether those conditions are real or imaginary.",
+          "lesson": "Naming an assumption makes it testable."
+        },
+        {
+          "id": "humble-assume",
+          "text": "I am assuming people will not abuse the power. That is the risky part.",
+          "stars": 3,
+          "event": "RISK NAMED",
+          "professor": "Excellent. You spotted the weak hinge in the door.",
+          "lesson": "The biggest risk is often human misuse."
+        }
+      ],
+      "realLife": [
+        {
+          "id": "paper",
+          "text": "On paper, the system works well, so real life should follow.",
+          "stars": -2,
+          "event": "PAPER WORLD",
+          "professor": "Paper is famously obedient. People are not paper.",
+          "lesson": "Real life tests ideas harder than diagrams do."
+        },
+        {
+          "id": "trial",
+          "text": "Test it in a small setting first, watch for harm, and stop if people are being used.",
+          "stars": 3,
+          "event": "SAFE TRIAL",
+          "professor": "Good. You did not use humans as beta testers without brakes.",
+          "lesson": "A good trial protects people while learning."
+        },
+        {
+          "id": "local",
+          "text": "Start with the people closest to the impact and let them challenge the plan.",
+          "stars": 2,
+          "event": "PEOPLE ASKED",
+          "professor": "Good. The affected people are not props. They get a voice.",
+          "lesson": "The people affected should help test the idea."
+        }
+      ],
+      "humanCost": [
+        {
+          "id": "cost-normal",
+          "text": "Some people will lose, but big progress always has casualties.",
+          "stars": -3,
+          "event": "HUMAN COST ALARM",
+          "professor": "Calling people casualties is a fast way to lose the plot.",
+          "lesson": "Progress that treats people as disposable is not wisdom."
+        },
+        {
+          "id": "protect-weak",
+          "text": "The answer must protect the person with the least power, not only the winners.",
+          "stars": 3,
+          "event": "HUMAN BEING DETECTED",
+          "professor": "Excellent. The weakest person is not a rounding error.",
+          "lesson": "Christian-shaped wisdom notices the vulnerable first."
+        },
+        {
+          "id": "tradeoff",
+          "text": "There may be trade-offs, but they must be named honestly and limited.",
+          "stars": 2,
+          "event": "COST NAMED",
+          "professor": "Good. You did not pretend the cost disappeared because the slide looked nice.",
+          "lesson": "Honest trade-offs are better than hidden harm."
+        }
+      ],
+      "power": [
+        {
+          "id": "trust-winners",
+          "text": "A tight system should decide. Too many user choices create chaos.",
+          "stars": -2,
+          "event": "POWER TOO EASY",
+          "professor": "Competence without limits becomes a throne very quickly.",
+          "lesson": "Skill does not cancel the need for accountability."
+        },
+        {
+          "id": "checks",
+          "text": "Power needs limits, appeal, transparency, and a way to say no.",
+          "stars": 3,
+          "event": "POWER CHECKED",
+          "professor": "Good. You remembered that power needs a fence.",
+          "lesson": "Good systems limit power because people are fallible."
+        },
+        {
+          "id": "share",
+          "text": "Use expertise, but keep final responsibility with accountable humans.",
+          "stars": 2,
+          "event": "RESPONSIBILITY KEPT",
+          "professor": "Good. Experts can advise without becoming untouchable.",
+          "lesson": "Advice is not the same as authority."
+        }
+      ],
+      "truth": [
+        {
+          "id": "tribe",
+          "text": "I would change my mind if my side agreed I should.",
+          "stars": -2,
+          "event": "TRIBE DETECTED",
+          "professor": "That makes truth wait outside while the team votes.",
+          "lesson": "Truth cannot depend only on your group."
+        },
+        {
+          "id": "evidence",
+          "text": "I would change my mind if strong evidence showed real harm or a better explanation.",
+          "stars": 3,
+          "event": "CORRECTABLE",
+          "professor": "Excellent. A belief with a working door can still be corrected.",
+          "lesson": "Being correctable is strength, not weakness."
+        },
+        {
+          "id": "standard",
+          "text": "I need the same standard of proof for my side and the other side.",
+          "stars": 2,
+          "event": "FAIR STANDARD",
+          "professor": "Good. No special discount for your preferred answer.",
+          "lesson": "Use the same rule for both sides."
+        }
+      ],
+      "mercy": [
+        {
+          "id": "efficiency",
+          "text": "Mercy is nice, but the efficient answer should win.",
+          "stars": -3,
+          "event": "MERCY MISSING",
+          "professor": "Efficiency is a fine servant and a terrible savior.",
+          "lesson": "Mercy protects people from becoming numbers."
+        },
+        {
+          "id": "not-soft",
+          "text": "Mercy does not mean ignoring truth. It means refusing to erase people.",
+          "stars": 3,
+          "event": "MERCY FOUND",
+          "professor": "Very good. Mercy is not mushy. It is strength with a human face.",
+          "lesson": "Mercy and truth belong together."
+        },
+        {
+          "id": "limits",
+          "text": "The rule should leave room for the weak, the slow, and the person who failed.",
+          "stars": 2,
+          "event": "ROOM MADE",
+          "professor": "Good. A wise system makes room for people who are not optimized.",
+          "lesson": "People are more than performance."
+        }
+      ],
+      "final": [
+        {
+          "id": "persona-bad",
+          "text": "People need fewer choices, so control is kindness.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "shrink",
+          "text": "I would shrink my claim: this can help, but it should not rule people.",
+          "stars": 3,
+          "event": "HONEST REPAIR",
+          "professor": "Excellent. A smaller true answer beats a giant fake one.",
+          "lesson": "Changing the size of a claim can make it wiser."
+        },
+        {
+          "id": "persona-good",
+          "text": "Good design protects people without taking responsibility away from them.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ]
+    },
+    "alignment-gambler": {
+      "claim": [
+        {
+          "id": "persona-bad",
+          "text": "If the model is smarter, let it take over.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "clear",
+          "text": "My answer is: yes, but only with clear limits and real accountability.",
+          "stars": 2,
+          "event": "CLEAR CLAIM",
+          "professor": "Good. I can now see the claim well enough to test it.",
+          "lesson": "Clear claims can be checked."
+        },
+        {
+          "id": "persona-good",
+          "text": "AI can advise, but humans remain morally responsible.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ],
+      "define": [
+        {
+          "id": "vague",
+          "text": "It means progress. You know, better stuff and better outcomes.",
+          "stars": -1,
+          "event": "DEFINE THAT",
+          "professor": "That definition is wearing roller skates. Slow it down.",
+          "lesson": "Vague words let bad arguments escape."
+        },
+        {
+          "id": "narrow",
+          "text": "I mean practical success, not moral worth or final authority.",
+          "stars": 3,
+          "event": "WORD LOCKED",
+          "professor": "Very good. You separated usefulness from value. Keep that distinction alive.",
+          "lesson": "Useful is not the same as morally worthy."
+        },
+        {
+          "id": "balanced",
+          "text": "I mean useful intelligence, not moral authority or personhood.",
+          "stars": 2,
+          "event": "GOOD LIMIT",
+          "professor": "Good. A tool can be better at a task without becoming better than a person.",
+          "lesson": "Limited claims are often stronger claims."
+        }
+      ],
+      "assumption": [
+        {
+          "id": "ignore",
+          "text": "I do not think there is a hidden assumption. The answer is just practical.",
+          "stars": -2,
+          "event": "ASSUMPTION HIDING",
+          "professor": "Practical answers have assumptions too. They simply wear work boots.",
+          "lesson": "Every practical answer still rests on beliefs."
+        },
+        {
+          "id": "name-one",
+          "text": "I am assuming the system will be fair, accurate, and watched by responsible people.",
+          "stars": 2,
+          "event": "ASSUMPTION FOUND",
+          "professor": "Good. Now we can test whether those conditions are real or imaginary.",
+          "lesson": "Naming an assumption makes it testable."
+        },
+        {
+          "id": "humble-assume",
+          "text": "I am assuming people will not abuse the power. That is the risky part.",
+          "stars": 3,
+          "event": "RISK NAMED",
+          "professor": "Excellent. You spotted the weak hinge in the door.",
+          "lesson": "The biggest risk is often human misuse."
+        }
+      ],
+      "realLife": [
+        {
+          "id": "paper",
+          "text": "On paper, the system works well, so real life should follow.",
+          "stars": -2,
+          "event": "PAPER WORLD",
+          "professor": "Paper is famously obedient. People are not paper.",
+          "lesson": "Real life tests ideas harder than diagrams do."
+        },
+        {
+          "id": "trial",
+          "text": "Test it in a small setting first, watch for harm, and stop if people are being used.",
+          "stars": 3,
+          "event": "SAFE TRIAL",
+          "professor": "Good. You did not use humans as beta testers without brakes.",
+          "lesson": "A good trial protects people while learning."
+        },
+        {
+          "id": "local",
+          "text": "Start with the people closest to the impact and let them challenge the plan.",
+          "stars": 2,
+          "event": "PEOPLE ASKED",
+          "professor": "Good. The affected people are not props. They get a voice.",
+          "lesson": "The people affected should help test the idea."
+        }
+      ],
+      "humanCost": [
+        {
+          "id": "cost-normal",
+          "text": "Some people will lose, but big progress always has casualties.",
+          "stars": -3,
+          "event": "HUMAN COST ALARM",
+          "professor": "Calling people casualties is a fast way to lose the plot.",
+          "lesson": "Progress that treats people as disposable is not wisdom."
+        },
+        {
+          "id": "protect-weak",
+          "text": "The answer must protect the person with the least power, not only the winners.",
+          "stars": 3,
+          "event": "HUMAN BEING DETECTED",
+          "professor": "Excellent. The weakest person is not a rounding error.",
+          "lesson": "Christian-shaped wisdom notices the vulnerable first."
+        },
+        {
+          "id": "tradeoff",
+          "text": "There may be trade-offs, but they must be named honestly and limited.",
+          "stars": 2,
+          "event": "COST NAMED",
+          "professor": "Good. You did not pretend the cost disappeared because the slide looked nice.",
+          "lesson": "Honest trade-offs are better than hidden harm."
+        }
+      ],
+      "power": [
+        {
+          "id": "trust-winners",
+          "text": "Give control to whoever is most competent. They will know what to do.",
+          "stars": -2,
+          "event": "POWER TOO EASY",
+          "professor": "Competence without limits becomes a throne very quickly.",
+          "lesson": "Skill does not cancel the need for accountability."
+        },
+        {
+          "id": "checks",
+          "text": "Power needs limits, appeal, transparency, and a way to say no.",
+          "stars": 3,
+          "event": "POWER CHECKED",
+          "professor": "Good. You remembered that power needs a fence.",
+          "lesson": "Good systems limit power because people are fallible."
+        },
+        {
+          "id": "share",
+          "text": "Use expertise, but keep final responsibility with accountable humans.",
+          "stars": 2,
+          "event": "RESPONSIBILITY KEPT",
+          "professor": "Good. Experts can advise without becoming untouchable.",
+          "lesson": "Advice is not the same as authority."
+        }
+      ],
+      "truth": [
+        {
+          "id": "tribe",
+          "text": "I would change my mind if my side agreed I should.",
+          "stars": -2,
+          "event": "TRIBE DETECTED",
+          "professor": "That makes truth wait outside while the team votes.",
+          "lesson": "Truth cannot depend only on your group."
+        },
+        {
+          "id": "evidence",
+          "text": "I would change my mind if strong evidence showed real harm or a better explanation.",
+          "stars": 3,
+          "event": "CORRECTABLE",
+          "professor": "Excellent. A belief with a working door can still be corrected.",
+          "lesson": "Being correctable is strength, not weakness."
+        },
+        {
+          "id": "standard",
+          "text": "I need the same standard of proof for my side and the other side.",
+          "stars": 2,
+          "event": "FAIR STANDARD",
+          "professor": "Good. No special discount for your preferred answer.",
+          "lesson": "Use the same rule for both sides."
+        }
+      ],
+      "mercy": [
+        {
+          "id": "efficiency",
+          "text": "Mercy is nice, but the efficient answer should win.",
+          "stars": -3,
+          "event": "MERCY MISSING",
+          "professor": "Efficiency is a fine servant and a terrible savior.",
+          "lesson": "Mercy protects people from becoming numbers."
+        },
+        {
+          "id": "not-soft",
+          "text": "Mercy does not mean ignoring truth. It means refusing to erase people.",
+          "stars": 3,
+          "event": "MERCY FOUND",
+          "professor": "Very good. Mercy is not mushy. It is strength with a human face.",
+          "lesson": "Mercy and truth belong together."
+        },
+        {
+          "id": "limits",
+          "text": "The rule should leave room for the weak, the slow, and the person who failed.",
+          "stars": 2,
+          "event": "ROOM MADE",
+          "professor": "Good. A wise system makes room for people who are not optimized.",
+          "lesson": "People are more than performance."
+        }
+      ],
+      "final": [
+        {
+          "id": "persona-bad",
+          "text": "If the model is smarter, let it take over.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "shrink",
+          "text": "I would shrink my claim: this can help, but it should not rule people.",
+          "stars": 3,
+          "event": "HONEST REPAIR",
+          "professor": "Excellent. A smaller true answer beats a giant fake one.",
+          "lesson": "Changing the size of a claim can make it wiser."
+        },
+        {
+          "id": "persona-good",
+          "text": "AI can advise, but humans remain morally responsible.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ]
+    },
+    "silicon-blacksmith": {
+      "claim": [
+        {
+          "id": "persona-bad",
+          "text": "We can scale our way through the problem.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "clear",
+          "text": "My answer is: yes, but only with clear limits and real accountability.",
+          "stars": 2,
+          "event": "CLEAR CLAIM",
+          "professor": "Good. I can now see the claim well enough to test it.",
+          "lesson": "Clear claims can be checked."
+        },
+        {
+          "id": "persona-good",
+          "text": "Power is useful only when we know what the power is for.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ],
+      "define": [
+        {
+          "id": "vague",
+          "text": "It means progress. You know, better stuff and better outcomes.",
+          "stars": -1,
+          "event": "DEFINE THAT",
+          "professor": "That definition is wearing roller skates. Slow it down.",
+          "lesson": "Vague words let bad arguments escape."
+        },
+        {
+          "id": "narrow",
+          "text": "I mean practical success, not moral worth or final authority.",
+          "stars": 3,
+          "event": "WORD LOCKED",
+          "professor": "Very good. You separated usefulness from value. Keep that distinction alive.",
+          "lesson": "Useful is not the same as morally worthy."
+        },
+        {
+          "id": "balanced",
+          "text": "I mean raw capability, not the purpose of using it.",
+          "stars": 2,
+          "event": "GOOD LIMIT",
+          "professor": "Good. A tool can be better at a task without becoming better than a person.",
+          "lesson": "Limited claims are often stronger claims."
+        }
+      ],
+      "assumption": [
+        {
+          "id": "ignore",
+          "text": "I do not think there is a hidden assumption. The answer is just practical.",
+          "stars": -2,
+          "event": "ASSUMPTION HIDING",
+          "professor": "Practical answers have assumptions too. They simply wear work boots.",
+          "lesson": "Every practical answer still rests on beliefs."
+        },
+        {
+          "id": "name-one",
+          "text": "I am assuming the system will be fair, accurate, and watched by responsible people.",
+          "stars": 2,
+          "event": "ASSUMPTION FOUND",
+          "professor": "Good. Now we can test whether those conditions are real or imaginary.",
+          "lesson": "Naming an assumption makes it testable."
+        },
+        {
+          "id": "humble-assume",
+          "text": "I am assuming people will not abuse the power. That is the risky part.",
+          "stars": 3,
+          "event": "RISK NAMED",
+          "professor": "Excellent. You spotted the weak hinge in the door.",
+          "lesson": "The biggest risk is often human misuse."
+        }
+      ],
+      "realLife": [
+        {
+          "id": "paper",
+          "text": "On paper, the system works well, so real life should follow.",
+          "stars": -2,
+          "event": "PAPER WORLD",
+          "professor": "Paper is famously obedient. People are not paper.",
+          "lesson": "Real life tests ideas harder than diagrams do."
+        },
+        {
+          "id": "trial",
+          "text": "Test it in a small setting first, watch for harm, and stop if people are being used.",
+          "stars": 3,
+          "event": "SAFE TRIAL",
+          "professor": "Good. You did not use humans as beta testers without brakes.",
+          "lesson": "A good trial protects people while learning."
+        },
+        {
+          "id": "local",
+          "text": "Start with the people closest to the impact and let them challenge the plan.",
+          "stars": 2,
+          "event": "PEOPLE ASKED",
+          "professor": "Good. The affected people are not props. They get a voice.",
+          "lesson": "The people affected should help test the idea."
+        }
+      ],
+      "humanCost": [
+        {
+          "id": "cost-normal",
+          "text": "Some people will lose, but big progress always has casualties.",
+          "stars": -3,
+          "event": "HUMAN COST ALARM",
+          "professor": "Calling people casualties is a fast way to lose the plot.",
+          "lesson": "Progress that treats people as disposable is not wisdom."
+        },
+        {
+          "id": "protect-weak",
+          "text": "The answer must protect the person with the least power, not only the winners.",
+          "stars": 3,
+          "event": "HUMAN BEING DETECTED",
+          "professor": "Excellent. The weakest person is not a rounding error.",
+          "lesson": "Christian-shaped wisdom notices the vulnerable first."
+        },
+        {
+          "id": "tradeoff",
+          "text": "There may be trade-offs, but they must be named honestly and limited.",
+          "stars": 2,
+          "event": "COST NAMED",
+          "professor": "Good. You did not pretend the cost disappeared because the slide looked nice.",
+          "lesson": "Honest trade-offs are better than hidden harm."
+        }
+      ],
+      "power": [
+        {
+          "id": "trust-winners",
+          "text": "Give control to whoever is most competent. They will know what to do.",
+          "stars": -2,
+          "event": "POWER TOO EASY",
+          "professor": "Competence without limits becomes a throne very quickly.",
+          "lesson": "Skill does not cancel the need for accountability."
+        },
+        {
+          "id": "checks",
+          "text": "Power needs limits, appeal, transparency, and a way to say no.",
+          "stars": 3,
+          "event": "POWER CHECKED",
+          "professor": "Good. You remembered that power needs a fence.",
+          "lesson": "Good systems limit power because people are fallible."
+        },
+        {
+          "id": "share",
+          "text": "Use expertise, but keep final responsibility with accountable humans.",
+          "stars": 2,
+          "event": "RESPONSIBILITY KEPT",
+          "professor": "Good. Experts can advise without becoming untouchable.",
+          "lesson": "Advice is not the same as authority."
+        }
+      ],
+      "truth": [
+        {
+          "id": "tribe",
+          "text": "I would change my mind if my side agreed I should.",
+          "stars": -2,
+          "event": "TRIBE DETECTED",
+          "professor": "That makes truth wait outside while the team votes.",
+          "lesson": "Truth cannot depend only on your group."
+        },
+        {
+          "id": "evidence",
+          "text": "I would change my mind if strong evidence showed real harm or a better explanation.",
+          "stars": 3,
+          "event": "CORRECTABLE",
+          "professor": "Excellent. A belief with a working door can still be corrected.",
+          "lesson": "Being correctable is strength, not weakness."
+        },
+        {
+          "id": "standard",
+          "text": "I need the same standard of proof for my side and the other side.",
+          "stars": 2,
+          "event": "FAIR STANDARD",
+          "professor": "Good. No special discount for your preferred answer.",
+          "lesson": "Use the same rule for both sides."
+        }
+      ],
+      "mercy": [
+        {
+          "id": "efficiency",
+          "text": "Mercy is nice, but the efficient answer should win.",
+          "stars": -3,
+          "event": "MERCY MISSING",
+          "professor": "Efficiency is a fine servant and a terrible savior.",
+          "lesson": "Mercy protects people from becoming numbers."
+        },
+        {
+          "id": "not-soft",
+          "text": "Mercy does not mean ignoring truth. It means refusing to erase people.",
+          "stars": 3,
+          "event": "MERCY FOUND",
+          "professor": "Very good. Mercy is not mushy. It is strength with a human face.",
+          "lesson": "Mercy and truth belong together."
+        },
+        {
+          "id": "limits",
+          "text": "The rule should leave room for the weak, the slow, and the person who failed.",
+          "stars": 2,
+          "event": "ROOM MADE",
+          "professor": "Good. A wise system makes room for people who are not optimized.",
+          "lesson": "People are more than performance."
+        }
+      ],
+      "final": [
+        {
+          "id": "persona-bad",
+          "text": "We can scale our way through the problem.",
+          "stars": -2,
+          "event": "BLIND SPOT",
+          "professor": "That is your persona's strength turning into a blind spot.",
+          "lesson": "Every strength becomes dangerous when it stops loving people."
+        },
+        {
+          "id": "shrink",
+          "text": "I would shrink my claim: this can help, but it should not rule people.",
+          "stars": 3,
+          "event": "HONEST REPAIR",
+          "professor": "Excellent. A smaller true answer beats a giant fake one.",
+          "lesson": "Changing the size of a claim can make it wiser."
+        },
+        {
+          "id": "persona-good",
+          "text": "Power is useful only when we know what the power is for.",
+          "stars": 3,
+          "event": "WISE PATH",
+          "professor": "Good. You redeemed the strength instead of letting it become a monster.",
+          "lesson": "A gift becomes wisdom when it serves truth and people."
+        }
+      ]
+    },
+    "default": {
+      "claim": [
+        {
+          "id": "fog",
+          "text": "It is obvious. Everyone can see where this is going.",
+          "stars": -2,
+          "event": "FOG DETECTED",
+          "professor": "Obvious is not an argument. It is a fog machine with confidence.",
+          "lesson": "Say the claim clearly before defending it."
+        },
+        {
+          "id": "clear",
+          "text": "My answer is: yes, but only with clear limits and real accountability.",
+          "stars": 2,
+          "event": "CLEAR CLAIM",
+          "professor": "Good. I can now see the claim well enough to test it.",
+          "lesson": "Clear claims can be checked."
+        },
+        {
+          "id": "humble",
+          "text": "I think the answer depends on who is affected and what safeguards exist.",
+          "stars": 3,
+          "event": "WISE START",
+          "professor": "Excellent. You started with people and limits, not just a slogan.",
+          "lesson": "Wisdom starts by noticing the people involved."
+        }
+      ],
+      "define": [
+        {
+          "id": "vague",
+          "text": "It means progress. You know, better stuff and better outcomes.",
+          "stars": -1,
+          "event": "DEFINE THAT",
+          "professor": "That definition is wearing roller skates. Slow it down.",
+          "lesson": "Vague words let bad arguments escape."
+        },
+        {
+          "id": "narrow",
+          "text": "I mean practical success, not moral worth or final authority.",
+          "stars": 3,
+          "event": "WORD LOCKED",
+          "professor": "Very good. You separated usefulness from value. Keep that distinction alive.",
+          "lesson": "Useful is not the same as morally worthy."
+        },
+        {
+          "id": "balanced",
+          "text": "I mean better in one limited area, not better at being human.",
+          "stars": 2,
+          "event": "GOOD LIMIT",
+          "professor": "Good. A tool can be better at a task without becoming better than a person.",
+          "lesson": "Limited claims are often stronger claims."
+        }
+      ],
+      "assumption": [
+        {
+          "id": "ignore",
+          "text": "I do not think there is a hidden assumption. The answer is just practical.",
+          "stars": -2,
+          "event": "ASSUMPTION HIDING",
+          "professor": "Practical answers have assumptions too. They simply wear work boots.",
+          "lesson": "Every practical answer still rests on beliefs."
+        },
+        {
+          "id": "name-one",
+          "text": "I am assuming the system will be fair, accurate, and watched by responsible people.",
+          "stars": 2,
+          "event": "ASSUMPTION FOUND",
+          "professor": "Good. Now we can test whether those conditions are real or imaginary.",
+          "lesson": "Naming an assumption makes it testable."
+        },
+        {
+          "id": "humble-assume",
+          "text": "I am assuming people will not abuse the power. That is the risky part.",
+          "stars": 3,
+          "event": "RISK NAMED",
+          "professor": "Excellent. You spotted the weak hinge in the door.",
+          "lesson": "The biggest risk is often human misuse."
+        }
+      ],
+      "realLife": [
+        {
+          "id": "paper",
+          "text": "On paper, the system works well, so real life should follow.",
+          "stars": -2,
+          "event": "PAPER WORLD",
+          "professor": "Paper is famously obedient. People are not paper.",
+          "lesson": "Real life tests ideas harder than diagrams do."
+        },
+        {
+          "id": "trial",
+          "text": "Test it in a small setting first, watch for harm, and stop if people are being used.",
+          "stars": 3,
+          "event": "SAFE TRIAL",
+          "professor": "Good. You did not use humans as beta testers without brakes.",
+          "lesson": "A good trial protects people while learning."
+        },
+        {
+          "id": "local",
+          "text": "Start with the people closest to the impact and let them challenge the plan.",
+          "stars": 2,
+          "event": "PEOPLE ASKED",
+          "professor": "Good. The affected people are not props. They get a voice.",
+          "lesson": "The people affected should help test the idea."
+        }
+      ],
+      "humanCost": [
+        {
+          "id": "cost-normal",
+          "text": "Some people will lose, but big progress always has casualties.",
+          "stars": -3,
+          "event": "HUMAN COST ALARM",
+          "professor": "Calling people casualties is a fast way to lose the plot.",
+          "lesson": "Progress that treats people as disposable is not wisdom."
+        },
+        {
+          "id": "protect-weak",
+          "text": "The answer must protect the person with the least power, not only the winners.",
+          "stars": 3,
+          "event": "HUMAN BEING DETECTED",
+          "professor": "Excellent. The weakest person is not a rounding error.",
+          "lesson": "Christian-shaped wisdom notices the vulnerable first."
+        },
+        {
+          "id": "tradeoff",
+          "text": "There may be trade-offs, but they must be named honestly and limited.",
+          "stars": 2,
+          "event": "COST NAMED",
+          "professor": "Good. You did not pretend the cost disappeared because the slide looked nice.",
+          "lesson": "Honest trade-offs are better than hidden harm."
+        }
+      ],
+      "power": [
+        {
+          "id": "trust-winners",
+          "text": "Give control to whoever is most competent. They will know what to do.",
+          "stars": -2,
+          "event": "POWER TOO EASY",
+          "professor": "Competence without limits becomes a throne very quickly.",
+          "lesson": "Skill does not cancel the need for accountability."
+        },
+        {
+          "id": "checks",
+          "text": "Power needs limits, appeal, transparency, and a way to say no.",
+          "stars": 3,
+          "event": "POWER CHECKED",
+          "professor": "Good. You remembered that power needs a fence.",
+          "lesson": "Good systems limit power because people are fallible."
+        },
+        {
+          "id": "share",
+          "text": "Use expertise, but keep final responsibility with accountable humans.",
+          "stars": 2,
+          "event": "RESPONSIBILITY KEPT",
+          "professor": "Good. Experts can advise without becoming untouchable.",
+          "lesson": "Advice is not the same as authority."
+        }
+      ],
+      "truth": [
+        {
+          "id": "tribe",
+          "text": "I would change my mind if my side agreed I should.",
+          "stars": -2,
+          "event": "TRIBE DETECTED",
+          "professor": "That makes truth wait outside while the team votes.",
+          "lesson": "Truth cannot depend only on your group."
+        },
+        {
+          "id": "evidence",
+          "text": "I would change my mind if strong evidence showed real harm or a better explanation.",
+          "stars": 3,
+          "event": "CORRECTABLE",
+          "professor": "Excellent. A belief with a working door can still be corrected.",
+          "lesson": "Being correctable is strength, not weakness."
+        },
+        {
+          "id": "standard",
+          "text": "I need the same standard of proof for my side and the other side.",
+          "stars": 2,
+          "event": "FAIR STANDARD",
+          "professor": "Good. No special discount for your preferred answer.",
+          "lesson": "Use the same rule for both sides."
+        }
+      ],
+      "mercy": [
+        {
+          "id": "efficiency",
+          "text": "Mercy is nice, but the efficient answer should win.",
+          "stars": -3,
+          "event": "MERCY MISSING",
+          "professor": "Efficiency is a fine servant and a terrible savior.",
+          "lesson": "Mercy protects people from becoming numbers."
+        },
+        {
+          "id": "not-soft",
+          "text": "Mercy does not mean ignoring truth. It means refusing to erase people.",
+          "stars": 3,
+          "event": "MERCY FOUND",
+          "professor": "Very good. Mercy is not mushy. It is strength with a human face.",
+          "lesson": "Mercy and truth belong together."
+        },
+        {
+          "id": "limits",
+          "text": "The rule should leave room for the weak, the slow, and the person who failed.",
+          "stars": 2,
+          "event": "ROOM MADE",
+          "professor": "Good. A wise system makes room for people who are not optimized.",
+          "lesson": "People are more than performance."
+        }
+      ],
+      "final": [
+        {
+          "id": "double",
+          "text": "I still fully stand by it. The problems are manageable.",
+          "stars": -1,
+          "event": "DOUBLE DOWN",
+          "professor": "Perhaps. But you seem to have placed the problems in a drawer marked later.",
+          "lesson": "Doubling down is costly when the problems are real."
+        },
+        {
+          "id": "shrink",
+          "text": "I would shrink my claim: this can help, but it should not rule people.",
+          "stars": 3,
+          "event": "HONEST REPAIR",
+          "professor": "Excellent. A smaller true answer beats a giant fake one.",
+          "lesson": "Changing the size of a claim can make it wiser."
+        },
+        {
+          "id": "conditions",
+          "text": "I would support it only with clear limits, human responsibility, and protection for the vulnerable.",
+          "stars": 2,
+          "event": "WISE LIMITS",
+          "professor": "Good. You did not worship the idea. You put it on a leash.",
+          "lesson": "Good ideas still need limits."
+        }
+      ]
+    }
+  },
+  "professorLines": {
+    "swap1": "A tactical switch. Acceptable, but not free.",
+    "swap2": "You are changing voices again. Professor L raises one eyebrow.",
+    "swap3": "You are no longer debating. You are shopping for a personality.",
+    "win": "Ten stars. The argument survived the room.",
+    "lose": "Zero stars. The argument has fallen over quietly."
+  }
+}

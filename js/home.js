@@ -33,14 +33,15 @@ async function init() {
       <div class="persona-head">
         <div class="portrait-wrap"><img src="${persona.portrait}" alt="${resolvePersonaName(persona)} portrait" /></div>
         <div>
-          <div class="badge">${persona.weakness}</div>
+          <div class="badge">${persona.type || persona.weakness}</div>
           <h3 style="margin-top:10px">${resolvePersonaName(persona)}</h3>
           <p>${persona.tagline}</p>
         </div>
       </div>
       <p>${persona.intro}</p>
+      <p class="small"><strong>Wise path:</strong> ${persona.wisePath || "Find the human cost before Professor L does."}</p>
       <div class="persona-stats">${renderStats(persona.stats)}</div>
-      <button class="btn ${selected === persona.id ? "primary" : "secondary"}" type="button">${selected === persona.id ? "Selected" : "Select Persona"}</button>
+      <button class="btn ${selected === persona.id ? "primary" : "secondary"}" type="button">${selected === persona.id ? "Preselected" : "Practice This Persona"}</button>
     `;
     card.querySelector("button").addEventListener("click", () => {
       setSelectedPersona(persona.id);

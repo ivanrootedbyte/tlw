@@ -8,9 +8,6 @@ import {
 const newGameBtn = document.getElementById("newGameBtn");
 const loadGameBtn = document.getElementById("loadGameBtn");
 const saveStatus = document.getElementById("saveStatus");
-const settingsBtn = document.getElementById("settingsBtn");
-const settingsPanel = document.getElementById("settingsPanel");
-const soundBtn = document.getElementById("soundBtn");
 
 function timeAgo(iso) {
   if (!iso) return "";
@@ -61,16 +58,5 @@ loadGameBtn?.addEventListener("click", () => {
   window.location.href = "arena.html?resume=1";
 });
 
-settingsBtn?.addEventListener("click", () => {
-  if (!settingsPanel) return;
-  settingsPanel.hidden = !settingsPanel.hidden;
-});
-
-soundBtn?.addEventListener("click", () => {
-  const muted = soundBtn.dataset.muted === "true";
-  soundBtn.dataset.muted = String(!muted);
-  soundBtn.textContent = muted ? "▮▮" : "×";
-  soundBtn.setAttribute("aria-label", muted ? "Sound on" : "Sound off");
-});
 
 updateLoadState();

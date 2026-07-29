@@ -5,6 +5,9 @@ import { saveCloudMatch } from './supabase-client.js';
 import {
   STARTING_STARS,
   applyStarChange,
+  getMaxStars,
+  getRoundsPerTrial,
+  getStartingStars,
   buildProfessorQuestion,
   calculateStarEnding,
   getPersonaAnswers,
@@ -59,12 +62,15 @@ const state = {
 
 function showModal(modal) { modal.classList.remove('hidden'); }
 function hideModal(modal) { modal.classList.add('hidden'); }
+function maxStars() { return getMaxStars(state.trialData); }
+function totalRounds() { return getRoundsPerTrial(state.topic, state.trialData); }
 
 function renderStars() {
-  const filled = Math.max(0, Math.min(10, state.stars));
-  els.starsDisplay.textContent = `${'★'.repeat(filled)}${'☆'.repeat(10 - filled)}`;
-  els.starNumber.textContent = `${filled} / 10`;
-  const patience = Math.max(12, Math.min(100, 30 + filled * 7));
+  const max = maxStars();
+  const filled = Math.max(0, Math.min(max, state.stars));
+  els.starsDisplay.textContent = `${'★'.repeat(filled)}${'☆'.repeat(max - filled)}`;
+  els.starNumber.textContent = `${filled} / ${max}`;
+  const patience = Math.max(10, Math.min(100, 20 + Math.round((filled / max) * 80)));
   els.patienceFill.style.width = `${patience}%`;
 }
 
@@ -132,7 +138,7 @@ function choosePersona(persona) {
   const isSwap = hadPersona && state.persona.id !== persona.id && state.roundIndex > 0;
   if (isSwap) {
     const cost = getSwapCost(state.swapCount);
-    state.stars = applyStarChange(state.stars, -cost);
+    state.stars = applyStarChange(state.stars, -cost, maxStars());
     state.swapCount += 1;
     state.history.push({
       round: state.roundIndex + 1,
@@ -155,7 +161,7 @@ function choosePersona(persona) {
 
 function renderRound() {
   const round = currentRound();
-  els.roundCounter.textContent = `Round ${state.roundIndex + 1} of ${state.trialData.roundsPerTrial || 5}`;
+  els.roundCounter.textContent = `Round ${state.roundIndex + 1} of ${totalRounds()}`;
   els.challengeType.textContent = round.title;
   els.professorQuestion.textContent = round.professor;
   els.roundHint.textContent = round.hint;
@@ -187,7 +193,7 @@ function chooseAnswer(answer) {
   if (!state.persona || state.locked) return;
   state.locked = true;
   const before = state.stars;
-  state.stars = applyStarChange(state.stars, answer.stars);
+  state.stars = applyStarChange(state.stars, answer.stars, maxStars());
   const round = currentRound();
   const changeText = starLabel(state.stars - before);
   if (answer.stars < 0) {
@@ -206,19 +212,21 @@ function chooseAnswer(answer) {
   renderStars();
   saveCurrentGame();
   els.resultEvent.textContent = `${answer.event || 'STAR CHANGE'} · ${changeText}`;
-  els.resultTitle.textContent = state.stars <= 0 ? 'Argument collapsed' : answer.stars >= 3 ? 'Professor L approves' : answer.stars < 0 ? 'Professor L pushes back' : 'Professor L responds';
+  els.resultTitle.textContent = state.stars <= 0 ? 'Argument collapsed' : answer.stars >= 2 ? 'Professor L approves' : answer.stars < 0 ? 'Professor L pushes back' : 'Professor L responds';
   els.resultResponse.textContent = answer.professor;
   els.resultLesson.textContent = answer.lesson || 'Lesson: smart answers still need wisdom.';
-  const lastRound = state.roundIndex >= (state.trialData.roundsPerTrial || 5) - 1;
-  els.nextRoundBtn.textContent = state.stars <= 0 || state.stars >= 10 || lastRound ? 'Go to Verdict' : 'Next Question';
+  const lastRound = state.roundIndex >= totalRounds() - 1;
+  els.nextRoundBtn.textContent = state.stars <= 0 || lastRound ? 'Go to Verdict' : 'Next Question';
   showModal(els.resultModal);
 }
 
 async function finishTrial() {
-  const scores = scoreToMeters(state.stars);
+  const max = maxStars();
+  const scores = scoreToMeters(state.stars, max);
   const personaName = state.persona ? resolvePersonaName(state.persona) : 'No persona';
   const ending = calculateStarEnding({
     stars: state.stars,
+    maxStars: max,
     history: state.history,
     personaName,
     topicTitle: state.topic.title,
@@ -231,11 +239,11 @@ async function finishTrial() {
     topicId: state.topic.id,
     topicTitle: state.topic.title,
     stars: state.stars,
-    maxStars: 10,
+    maxStars: max,
     swaps: state.swapCount,
     history: state.history,
     badAnswers: state.badAnswers,
-    nextHook: nextHook({ stars: state.stars, swaps: state.swapCount }),
+    nextHook: nextHook({ stars: state.stars, maxStars: max, swaps: state.swapCount }),
     scores,
     ending
   };
@@ -264,7 +272,7 @@ async function init() {
   state.personas = personas;
   state.topic = topics.find((t) => t.id === topicId) || topics[0];
   state.trialData = trialData;
-  state.stars = activeGame ? Number(activeGame.stars ?? STARTING_STARS) : (trialData.startingStars || STARTING_STARS);
+  state.stars = activeGame ? Number(activeGame.stars ?? STARTING_STARS) : getStartingStars(trialData);
   state.roundIndex = activeGame ? Number(activeGame.roundIndex ?? 0) : 0;
   state.swapCount = activeGame ? Number(activeGame.swapCount ?? 0) : 0;
   state.history = Array.isArray(activeGame?.history) ? activeGame.history : [];
@@ -301,7 +309,7 @@ els.startRoundBtn.addEventListener('click', () => hideModal(els.roundIntroModal)
 els.forfeitBtn.addEventListener('click', finishTrial);
 els.nextRoundBtn.addEventListener('click', () => {
   hideModal(els.resultModal);
-  if (state.stars <= 0 || state.stars >= 10 || state.roundIndex >= (state.trialData.roundsPerTrial || 5) - 1) {
+  if (state.stars <= 0 || state.roundIndex >= totalRounds() - 1) {
     finishTrial();
     return;
   }

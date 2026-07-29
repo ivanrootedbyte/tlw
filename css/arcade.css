@@ -473,24 +473,24 @@ textarea {
   Account button approx x=276 y=253 w=112 h=30.
 */
 .title-new-game {
-  left: 37.1% !important;
-  top: 76.2% !important;
+  left: 35.1% !important;
+  top: 67.0% !important;
   width: 36.0% !important;
-  height: 10.4% !important;
+  height: 11.6% !important;
 }
 
 .title-load-game {
-  left: 32.2% !important;
-  top: 91.0% !important;
+  left: 33.2% !important;
+  top: 81.1% !important;
   width: 22.7% !important;
-  height: 8.8% !important;
+  height: 9.6% !important;
 }
 
 .title-account {
-  left: 55.3% !important;
-  top: 91.0% !important;
+  left: 56.3% !important;
+  top: 81.1% !important;
   width: 22.9% !important;
-  height: 8.8% !important;
+  height: 9.6% !important;
 }
 
 /* Do not draw a huge translucent block over the artwork; use a tight glow only. */
@@ -517,7 +517,7 @@ textarea {
 }
 
 .title-status {
-  bottom: 0.1% !important;
+  bottom: 2.2% !important;
   font-size: clamp(.5rem, 1.15vw, .72rem) !important;
   pointer-events: none;
 }
@@ -540,7 +540,197 @@ textarea {
     max-width: calc(100vw - 16px);
   }
   .title-status {
-    bottom: .1% !important;
+    bottom: .8% !important;
     font-size: .48rem !important;
   }
+}
+
+
+/* V5 Premium Trial: compact no-scroll round window and 20-star meter */
+body:has(.star-trial-screen) {
+  overflow: hidden;
+}
+.star-trial-screen {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.star-trial-screen .topbar {
+  flex: 0 0 auto;
+  margin-bottom: 8px;
+  padding-block: 8px;
+}
+.trial-shell {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: calc(100dvh - 82px);
+  align-items: stretch;
+}
+.persona-rail,
+.trial-main {
+  min-height: 0;
+  overflow: hidden;
+}
+.persona-rail-list {
+  max-height: none;
+  overflow: hidden;
+  gap: 7px;
+}
+.rail-persona {
+  grid-template-columns: 44px 1fr auto;
+  padding: 7px;
+}
+.rail-persona img {
+  width: 44px;
+  height: 44px;
+}
+.rail-persona small {
+  font-size: .68rem;
+}
+.trial-main {
+  display: flex;
+  flex-direction: column;
+}
+.trial-topline {
+  flex: 0 0 auto;
+  margin-bottom: 8px;
+}
+.trial-topline h1 {
+  font-size: clamp(1.05rem, 2.1vw, 2rem);
+}
+.star-board {
+  min-width: 190px;
+  padding: 8px;
+}
+.stars {
+  font-size: clamp(.72rem, 1.25vw, 1rem);
+  letter-spacing: 0;
+  word-break: break-all;
+}
+.battle-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-columns: 180px minmax(0,1fr) 170px;
+  gap: 10px;
+}
+.active-persona-card,
+.professor-panel,
+.question-window {
+  padding: 10px;
+  min-height: 0;
+  overflow: hidden;
+}
+.active-persona-card img,
+.professor-panel img {
+  max-height: 125px;
+  width: 100%;
+  object-fit: cover;
+}
+.persona-mini-stats,
+.professor-meter,
+.professor-panel .small,
+.active-persona-card p {
+  display: none;
+}
+.question-window {
+  grid-template-rows: auto auto auto 1fr;
+  gap: 8px;
+}
+.big-bubble {
+  font-size: clamp(.9rem, 1.3vw, 1.08rem);
+  line-height: 1.2;
+  padding: 10px;
+}
+.trial-hint {
+  font-size: .82rem;
+  padding: 8px 10px;
+}
+.answer-list {
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  min-height: 0;
+}
+.answer-card {
+  min-height: 0;
+  padding: 9px;
+  gap: 9px;
+  grid-template-columns: 34px 1fr;
+}
+.answer-card strong {
+  font-size: clamp(.78rem, 1.05vw, .98rem);
+  line-height: 1.16;
+}
+.answer-card small {
+  display: none;
+}
+.answer-letter {
+  width: 30px;
+  height: 30px;
+}
+.round-modal {
+  padding: 10px;
+}
+.round-window {
+  max-height: calc(100dvh - 20px);
+  overflow: hidden;
+  padding: 18px;
+}
+.round-window p,
+.modal-tip,
+.lesson-box {
+  font-size: clamp(.82rem, 1.1vw, 1rem);
+}
+@media (max-width: 1180px) {
+  .trial-shell { grid-template-columns: 1fr; height: calc(100dvh - 74px); }
+  .persona-rail { padding: 8px; }
+  .persona-rail .small { display: none; }
+  .persona-rail-list { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .rail-persona { grid-template-columns: 34px 1fr; }
+  .rail-persona img { width: 34px; height: 34px; }
+  .rail-persona em, .rail-persona small { display: none; }
+  .battle-grid { grid-template-columns: minmax(0,1fr); }
+  .active-persona-card, .professor-panel { display: none; }
+}
+@media (max-width: 740px) {
+  .star-trial-screen { padding: 6px; }
+  .star-trial-screen .topbar { margin-bottom: 5px; padding: 6px; }
+  .star-trial-screen .brand small, .star-trial-screen .nav a[href="account.html"] { display: none; }
+  .trial-shell { height: calc(100dvh - 58px); gap: 6px; }
+  .trial-topline { flex-direction: row; align-items: start; gap: 8px; }
+  .trial-topline h1 { font-size: .92rem; line-height: 1.05; margin: 2px 0; }
+  .trial-topline .small { display: none; }
+  .categoryLabel, .kicker { font-size: .62rem; }
+  .star-board { min-width: 96px; width: 96px; padding: 5px; border-radius: 10px; }
+  .star-label { font-size: .48rem; }
+  .stars { display: none; }
+  #starNumber { font-size: .78rem; }
+  .persona-rail { border-radius: 12px; }
+  .rail-head { margin-bottom: 4px; }
+  .rail-head h2 { display:none; }
+  .swap-chip { font-size: .58rem; padding: 4px 6px; }
+  .persona-rail-list { margin-top: 4px; gap: 4px; }
+  .rail-persona { border-radius: 9px; padding: 4px; grid-template-columns: 26px 1fr; gap: 5px; }
+  .rail-persona img { width: 26px; height: 26px; border-radius: 6px; }
+  .rail-persona strong { font-size: .56rem; line-height: 1; }
+  .trial-main { padding: 8px; border-radius: 14px; }
+  .battle-grid { gap: 0; }
+  .question-window { border-radius: 12px; padding: 8px; gap: 6px; }
+  .round-status { font-size: .58rem; }
+  .big-bubble { font-size: .78rem; line-height: 1.13; padding: 7px; box-shadow: none; }
+  .trial-hint { font-size: .62rem; line-height: 1.12; padding: 5px 7px; border-left-width: 3px; }
+  .answer-list { gap: 5px; }
+  .answer-card { padding: 6px; grid-template-columns: 26px 1fr; border-radius: 10px; }
+  .answer-card strong { font-size: .66rem; line-height: 1.1; }
+  .answer-letter { width: 22px; height: 22px; border-radius: 7px; font-size: .72rem; }
+  .round-window { width: min(94vw, 420px); padding: 14px; border-radius: 16px; }
+  .round-window h2 { font-size: 1rem; margin: 4px 0; }
+  .round-window p, .modal-tip, .lesson-box { font-size: .76rem; line-height: 1.22; }
+  .event-banner.big { font-size: 1.05rem; padding: 10px; }
+}
+@media (max-width: 390px) {
+  .answer-card strong { font-size: .61rem; }
+  .big-bubble { font-size: .72rem; }
+  .trial-hint { display: none; }
+  .question-window { grid-template-rows: auto auto 1fr; }
 }

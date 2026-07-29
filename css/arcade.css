@@ -517,7 +517,7 @@ textarea {
 }
 
 .title-status {
-  bottom: 0.7% !important;
+  bottom: 0.1% !important;
   font-size: clamp(.5rem, 1.15vw, .72rem) !important;
   pointer-events: none;
 }
@@ -540,7 +540,7 @@ textarea {
     max-width: calc(100vw - 16px);
   }
   .title-status {
-    bottom: .8% !important;
+    bottom: .1% !important;
     font-size: .48rem !important;
   }
 }

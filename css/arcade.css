@@ -307,7 +307,7 @@ textarea {
 }
 
 .title-new-game {
-  left: 37.2%;
+  left: 39.2%;
   top: 72.6%;
   width: 32.4%;
   height: 10.8%;
@@ -316,8 +316,8 @@ textarea {
 }
 
 .title-load-game {
-  left: 34.7%;
-  top: 86.6%;
+  left: 32.7%;
+  top: 88.6%;
   width: 18.3%;
   height: 9.4%;
   background: rgba(89, 44, 138, .06);
@@ -325,8 +325,8 @@ textarea {
 }
 
 .title-account {
-  left: 54.4%;
-  top: 86.6%;
+  left: 52.4%;
+  top: 88.6%;
   width: 19.9%;
   height: 9.4%;
   background: rgba(89, 44, 138, .06);
@@ -480,15 +480,15 @@ textarea {
 }
 
 .title-load-game {
-  left: 33.2% !important;
-  top: 88.1% !important;
+  left: 31.2% !important;
+  top: 90.1% !important;
   width: 22.7% !important;
   height: 9.6% !important;
 }
 
 .title-account {
-  left: 56.3% !important;
-  top: 88.1% !important;
+  left: 54.3% !important;
+  top: 90.1% !important;
   width: 22.9% !important;
   height: 9.6% !important;
 }

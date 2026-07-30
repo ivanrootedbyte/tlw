@@ -473,7 +473,7 @@ textarea {
   Account button approx x=276 y=253 w=112 h=30.
 */
 .title-new-game {
-  left: 35.1% !important;
+  left: 37.1% !important;
   top: 76.0% !important;
   width: 36.0% !important;
   height: 11.6% !important;
@@ -517,7 +517,7 @@ textarea {
 }
 
 .title-status {
-  bottom: 2.2% !important;
+  bottom: 0.6% !important;
   font-size: clamp(.5rem, 1.15vw, .72rem) !important;
   pointer-events: none;
 }

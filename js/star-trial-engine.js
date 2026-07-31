@@ -3,15 +3,15 @@ export const STAR_MAX = 20;
 export const STARTING_STARS = 10;
 
 export function getMaxStars(trialData = null) {
-  return Number(trialData?.maxStars || STAR_MAX);
+  return Number(trialData?.victoryLine || trialData?.maxStars || STAR_MAX);
 }
 
 export function getStartingStars(trialData = null) {
   return Number(trialData?.startingStars || STARTING_STARS);
 }
 
-export function clampStars(value, maxStars = STAR_MAX) {
-  return Math.max(STAR_MIN, Math.min(maxStars, Number(value) || 0));
+export function clampStars(value) {
+  return Math.max(STAR_MIN, Number(value) || 0);
 }
 
 export function getCustomTrial(topic, trialData) {
@@ -25,7 +25,7 @@ export function getRoundsPerTrial(topic, trialData) {
 
 export function getCategoryPlan(topic, trialData) {
   const plans = trialData.categoryPlans || {};
-  return plans[topic?.category] || trialData.defaultPlan || ["claim", "truth", "power", "humanCost", "assumption", "mercy", "final"];
+  return plans[topic?.category] || trialData.defaultPlan || ["authority", "cost", "appeal", "incentive", "boundary", "truth", "mercy", "verdict"];
 }
 
 export function getRoundType(topic, trialData, roundIndex) {
@@ -56,10 +56,10 @@ export function buildProfessorQuestion(topic, trialData, roundIndex) {
     };
   }
   const type = getRoundType(topic, trialData, roundIndex);
-  const challenge = trialData.challenges[type] || trialData.challenges.claim;
+  const challenge = trialData.challenges?.[type] || trialData.challenges?.claim || {};
   return {
     type,
-    title: challenge.title,
+    title: challenge.title || `Round ${roundIndex + 1}`,
     prompt: fillTemplate(challenge.prompt, topic),
     hint: fillTemplate(challenge.hint, topic),
     professor: fillTemplate(challenge.professor, topic),
@@ -96,7 +96,7 @@ export function getPersonaAnswers(persona, round, trialData, topic) {
     })), `${topic.id}-${persona.id}-${round.id || round.type}`);
   }
   const personaSet = trialData.personaAnswers?.[persona.id] || trialData.personaAnswers?.default || {};
-  const answers = personaSet[round.type] || personaSet.claim || trialData.personaAnswers.default.claim;
+  const answers = personaSet[round.type] || personaSet.claim || trialData.personaAnswers?.default?.claim || [];
   return deterministicShuffle(answers.map((answer, index) => ({
     ...answer,
     id: `${persona.id}-${round.type}-${answer.id || index}`,
@@ -112,8 +112,8 @@ export function getSwapCost(swapCount) {
   return 3;
 }
 
-export function applyStarChange(currentStars, change, maxStars = STAR_MAX) {
-  return clampStars(currentStars + Number(change || 0), maxStars);
+export function applyStarChange(currentStars, change) {
+  return clampStars(currentStars + Number(change || 0));
 }
 
 export function starLabel(change) {
@@ -122,8 +122,8 @@ export function starLabel(change) {
   return "0 stars";
 }
 
-export function scoreToMeters(stars, maxStars = STAR_MAX) {
-  const base = Math.round((stars / maxStars) * 100);
+export function scoreToMeters(stars, victoryLine = STAR_MAX) {
+  const base = Math.round((Math.min(stars, victoryLine) / victoryLine) * 100);
   return {
     logic: Math.max(10, Math.min(100, base + 8)),
     evidence: Math.max(10, Math.min(100, base - 2)),
@@ -132,15 +132,32 @@ export function scoreToMeters(stars, maxStars = STAR_MAX) {
   };
 }
 
-export function calculateStarEnding({ stars, maxStars = STAR_MAX, history, swaps }) {
+export function scoreTier(stars, victoryLine = STAR_MAX) {
+  if (stars <= 0) return "Collapsed";
+  if (stars < Math.ceil(victoryLine * 0.5)) return "Losing Ground";
+  if (stars < victoryLine) return "Still Debating";
+  if (stars < victoryLine + 10) return "Victory Line Crossed";
+  if (stars < victoryLine + 20) return "Professor L Is Interested";
+  if (stars < victoryLine + 30) return "Dangerous Amount of Wisdom";
+  return "Last Word Legend";
+}
+
+export function calculateStarEnding({ stars, maxStars = STAR_MAX, history, swaps, bestStars = null }) {
   const greatAnswers = history.filter((item) => item.answer?.stars >= 2).length;
   const costlyAnswers = history.filter((item) => item.answer?.stars < 0).length;
   const noSwap = swaps === 0;
-  if (stars >= maxStars && noSwap && greatAnswers >= 6) {
-    return { title: "20-Star Clear", summary: "You held one persona steady through the long trial and still found the wise path.", professor: "Excellent. Longer debate did not make you louder. It made you clearer." };
+  const bestLine = bestStars && bestStars > stars ? ` Best run: ${bestStars}.` : "";
+  if (stars >= maxStars + 30 && noSwap && greatAnswers >= 7) {
+    return { title: "Last Word Legend", summary: `You crossed the victory line and kept climbing.${bestLine}`, professor: "Excellent. You did not merely win; you stayed wise after winning became easy." };
+  }
+  if (stars >= maxStars + 20) {
+    return { title: "Dangerous Amount of Wisdom", summary: `You passed 20 stars and kept building a stronger case.${bestLine}`, professor: "Careful. At this level even your good answers may need a seatbelt." };
+  }
+  if (stars >= maxStars + 10) {
+    return { title: "Professor L Is Interested", summary: `You won the debate and kept earning stars beyond the victory line.${bestLine}`, professor: "Good. You crossed the line without turning victory into swagger." };
   }
   if (stars >= maxStars) {
-    return { title: "Professor L Approved", summary: "You reached the 20-star ceiling. Your answer protected truth, limits, and people.", professor: "Good. You won without pretending the issue was simple. The tea remains undisturbed." };
+    return { title: "Victory Line Crossed", summary: `You reached the 20-star victory line. Final score: ${stars}.${bestLine}`, professor: "You won without pretending the issue was simple. The tea remains undisturbed." };
   }
   if (stars >= Math.ceil(maxStars * 0.8)) {
     return { title: "Strong Case", summary: "You nearly cleared the trial. One answer probably forgot a real person.", professor: "Strong work. Not flawless, but the argument has bones." };
@@ -155,7 +172,8 @@ export function calculateStarEnding({ stars, maxStars = STAR_MAX, history, swaps
 }
 
 export function nextHook(result) {
-  if (result.stars >= result.maxStars && result.swaps === 0) return "Try a harder topic with the same persona.";
+  if (result.stars >= result.maxStars + 30 && result.swaps === 0) return "Try a new topic and defend your legend status.";
+  if (result.stars >= result.maxStars) return "Replay with a weaker persona and chase a higher score.";
   if (result.stars >= Math.ceil(result.maxStars * 0.8)) return "Replay the round where Professor L pushed back hardest.";
   if (result.swaps > 1) return "Try the No-Swap Challenge: one persona, no escape hatch.";
   if (result.stars <= Math.ceil(result.maxStars * 0.25)) return "Retry from collapse. Look for the human cost before Professor L does.";

@@ -18,9 +18,10 @@ function setMeter(idPrefix, value) {
   document.getElementById(`${idPrefix}Fill`).style.width = `${value}%`;
 }
 
-function starsLine(stars = 0, max = 10) {
+function starsLine(stars = 0, max = 20, best = 0) {
   const filled = Math.max(0, Math.min(max, stars));
-  return `${"★".repeat(filled)}${"☆".repeat(max - filled)} ${filled}/${max}`;
+  const bestText = best > stars ? ` · Best ${best}` : '';
+  return `${"★".repeat(filled)}${"☆".repeat(max - filled)} ${stars}/${max} victory line${bestText}`;
 }
 
 function renderHistory(result) {
@@ -53,7 +54,7 @@ if (!result) {
   endingSummary.textContent = `${result.personaName} on “${result.topicTitle}”. ${result.ending.summary}`;
   professorFinal.textContent = result.ending.professor;
   shareBlock.textContent = buildShareBlock(result);
-  resultStars.textContent = result.mode === 'star-trial' ? starsLine(result.stars, result.maxStars || 10) : '';
+  resultStars.textContent = result.mode === 'star-trial' ? starsLine(result.stars, result.maxStars || 20, result.bestStars || 0) : '';
   nextHook.textContent = result.nextHook ? `Next challenge: ${result.nextHook}` : 'Try the same question with a different persona.';
   setMeter("logic", result.scores.logic);
   setMeter("evidence", result.scores.evidence);

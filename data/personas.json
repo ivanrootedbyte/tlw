@@ -5,150 +5,150 @@
       "displayName": "The X-cess Architect",
       "safeName": "The X-cess Architect",
       "publicName": "The X-cess Architect",
-      "tagline": "Build first. Apologize from orbit.",
+      "tagline": "Big mission. Short fuse. Needs brakes before orbit.",
       "theme": "rust",
       "portrait": "assets/portraits/frontier-founder.png",
       "stats": {
-        "Logic": 74,
+        "Logic": 76,
         "Evidence": 58,
-        "Humanity": 49,
-        "Humility": 34
+        "Humanity": 52,
+        "Humility": 35
       },
       "signatureCards": [
         "launch-now",
         "first-principles",
         "backup-civilization"
       ],
-      "weakness": "Risk hits real people.",
-      "intro": "Fast, bold, and allergic to waiting rooms.",
-      "type": "Builder / Risk",
-      "wisePath": "Build boldly, but never treat people as fuel.",
-      "blindSpot": "The mission can become more important than mercy."
+      "weakness": "Speed can flatten people.",
+      "intro": "A rocket-speed builder who treats delay like a software bug.",
+      "type": "Builder / Risk / Mission",
+      "wisePath": "Move boldly, but install real brakes before people become test pilots.",
+      "blindSpot": "The mission can start sounding holier than the humans it affects."
     },
     {
       "id": "virtual-mayor",
       "displayName": "The Meta-Verse Mayor",
       "safeName": "The Meta-Verse Mayor",
       "publicName": "The Meta-Verse Mayor",
-      "tagline": "Reality, now with likes.",
+      "tagline": "Every crisis deserves a group chat and three reaction buttons.",
       "theme": "violet",
       "portrait": "assets/portraits/virtual-mayor.png",
       "stats": {
-        "Logic": 61,
-        "Evidence": 52,
-        "Humanity": 57,
-        "Humility": 30
+        "Logic": 62,
+        "Evidence": 53,
+        "Humanity": 60,
+        "Humility": 32
       },
       "signatureCards": [
         "engagement-max",
         "network-effects",
         "terms-accepted"
       ],
-      "weakness": "Privacy and loneliness.",
-      "intro": "Thinks connection can be engineered if the dashboard is big enough.",
-      "type": "Network / Influence",
-      "wisePath": "Use connection to serve real people, not just engagement.",
-      "blindSpot": "Likes can pretend to be love."
+      "weakness": "Engagement can impersonate care.",
+      "intro": "A platform mayor who sees connection everywhere, even in a rage spiral.",
+      "type": "Network / Influence / Belonging",
+      "wisePath": "Build connection that makes people freer, calmer, and more truthful.",
+      "blindSpot": "A room full of reactions can still be a lonely room."
     },
     {
       "id": "index-chancellor",
       "displayName": "The Search Supreme",
       "safeName": "The Search Supreme",
       "publicName": "The Search Supreme",
-      "tagline": "I found the answer. Wisdom was on page two.",
+      "tagline": "Citation loaded. Wisdom still buffering.",
       "theme": "gold",
       "portrait": "assets/portraits/index-chancellor.png",
       "stats": {
-        "Logic": 66,
-        "Evidence": 77,
-        "Humanity": 46,
-        "Humility": 42
+        "Logic": 68,
+        "Evidence": 80,
+        "Humanity": 49,
+        "Humility": 43
       },
       "signatureCards": [
         "citation-needed",
         "relevance-ranking",
         "data-knows-best"
       ],
-      "weakness": "Meaning, not just information.",
-      "intro": "Knows every result and still has to ask what matters.",
-      "type": "Knowledge / Data",
-      "wisePath": "Use information as a servant of wisdom.",
-      "blindSpot": "A search result can look like truth without becoming wisdom."
+      "weakness": "Rankings can outrun meaning.",
+      "intro": "A data monarch who brings a spreadsheet to an awkward moral silence.",
+      "type": "Knowledge / Evidence / Ranking",
+      "wisePath": "Use evidence carefully, then ask what the evidence cannot measure.",
+      "blindSpot": "Page one can look like truth while skipping the wounded person."
     },
     {
       "id": "polished-minimalist",
       "displayName": "The iOrchard Keeper",
       "safeName": "The iOrchard Keeper",
       "publicName": "The iOrchard Keeper",
-      "tagline": "Your argument has too many buttons.",
+      "tagline": "Beautiful answer. Suspiciously few choices.",
       "theme": "silver",
       "portrait": "assets/portraits/polished-minimalist.png",
       "stats": {
-        "Logic": 69,
-        "Evidence": 54,
-        "Humanity": 63,
-        "Humility": 37
+        "Logic": 70,
+        "Evidence": 55,
+        "Humanity": 65,
+        "Humility": 38
       },
       "signatureCards": [
         "one-more-thing",
         "walled-garden",
         "remove-the-button"
       ],
-      "weakness": "Who controls the gate?",
-      "intro": "Clean, controlled, beautiful, and very suspicious of user choice.",
-      "type": "Design / Control",
-      "wisePath": "Protect people without taking responsibility away from them.",
-      "blindSpot": "Control can disguise itself as care."
+      "weakness": "Care can become control.",
+      "intro": "A calm design guardian who solves chaos by removing buttons.",
+      "type": "Design / Control / Agency",
+      "wisePath": "Make the good path easy without hiding the real choice.",
+      "blindSpot": "A walled garden can become a velvet cage."
     },
     {
       "id": "alignment-gambler",
       "displayName": "The GPT Gambler",
       "safeName": "The GPT Gambler",
       "publicName": "The GPT Gambler",
-      "tagline": "Probably safe. Maybe. Define safe.",
+      "tagline": "Probably safe. The next model will explain why.",
       "theme": "green",
       "portrait": "assets/portraits/alignment-gambler.png",
       "stats": {
-        "Logic": 71,
-        "Evidence": 64,
-        "Humanity": 51,
-        "Humility": 41
+        "Logic": 72,
+        "Evidence": 65,
+        "Humanity": 53,
+        "Humility": 42
       },
       "signatureCards": [
         "alignment-pending",
         "redefine-agi",
         "probability-cloud"
       ],
-      "weakness": "Stable words.",
-      "intro": "Calm about wild futures and very flexible with definitions.",
-      "type": "Prediction / AI",
-      "wisePath": "Let AI advise, while humans keep moral responsibility.",
-      "blindSpot": "Confidence scores can start sounding like commandments."
+      "weakness": "Confidence can cosplay as truth.",
+      "intro": "A charming futurist who can turn uncertainty into a launch plan.",
+      "type": "AI / Forecast / Uncertainty",
+      "wisePath": "Let AI advise, but keep moral responsibility with accountable humans.",
+      "blindSpot": "A confidence score can start sounding like a commandment."
     },
     {
       "id": "silicon-blacksmith",
       "displayName": "The GPU Forge Master",
       "safeName": "The GPU Forge Master",
       "publicName": "The GPU Forge Master",
-      "tagline": "Your problem is slow. I added GPUs.",
+      "tagline": "More GPUs. More cooling. Same soul problem.",
       "theme": "teal",
       "portrait": "assets/portraits/silicon-blacksmith.png",
       "stats": {
-        "Logic": 68,
-        "Evidence": 72,
-        "Humanity": 48,
-        "Humility": 33
+        "Logic": 69,
+        "Evidence": 73,
+        "Humanity": 50,
+        "Humility": 34
       },
       "signatureCards": [
         "maximum-compute",
         "digital-twin",
         "parallelize-it"
       ],
-      "weakness": "People are not workloads.",
-      "intro": "Turns everything into compute, speed, and power bills.",
-      "type": "Compute / Power",
-      "wisePath": "Use power only after asking what the power is for.",
-      "blindSpot": "Not every human problem is a workload."
+      "weakness": "Power can forget purpose.",
+      "intro": "A forge master who treats every problem like a workload waiting for compute.",
+      "type": "Compute / Power / Scale",
+      "wisePath": "Ask what the power is for before making it faster.",
+      "blindSpot": "Not every human problem becomes moral when rendered in 4K."
     }
   ]
 }

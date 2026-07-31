@@ -63,14 +63,26 @@ const state = {
 function showModal(modal) { modal.classList.remove('hidden'); }
 function hideModal(modal) { modal.classList.add('hidden'); }
 function maxStars() { return getMaxStars(state.trialData); }
+const BEST_RUN_KEY = 'tlw.bestStarRun';
+function getBestRun() {
+  try { return Number(localStorage.getItem(BEST_RUN_KEY) || 0); } catch { return 0; }
+}
+function saveBestRun(stars) {
+  const best = Math.max(getBestRun(), Number(stars) || 0);
+  try { localStorage.setItem(BEST_RUN_KEY, String(best)); } catch {}
+  return best;
+}
 function totalRounds() { return getRoundsPerTrial(state.topic, state.trialData); }
 
 function renderStars() {
   const max = maxStars();
-  const filled = Math.max(0, Math.min(max, state.stars));
-  els.starsDisplay.textContent = `${'★'.repeat(filled)}${'☆'.repeat(max - filled)}`;
-  els.starNumber.textContent = `${filled} / ${max}`;
-  const patience = Math.max(10, Math.min(100, 20 + Math.round((filled / max) * 80)));
+  const displayStars = Math.max(0, Math.min(max, state.stars));
+  els.starsDisplay.textContent = `${'★'.repeat(displayStars)}${'☆'.repeat(max - displayStars)}`;
+  const best = getBestRun();
+  els.starNumber.textContent = state.stars >= max
+    ? `${state.stars} ★ · victory line ${max}${best > state.stars ? ` · best ${best}` : ''}`
+    : `${state.stars} / ${max}${best > state.stars ? ` · best ${best}` : ''}`;
+  const patience = Math.max(10, Math.min(100, 20 + Math.round((Math.min(state.stars, max) / max) * 80)));
   els.patienceFill.style.width = `${patience}%`;
 }
 
@@ -85,6 +97,7 @@ function saveCurrentGame() {
     topicId: state.topic.id,
     personaId: state.persona?.id || null,
     stars: state.stars,
+    bestStars: getBestRun(),
     roundIndex: state.roundIndex,
     swapCount: state.swapCount,
     history: state.history,
@@ -138,7 +151,7 @@ function choosePersona(persona) {
   const isSwap = hadPersona && state.persona.id !== persona.id && state.roundIndex > 0;
   if (isSwap) {
     const cost = getSwapCost(state.swapCount);
-    state.stars = applyStarChange(state.stars, -cost, maxStars());
+    state.stars = applyStarChange(state.stars, -cost);
     state.swapCount += 1;
     state.history.push({
       round: state.roundIndex + 1,
@@ -193,7 +206,8 @@ function chooseAnswer(answer) {
   if (!state.persona || state.locked) return;
   state.locked = true;
   const before = state.stars;
-  state.stars = applyStarChange(state.stars, answer.stars, maxStars());
+  state.stars = applyStarChange(state.stars, answer.stars);
+  saveBestRun(state.stars);
   const round = currentRound();
   const changeText = starLabel(state.stars - before);
   if (answer.stars < 0) {
@@ -224,13 +238,15 @@ async function finishTrial() {
   const max = maxStars();
   const scores = scoreToMeters(state.stars, max);
   const personaName = state.persona ? resolvePersonaName(state.persona) : 'No persona';
+  const bestStars = saveBestRun(state.stars);
   const ending = calculateStarEnding({
     stars: state.stars,
     maxStars: max,
     history: state.history,
     personaName,
     topicTitle: state.topic.title,
-    swaps: state.swapCount
+    swaps: state.swapCount,
+    bestStars
   });
   const result = {
     mode: 'star-trial',
@@ -239,6 +255,7 @@ async function finishTrial() {
     topicId: state.topic.id,
     topicTitle: state.topic.title,
     stars: state.stars,
+    bestStars,
     maxStars: max,
     swaps: state.swapCount,
     history: state.history,

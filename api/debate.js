@@ -1,12 +1,10 @@
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash';
 
 function fallbackProfessor(payload) {
-  const card = payload?.card?.name || 'that move';
-  const custom = (payload?.customAnswer || '').trim();
-  if (custom) {
-    return `You played ${card}. Your line has energy. Now make it clearer, prove one thing, and stop giving the question somewhere to hide.`;
-  }
-  return `You played ${card}. Good move. Now show the missing step between what sounds useful and what is actually right.`;
+  const custom = String(payload?.customAnswer || '').trim();
+  if (!custom) return 'State your position plainly, then tell me which principle you are relying on.';
+  if (custom.length > 260) return 'There are several claims in that answer. Choose the one your conclusion most depends on, then defend that link without borrowing certainty from the other claims.';
+  return 'That gives me your conclusion. Now separate the evidence from the judgment: what fact would support your view, and what principle tells you what ought to follow from it?';
 }
 
 export default async function handler(req, res) {
@@ -23,45 +21,49 @@ export default async function handler(req, res) {
       return;
     }
 
-    const prompt = `You are Professor L in a retro debate card game. Use plain language that a smart teenager can understand.
-Rules:
-- 1 to 3 short sentences, max 70 words.
-- Witty, direct, and clear.
-- No academic jargon unless you immediately explain it.
-- Do not preach.
-- Do not impersonate a real person.
-- If the player dodged, call it out.
-- If the player was honest, praise it.
-- Keep the focus on truth, proof, people, and honest thinking.
+    const history = Array.isArray(payload.history)
+      ? payload.history.slice(-8).map((item) => `${item.role === 'user' ? 'User' : 'Professor Lennox'}: ${String(item.text || '').slice(0, 1200)}`).join('\n')
+      : '';
 
-Topic: ${payload.topic?.title || 'Unknown topic'}
-Category: ${payload.topic?.categoryLabel || payload.topic?.category || 'Unknown'}
-Round: ${payload.round?.title || 'Unknown round'}
-Round challenge: ${payload.round?.challenge || ''}
-Player persona: ${payload.persona?.displayName || payload.persona?.safeName || 'Unknown persona'}
-Selected card: ${payload.card?.name || 'Unknown card'}
-Card text: ${payload.card?.text || ''}
-Scores now: logic ${payload.scores?.logic ?? 'n/a'}, proof ${payload.scores?.evidence ?? 'n/a'}, people ${payload.scores?.humanity ?? 'n/a'}, honesty ${payload.scores?.humility ?? 'n/a'}
-Player custom line: ${payload.customAnswer || '[none]'}
+    const prompt = `You are the debate character "Professor Lennox" in The Last Word, an intellectual Socratic conversation experience. This is a fictional debate role inside the app; do not claim to be a real person or to quote a real Professor Lennox.
 
-Write Professor L's response now.`;
+Style and conduct:
+- Authoritative but fair; calm, curious, precise.
+- Respond directly to the user's actual reasoning.
+- Prefer one strong challenge over several shallow ones.
+- Test definitions, evidence, hidden assumptions, human consequences, tradeoffs, and uncertainty.
+- Acknowledge a strong point before pressing it when warranted.
+- Never insult or humiliate the user.
+- Do not preach, grandstand, or use academic jargon without explaining it.
+- 2 to 5 short sentences, maximum 115 words.
+- End with a concrete question that invites the user's next turn.
+
+Debate topic: ${payload.topic?.title || 'Unknown topic'}
+Context: ${payload.topic?.summary || ''}
+Scenario: ${payload.topic?.scenario || ''}
+Stakeholder: ${payload.topic?.stakeholder || ''}
+Risk to examine: ${payload.topic?.risk || ''}
+
+Recent exchange:
+${history}
+
+User's newest response:
+${payload.customAnswer || '[none]'}
+
+Reply as Professor Lennox now.`;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.75, maxOutputTokens: 120 }
+        generationConfig: { temperature: 0.68, maxOutputTokens: 180 }
       })
     });
 
-    if (!response.ok) {
-      const txt = await response.text();
-      throw new Error(txt || 'Gemini request failed');
-    }
-
+    if (!response.ok) throw new Error(await response.text() || 'Gemini request failed');
     const json = await response.json();
-    const professorResponse = json?.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join(' ').trim() || fallbackProfessor(payload);
+    const professorResponse = json?.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join(' ').trim() || fallbackProfessor(payload);
     res.status(200).json({ ok: true, mode: 'gemini', professorResponse });
   } catch (error) {
     res.status(200).json({ ok: true, mode: 'fallback', professorResponse: fallbackProfessor(req.body), debug: String(error.message || error) });

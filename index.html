@@ -3,31 +3,45 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Last Word | Star Trial</title>
+  <title>The Last Word | Debate Professor Lennox</title>
   <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/arcade.css" />
+  <link rel="stylesheet" href="css/debate.css" />
 </head>
-<body class="title-page-body">
-  <main class="title-screen-page" aria-labelledby="gameTitle">
-    <section class="title-cabinet" aria-label="The Last Word title screen">
-      <img class="title-art" src="assets/ui/home-title-screen.png" alt="The Last Word retro game title screen with Professor L" />
+<body class="debate-start-body">
+  <main class="debate-start-shell" aria-labelledby="gameTitle">
+    <header class="debate-brandbar">
+      <a class="debate-wordmark" href="index.html">THE LAST WORD</a>
+      <a class="quiet-link" href="account.html">Debate archive</a>
+    </header>
 
-      <div class="title-hotspots" aria-hidden="false">
-        <h1 id="gameTitle" class="sr-only">The Last Word</h1>
+    <section class="debate-start-card">
+      <div class="start-copy">
+        <div class="eyebrow">A live Socratic debate</div>
+        <h1 id="gameTitle">Begin your debate with <span>Professor Lennox.</span></h1>
+        <p class="start-lede">Choose a question, make your case in your own words, and defend it under pressure. The audience is listening — and they do not always stay quiet.</p>
+        <div class="start-actions">
+          <button class="debate-btn primary" id="newGameBtn" type="button">Begin the debate <span aria-hidden="true">→</span></button>
+          <button class="debate-btn secondary" id="loadGameBtn" type="button">Resume last debate</button>
+        </div>
+        <p class="start-status" id="saveStatus" aria-live="polite">Checking for an unfinished debate…</p>
+      </div>
 
-        <button class="title-hit title-new-game" type="button" id="newGameBtn">
-          <span>New Game</span>
-        </button>
-        <button class="title-hit title-load-game" type="button" id="loadGameBtn">
-          <span>Load Game</span>
-        </button>
-        <a class="title-hit title-account" href="account.html">
-          <span>Account</span>
-        </a>
-
-        <p class="title-status" id="saveStatus">Checking saved game...</p>
+      <div class="start-stage" aria-label="Professor Lennox and the debate audience">
+        <div class="stage-glow"></div>
+        <figure class="professor-hero">
+          <img src="assets/portraits/professor-l.png" alt="Professor Lennox portrait" />
+          <figcaption>
+            <strong>Professor Lennox</strong>
+            <span>Your debate opponent</span>
+          </figcaption>
+        </figure>
+        <div class="audience-preview" id="audiencePreview" aria-label="Audience members"></div>
       </div>
     </section>
+
+    <footer class="start-footer">
+      <span>Reason clearly.</span><span>Challenge assumptions.</span><span>Keep people in the argument.</span>
+    </footer>
   </main>
 
   <script src="js/env.js"></script>

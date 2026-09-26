@@ -12,8 +12,10 @@ const previewSummary = document.getElementById("previewSummary");
 const previewPlayBtn = document.getElementById("previewPlayBtn");
 const previewArt = document.querySelector(".preview-art");
 const customQuestion = document.getElementById("customQuestion");
+const categoryIntro = document.getElementById("categoryIntro");
+const topicCount = document.getElementById("topicCount");
 
-const state = { topics: [], categories: [], activeCategory: "all", selectedTopic: null, query: "" };
+const state = { topics: [], categories: [], activeCategory: null, selectedTopic: null, query: "" };
 
 function getDailyIndex(length) {
   const today = new Date();
@@ -49,22 +51,31 @@ function play(topic) {
 }
 
 function renderCategories() {
-  const tabs = [{ id: "all", label: "All" }, ...state.categories];
+  const tabs = [...state.categories, { id: "all", label: "Explore all", description: "Browse every starting question across the library." }];
   categoryTabs.innerHTML = "";
   tabs.forEach((category) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `category-tab ${state.activeCategory === category.id ? "active" : ""}`;
-    button.textContent = category.label;
+    const count = category.id === "all" ? state.topics.length : state.topics.filter((topic) => topic.category === category.id).length;
+    button.innerHTML = `<span>${category.label}</span><small>${count}</small>`;
     button.addEventListener("click", () => {
       state.activeCategory = category.id;
       state.selectedTopic = null;
       previewPlayBtn.disabled = true;
       renderCategories();
       renderTopics();
+      updateCategoryContext();
     });
     categoryTabs.appendChild(button);
   });
+}
+
+function updateCategoryContext() {
+  const category = state.activeCategory === "all"
+    ? { label: "Explore all", description: "Browse every starting question across the library." }
+    : state.categories.find((item) => item.id === state.activeCategory);
+  if (categoryIntro) categoryIntro.textContent = category?.description || "Choose a starting point, then write the question you actually want Professor L to engage.";
 }
 
 function filteredTopics() {
@@ -88,7 +99,7 @@ function renderTopics() {
       <span class="topic-number">${index + 1}</span>
       <span class="topic-row-copy">
         <strong>${topic.title}</strong>
-        <small>${topic.categoryLabel} · ${topic.difficulty}</small>
+        <small>${topic.focus || "Clarity question"}</small>
       </span>
       <span class="topic-arrow">›</span>
     `;
@@ -96,6 +107,7 @@ function renderTopics() {
     row.addEventListener("dblclick", () => play(topic));
     topicGrid.appendChild(row);
   });
+  if (topicCount) topicCount.textContent = `${topics.length} starting ${topics.length === 1 ? "question" : "questions"}`;
   if (!topics.length) {
     topicGrid.innerHTML = `<div class="history-item"><strong>No questions found.</strong><p class="small">Try a broader search.</p></div>`;
   }
@@ -106,10 +118,11 @@ async function init() {
   const topicData = await loadJson("data/topics.json");
   state.topics = topicData.topics;
   state.categories = topicData.categories || [];
+  state.activeCategory = state.categories[0]?.id || "all";
 
   const dailyTopic = state.topics[getDailyIndex(state.topics.length)];
   dailyTitle.textContent = dailyTopic.title;
-  dailySummary.textContent = `${dailyTopic.categoryLabel} · A focused question for a live Socratic debate.`;
+  dailySummary.textContent = `${dailyTopic.categoryLabel} · ${dailyTopic.focus || "A focused question for a live Socratic conversation."}`;
   playDailyBtn.addEventListener("click", () => { selectTopic(dailyTopic); customQuestion?.focus(); });
   previewPlayBtn.addEventListener("click", () => state.selectedTopic && play(state.selectedTopic));
   customQuestion?.addEventListener("input", () => {
@@ -123,6 +136,7 @@ async function init() {
     renderTopics();
   });
   renderCategories();
+  updateCategoryContext();
   renderTopics();
 }
 

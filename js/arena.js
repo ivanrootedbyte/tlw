@@ -43,13 +43,22 @@ const state = {
   messages: [],
   interruptions: [],
   busy: false,
-  interruptionCursor: 0
+  interruptionCursor: 0,
+  responseMode: 'unknown'
 };
 
 function escapeHtml(value = '') {
   return String(value).replace(/[&<>'"]/g, (char) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
   }[char]));
+}
+
+function formatMessageText(value = '') {
+  let safe = escapeHtml(value);
+  safe = safe.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  safe = safe.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  safe = safe.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  return safe.replace(/\n/g, '<br>');
 }
 
 function nowTime() {
@@ -78,7 +87,7 @@ function messageMarkup(message) {
   const body = `
     <div class="message-body">
       <div class="message-meta"><strong>${isUser ? 'You' : 'Professor L'}</strong><span>${escapeHtml(message.time || '')}</span></div>
-      <p>${escapeHtml(message.text)}</p>
+      <p>${formatMessageText(message.text)}</p>
     </div>`;
   return `<article class="message ${isUser ? 'user' : 'professor'}">${isUser ? body + avatar : avatar + body}</article>`;
 }
@@ -150,9 +159,10 @@ async function getProfessorResponse(userText) {
     });
     if (!response.ok) throw new Error('Debate response failed');
     const data = await response.json();
-    return data?.professorResponse?.trim() || fallbackProfessorResponse(userText);
+    const text = data?.professorResponse?.trim() || fallbackProfessorResponse(userText);
+    return { text, mode: data?.mode === 'gemini' ? 'gemini' : 'fallback' };
   } catch {
-    return fallbackProfessorResponse(userText);
+    return { text: fallbackProfessorResponse(userText), mode: 'fallback' };
   }
 }
 
@@ -304,7 +314,17 @@ function setBusy(busy) {
   state.busy = busy;
   els.sendBtn.disabled = busy;
   els.userInput.disabled = busy;
-  els.composerHint.textContent = busy ? 'Professor L is considering your question…' : 'You do not need to defend a side. Keep following what is true.';
+  if (busy) {
+    els.composerHint.textContent = 'Professor L is considering your question…';
+    return;
+  }
+  if (state.responseMode === 'gemini') {
+    els.composerHint.textContent = 'Live AI response · Continue by questioning, challenging, or refining the point.';
+  } else if (state.responseMode === 'fallback') {
+    els.composerHint.textContent = 'Local fallback response · Live AI is currently unavailable.';
+  } else {
+    els.composerHint.textContent = 'You do not need to defend a side. Keep following what is true.';
+  }
 }
 
 async function submitUserTurn(event) {
@@ -321,7 +341,8 @@ async function submitUserTurn(event) {
 
   const reply = await getProfessorResponse(text);
   hideTyping();
-  appendMessage('professor', reply);
+  state.responseMode = reply.mode;
+  appendMessage('professor', reply.text);
   setBusy(false);
   maybeInterrupt('professor');
   els.userInput.focus();
@@ -362,7 +383,8 @@ async function init() {
       showTyping();
       const reply = await getProfessorResponse(customQuestion);
       hideTyping();
-      appendMessage('professor', reply);
+      state.responseMode = reply.mode;
+      appendMessage('professor', reply.text);
       setBusy(false);
       maybeInterrupt('professor');
     } else {

@@ -27,7 +27,7 @@ function categoryCode(label = "") {
 function selectTopic(topic) {
   state.selectedTopic = topic;
   previewTitle.textContent = topic.title;
-  previewSummary.textContent = `${topic.summary} Professor L will ask 8 specific rounds and score your answers on a 20-star meter.`;
+  previewSummary.textContent = `${topic.summary} Professor Lennox will challenge your reasoning in a live conversation while the audience listens in.`;
   previewArt.textContent = categoryCode(topic.categoryLabel);
   previewPlayBtn.disabled = false;
   document.querySelectorAll(".topic-row").forEach((row) => {
@@ -80,7 +80,7 @@ function renderTopics() {
       <span class="topic-number">${index + 1}</span>
       <span class="topic-row-copy">
         <strong>${topic.title}</strong>
-        <small>${topic.categoryLabel} · ${topic.difficulty} · 20-star trial</small>
+        <small>${topic.categoryLabel} · ${topic.difficulty}</small>
       </span>
       <span class="topic-arrow">›</span>
     `;
@@ -101,7 +101,7 @@ async function init() {
 
   const dailyTopic = state.topics[getDailyIndex(state.topics.length)];
   dailyTitle.textContent = dailyTopic.title;
-  dailySummary.textContent = `${dailyTopic.categoryLabel} · Can you survive the 20-star trial today?`;
+  dailySummary.textContent = `${dailyTopic.categoryLabel} · A focused question for a live Socratic debate.`;
   playDailyBtn.addEventListener("click", () => play(dailyTopic));
   previewPlayBtn.addEventListener("click", () => state.selectedTopic && play(state.selectedTopic));
   topicSearch.addEventListener("input", () => {

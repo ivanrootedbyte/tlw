@@ -1,344 +1,378 @@
 import { loadJson } from './data-loader.js';
-import { resolvePersonaName } from './persona-resolver.js';
-import { clearActiveGame, getActiveGame, getSelectedPersona, getSelectedTopic, saveActiveGame, setLastResult, setSelectedPersona } from './storage.js';
-import { saveCloudMatch } from './supabase-client.js';
 import {
-  STARTING_STARS,
-  applyStarChange,
-  getMaxStars,
-  getRoundsPerTrial,
-  getStartingStars,
-  buildProfessorQuestion,
-  calculateStarEnding,
-  getPersonaAnswers,
-  getSwapCost,
-  nextHook,
-  scoreToMeters,
-  starLabel
-} from './star-trial-engine.js';
+  clearActiveGame,
+  getActiveGame,
+  getSelectedTopic,
+  saveActiveGame
+} from './storage.js';
 
 const els = {
-  personaRail: document.getElementById('personaRail'),
-  activePersonaCard: document.getElementById('activePersonaCard'),
-  swapChip: document.getElementById('swapChip'),
   categoryLabel: document.getElementById('categoryLabel'),
   topicTitle: document.getElementById('topicTitle'),
   topicHook: document.getElementById('topicHook'),
-  starsDisplay: document.getElementById('starsDisplay'),
-  starNumber: document.getElementById('starNumber'),
-  roundCounter: document.getElementById('roundCounter'),
-  challengeType: document.getElementById('challengeType'),
-  professorQuestion: document.getElementById('professorQuestion'),
-  roundHint: document.getElementById('roundHint'),
-  answerList: document.getElementById('answerList'),
-  patienceFill: document.getElementById('patienceFill'),
+  turnCounter: document.getElementById('turnCounter'),
+  messageThread: document.getElementById('messageThread'),
+  debateForm: document.getElementById('debateForm'),
+  userInput: document.getElementById('userInput'),
+  sendBtn: document.getElementById('sendBtn'),
+  composerHint: document.getElementById('composerHint'),
+  personaRail: document.getElementById('personaRail'),
+  interruptionLayer: document.getElementById('interruptionLayer'),
   forfeitBtn: document.getElementById('forfeitBtn'),
-  roundIntroModal: document.getElementById('roundIntroModal'),
-  closeIntroBtn: document.getElementById('closeIntroBtn'),
-  startRoundBtn: document.getElementById('startRoundBtn'),
-  introTitle: document.getElementById('introTitle'),
-  introPrompt: document.getElementById('introPrompt'),
-  introTip: document.getElementById('introTip'),
-  resultModal: document.getElementById('resultModal'),
-  resultEvent: document.getElementById('resultEvent'),
-  resultTitle: document.getElementById('resultTitle'),
-  resultResponse: document.getElementById('resultResponse'),
-  resultLesson: document.getElementById('resultLesson'),
-  nextRoundBtn: document.getElementById('nextRoundBtn')
+  personaDrawer: document.getElementById('personaDrawer'),
+  drawerScrim: document.getElementById('drawerScrim'),
+  drawerClose: document.getElementById('drawerClose'),
+  drawerPortrait: document.getElementById('drawerPortrait'),
+  drawerName: document.getElementById('drawerName'),
+  drawerIntro: document.getElementById('drawerIntro'),
+  drawerType: document.getElementById('drawerType'),
+  drawerBlindSpot: document.getElementById('drawerBlindSpot'),
+  drawerHistory: document.getElementById('drawerHistory')
+};
+
+const ACCENTS = {
+  rust: '#c97654', violet: '#9a7ae8', gold: '#d6ad55',
+  silver: '#b5bec8', green: '#6ca67a', teal: '#5fa5a1'
 };
 
 const state = {
-  personas: [],
   topic: null,
-  trialData: null,
-  persona: null,
-  stars: STARTING_STARS,
-  roundIndex: 0,
-  swapCount: 0,
-  history: [],
-  badAnswers: [],
-  locked: false
+  personas: [],
+  messages: [],
+  interruptions: [],
+  busy: false,
+  interruptionCursor: 0
 };
 
-function showModal(modal) { modal.classList.remove('hidden'); }
-function hideModal(modal) { modal.classList.add('hidden'); }
-function maxStars() { return getMaxStars(state.trialData); }
-const BEST_RUN_KEY = 'tlw.bestStarRun';
-function getBestRun() {
-  try { return Number(localStorage.getItem(BEST_RUN_KEY) || 0); } catch { return 0; }
-}
-function saveBestRun(stars) {
-  const best = Math.max(getBestRun(), Number(stars) || 0);
-  try { localStorage.setItem(BEST_RUN_KEY, String(best)); } catch {}
-  return best;
-}
-function totalRounds() { return getRoundsPerTrial(state.topic, state.trialData); }
-
-function renderStars() {
-  const max = maxStars();
-  const displayStars = Math.max(0, Math.min(max, state.stars));
-  els.starsDisplay.textContent = `${'★'.repeat(displayStars)}${'☆'.repeat(max - displayStars)}`;
-  const best = getBestRun();
-  els.starNumber.textContent = state.stars >= max
-    ? `${state.stars} ★ · victory line ${max}${best > state.stars ? ` · best ${best}` : ''}`
-    : `${state.stars} / ${max}${best > state.stars ? ` · best ${best}` : ''}`;
-  const patience = Math.max(10, Math.min(100, 20 + Math.round((Math.min(state.stars, max) / max) * 80)));
-  els.patienceFill.style.width = `${patience}%`;
+function escapeHtml(value = '') {
+  return String(value).replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[char]));
 }
 
-function currentRound() {
-  return buildProfessorQuestion(state.topic, state.trialData, state.roundIndex);
+function nowTime() {
+  return new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit' }).format(new Date());
 }
 
-function saveCurrentGame() {
-  if (!state.topic || !state.trialData) return;
-  saveActiveGame({
-    mode: 'star-trial',
-    topicId: state.topic.id,
-    personaId: state.persona?.id || null,
-    stars: state.stars,
-    bestStars: getBestRun(),
-    roundIndex: state.roundIndex,
-    swapCount: state.swapCount,
-    history: state.history,
-    badAnswers: state.badAnswers
+function turnNumber() {
+  return state.messages.filter((message) => message.role === 'user').length + 1;
+}
+
+function updateTurnCounter() {
+  els.turnCounter.textContent = `Turn ${turnNumber()}`;
+}
+
+function scrollThread() {
+  requestAnimationFrame(() => {
+    els.messageThread.scrollTop = els.messageThread.scrollHeight;
   });
 }
 
-function renderPersonaRail() {
-  els.personaRail.innerHTML = '';
-  state.personas.forEach((persona) => {
-    const isActive = state.persona?.id === persona.id;
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = `rail-persona theme-${persona.theme} ${isActive ? 'active' : ''}`;
-    button.innerHTML = `
-      <img src="${persona.portrait}" alt="${resolvePersonaName(persona)} portrait" />
-      <span><strong>${resolvePersonaName(persona)}</strong><small>${persona.weakness}</small></span>
-      <em>${isActive ? 'ACTIVE' : 'PICK'}</em>
-    `;
-    button.addEventListener('click', () => choosePersona(persona));
-    els.personaRail.appendChild(button);
-  });
+function messageMarkup(message) {
+  const isUser = message.role === 'user';
+  const avatar = isUser
+    ? '<div class="message-avatar" aria-hidden="true">YOU</div>'
+    : '<div class="message-avatar"><img src="assets/portraits/professor-l.png" alt="" /></div>';
+  const body = `
+    <div class="message-body">
+      <div class="message-meta"><strong>${isUser ? 'You' : 'Professor Lennox'}</strong><span>${escapeHtml(message.time || '')}</span></div>
+      <p>${escapeHtml(message.text)}</p>
+    </div>`;
+  return `<article class="message ${isUser ? 'user' : 'professor'}">${isUser ? body + avatar : avatar + body}</article>`;
 }
 
-function renderActivePersona() {
-  if (!state.persona) {
-    els.activePersonaCard.innerHTML = '<div class="empty-persona">Pick a persona from the left before answering.</div>';
-    return;
-  }
-  els.activePersonaCard.innerHTML = `
-    <div class="fighter-label">YOUR PERSONA</div>
-    <img src="${state.persona.portrait}" alt="${resolvePersonaName(state.persona)} portrait" />
-    <h2>${resolvePersonaName(state.persona)}</h2>
-    <p>${state.persona.tagline}</p>
-    <div class="persona-mini-stats">
-      ${Object.entries(state.persona.stats || {}).map(([key, value]) => `
-        <span>${key}</span><div class="meter"><span style="width:${value}%"></span></div>
-      `).join('')}
-    </div>
-  `;
+function renderMessages() {
+  els.messageThread.innerHTML = state.messages.map(messageMarkup).join('');
+  scrollThread();
+  updateTurnCounter();
 }
 
-function renderSwapChip() {
-  const cost = state.persona && state.roundIndex > 0 ? getSwapCost(state.swapCount) : 0;
-  els.swapChip.textContent = `Swap cost: ${cost ? `-${cost} star${cost === 1 ? '' : 's'}` : '0'}`;
+function appendMessage(role, text) {
+  const message = { role, text: String(text).trim(), time: nowTime(), createdAt: new Date().toISOString() };
+  state.messages.push(message);
+  els.messageThread.insertAdjacentHTML('beforeend', messageMarkup(message));
+  scrollThread();
+  updateTurnCounter();
+  saveDebate();
 }
 
-function choosePersona(persona) {
-  if (state.locked) return;
-  const hadPersona = Boolean(state.persona);
-  const isSwap = hadPersona && state.persona.id !== persona.id && state.roundIndex > 0;
-  if (isSwap) {
-    const cost = getSwapCost(state.swapCount);
-    state.stars = applyStarChange(state.stars, -cost);
-    state.swapCount += 1;
-    state.history.push({
-      round: state.roundIndex + 1,
-      type: 'swap',
-      from: resolvePersonaName(state.persona),
-      to: resolvePersonaName(persona),
-      cost: -cost
+function showTyping() {
+  const node = document.createElement('article');
+  node.className = 'message professor typing';
+  node.id = 'typingMessage';
+  node.innerHTML = `
+    <div class="message-avatar"><img src="assets/portraits/professor-l.png" alt="" /></div>
+    <div class="message-body"><div class="message-meta"><strong>Professor Lennox</strong><span>considering</span></div><p>Formulating a challenge…</p></div>`;
+  els.messageThread.appendChild(node);
+  scrollThread();
+}
+
+function hideTyping() {
+  document.getElementById('typingMessage')?.remove();
+}
+
+function initialProfessorPrompt(topic) {
+  const scenario = topic.scenario ? `Consider this case: ${topic.scenario}. ` : '';
+  return `${topic.title} ${scenario}Take a position first. What do you think, and what principle are you relying on?`;
+}
+
+function fallbackProfessorResponse(input) {
+  const normalized = input.trim();
+  const openings = [
+    'That is a position. Now give me the principle underneath it.',
+    'I can follow the claim. I am less certain about the bridge from your premise to your conclusion.',
+    'Good — you have made the disagreement visible. Now test your rule against the person who bears the cost.',
+    'Let us sharpen that. Which part of your answer is evidence, and which part is judgment?',
+    'Suppose the strongest critic of your view were sitting here. What would they say you have overlooked?'
+  ];
+  const index = state.messages.filter((message) => message.role === 'user').length % openings.length;
+  const direct = normalized.length > 220 ? 'Your answer has several claims in it; choose the one you most need to defend.' : openings[index];
+  return `${direct} I am not asking you to abandon your conclusion — only to make it survive scrutiny.`;
+}
+
+async function getProfessorResponse(userText) {
+  const history = state.messages.slice(-8).map(({ role, text }) => ({ role, text }));
+  try {
+    const response = await fetch('/api/debate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mode: 'conversation',
+        topic: state.topic,
+        customAnswer: userText,
+        history
+      })
     });
+    if (!response.ok) throw new Error('Debate response failed');
+    const data = await response.json();
+    return data?.professorResponse?.trim() || fallbackProfessorResponse(userText);
+  } catch {
+    return fallbackProfessorResponse(userText);
   }
-  state.persona = persona;
-  setSelectedPersona(persona.id);
-  renderPersonaRail();
-  renderActivePersona();
-  renderSwapChip();
-  renderStars();
-  renderRound();
-  saveCurrentGame();
-  if (state.stars <= 0) finishTrial();
 }
 
-function renderRound() {
-  const round = currentRound();
-  els.roundCounter.textContent = `Round ${state.roundIndex + 1} of ${totalRounds()}`;
-  els.challengeType.textContent = round.title;
-  els.professorQuestion.textContent = round.professor;
-  els.roundHint.textContent = round.hint;
-  els.introTitle.textContent = `Round ${state.roundIndex + 1}: ${round.title}`;
-  els.introPrompt.textContent = round.prompt;
-  els.introTip.textContent = round.hint;
-
-  if (!state.persona) {
-    els.answerList.innerHTML = '<div class="answer-card disabled-answer"><strong>Choose a persona first.</strong><p>Different personas give different answers. Pick the one that fits this question.</p></div>';
-    return;
-  }
-  const answers = getPersonaAnswers(state.persona, round, state.trialData, state.topic);
-  els.answerList.innerHTML = '';
-  answers.forEach((answer, index) => {
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'answer-card';
-    card.innerHTML = `
-      <span class="answer-letter">${String.fromCharCode(65 + index)}</span>
-      <strong>${answer.text}</strong>
-      <small>${resolvePersonaName(state.persona)} answer path</small>
-    `;
-    card.addEventListener('click', () => chooseAnswer(answer));
-    els.answerList.appendChild(card);
-  });
-}
-
-function chooseAnswer(answer) {
-  if (!state.persona || state.locked) return;
-  state.locked = true;
-  const before = state.stars;
-  state.stars = applyStarChange(state.stars, answer.stars);
-  saveBestRun(state.stars);
-  const round = currentRound();
-  const changeText = starLabel(state.stars - before);
-  if (answer.stars < 0) {
-    state.badAnswers.push({ topic: state.topic.title, persona: resolvePersonaName(state.persona), answer: answer.text, professor: answer.professor });
-  }
-  state.history.push({
-    round: state.roundIndex + 1,
-    roundTitle: round.title,
-    roundType: round.type,
-    personaId: state.persona.id,
-    personaName: resolvePersonaName(state.persona),
-    answer,
-    starsBefore: before,
-    starsAfter: state.stars
-  });
-  renderStars();
-  saveCurrentGame();
-  els.resultEvent.textContent = `${answer.event || 'STAR CHANGE'} · ${changeText}`;
-  els.resultTitle.textContent = state.stars <= 0 ? 'Argument collapsed' : answer.stars >= 2 ? 'Professor L approves' : answer.stars < 0 ? 'Professor L pushes back' : 'Professor L responds';
-  els.resultResponse.textContent = answer.professor;
-  els.resultLesson.textContent = answer.lesson || 'Lesson: smart answers still need wisdom.';
-  const lastRound = state.roundIndex >= totalRounds() - 1;
-  els.nextRoundBtn.textContent = state.stars <= 0 || lastRound ? 'Go to Verdict' : 'Next Question';
-  showModal(els.resultModal);
-}
-
-async function finishTrial() {
-  const max = maxStars();
-  const scores = scoreToMeters(state.stars, max);
-  const personaName = state.persona ? resolvePersonaName(state.persona) : 'No persona';
-  const bestStars = saveBestRun(state.stars);
-  const ending = calculateStarEnding({
-    stars: state.stars,
-    maxStars: max,
-    history: state.history,
-    personaName,
-    topicTitle: state.topic.title,
-    swaps: state.swapCount,
-    bestStars
-  });
-  const result = {
-    mode: 'star-trial',
-    personaId: state.persona?.id || null,
-    personaName,
-    topicId: state.topic.id,
-    topicTitle: state.topic.title,
-    stars: state.stars,
-    bestStars,
-    maxStars: max,
-    swaps: state.swapCount,
-    history: state.history,
-    badAnswers: state.badAnswers,
-    nextHook: nextHook({ stars: state.stars, maxStars: max, swaps: state.swapCount }),
-    scores,
-    ending
+function interruptionText(persona, beat) {
+  const topic = state.topic || {};
+  const stakeholder = topic.stakeholder || 'the person who has to live with the rule';
+  const risk = topic.risk || 'the unintended consequence';
+  const lines = {
+    'frontier-founder': [
+      `We can debate forever, but what would you actually test first? Give me the smallest real-world experiment.`,
+      `Fine, but delay has a cost too. What happens if caution becomes an excuse to never act?`
+    ],
+    'virtual-mayor': [
+      `You are treating this like an individual choice. What happens once everyone around you starts copying it?`,
+      `I want the social layer. Does this make people more connected, or merely more engaged?`
+    ],
+    'index-chancellor': [
+      `Citation request: which part of that claim could we actually verify?`,
+      `Before we moralize the result, what evidence would change your mind?`
+    ],
+    'polished-minimalist': [
+      `Your rule sounds clean. Does it still leave people a meaningful choice?`,
+      `Could you design the good default without turning it into quiet coercion?`
+    ],
+    'alignment-gambler': [
+      `How certain are you, really? Put a confidence level on the part you are least sure about.`,
+      `That sounds plausible. Plausible is not the same as safe — what failure are you pricing in?`
+    ],
+    'silicon-blacksmith': [
+      `Scale test: does your principle still work when this affects a million people instead of ten?`,
+      `More capability is easy to imagine. Tell me what the capability is actually for.`
+    ]
   };
-  setLastResult(result);
-  clearActiveGame();
-  try { await saveCloudMatch(result); } catch (err) { console.warn('Cloud save failed', err.message); }
-  location.href = 'verdict.html';
+  const bank = lines[persona.id] || [
+    `What does your answer mean for ${stakeholder}?`,
+    `Have you accounted for ${risk}?`
+  ];
+  return bank[beat % bank.length]
+    .replace('{stakeholder}', stakeholder)
+    .replace('{risk}', risk);
+}
+
+function shouldInterrupt(afterRole) {
+  const userTurns = state.messages.filter((message) => message.role === 'user').length;
+  if (!userTurns) return false;
+  if (afterRole === 'user') return userTurns === 1 || userTurns % 3 === 0;
+  return userTurns % 2 === 0;
+}
+
+function choosePersona(afterRole) {
+  if (!state.personas.length) return null;
+  const offset = afterRole === 'professor' ? 2 : 0;
+  const persona = state.personas[(state.interruptionCursor + offset) % state.personas.length];
+  state.interruptionCursor = (state.interruptionCursor + 1) % state.personas.length;
+  return persona;
+}
+
+function dismissToast(toast) {
+  if (!toast || toast.classList.contains('leaving')) return;
+  toast.classList.add('leaving');
+  setTimeout(() => toast.remove(), 280);
+}
+
+function showInterruption(persona, text) {
+  const record = {
+    personaId: persona.id,
+    text,
+    createdAt: new Date().toISOString(),
+    turn: state.messages.filter((message) => message.role === 'user').length
+  };
+  state.interruptions.push(record);
+  saveDebate();
+
+  const card = document.querySelector(`[data-persona-id="${persona.id}"]`);
+  card?.classList.add('interrupting');
+  setTimeout(() => card?.classList.remove('interrupting'), 1500);
+
+  const toast = document.createElement('div');
+  toast.className = 'interruption-toast';
+  toast.style.setProperty('--persona-accent', ACCENTS[persona.theme] || '#d9b36c');
+  toast.innerHTML = `
+    <img src="${persona.portrait}" alt="${escapeHtml(persona.displayName)}" />
+    <div><strong>${escapeHtml(persona.displayName)} interrupts</strong><p>${escapeHtml(text)}</p></div>
+    <button class="toast-dismiss" type="button" aria-label="Dismiss interruption">×</button>`;
+  toast.querySelector('.toast-dismiss').addEventListener('click', () => dismissToast(toast));
+  toast.addEventListener('click', (event) => {
+    if (!event.target.closest('.toast-dismiss')) openPersonaDrawer(persona.id);
+  });
+  els.interruptionLayer.appendChild(toast);
+  while (els.interruptionLayer.children.length > 2) els.interruptionLayer.firstElementChild.remove();
+  setTimeout(() => dismissToast(toast), 6200);
+}
+
+function maybeInterrupt(afterRole) {
+  if (!shouldInterrupt(afterRole)) return;
+  const persona = choosePersona(afterRole);
+  if (!persona) return;
+  const beat = state.messages.length + state.interruptions.length;
+  const text = interruptionText(persona, beat);
+  setTimeout(() => showInterruption(persona, text), afterRole === 'user' ? 500 : 850);
+}
+
+function renderAudience() {
+  els.personaRail.innerHTML = state.personas.map((persona) => `
+    <button class="audience-card theme-${escapeHtml(persona.theme)}" type="button" data-persona-id="${persona.id}" style="--persona-accent:${ACCENTS[persona.theme] || '#d9b36c'}">
+      <img src="${persona.portrait}" alt="${escapeHtml(persona.displayName)} portrait" />
+      <span><strong>${escapeHtml(persona.displayName)}</strong><small>${escapeHtml(persona.type)}</small></span>
+    </button>`).join('');
+  els.personaRail.querySelectorAll('.audience-card').forEach((button) => {
+    button.addEventListener('click', () => openPersonaDrawer(button.dataset.personaId));
+  });
+}
+
+function openPersonaDrawer(personaId) {
+  const persona = state.personas.find((item) => item.id === personaId);
+  if (!persona) return;
+  els.drawerPortrait.src = persona.portrait;
+  els.drawerPortrait.alt = `${persona.displayName} portrait`;
+  els.drawerName.textContent = persona.displayName;
+  els.drawerIntro.textContent = `${persona.intro} ${persona.tagline}`;
+  els.drawerType.textContent = persona.type;
+  els.drawerBlindSpot.textContent = persona.blindSpot || persona.weakness;
+  const history = state.interruptions.filter((item) => item.personaId === persona.id).slice().reverse();
+  els.drawerHistory.innerHTML = history.length
+    ? history.map((item) => `<div class="history-entry"><strong>Turn ${item.turn}</strong><br>${escapeHtml(item.text)}</div>`).join('')
+    : '<div class="empty-history">No interruptions yet. They are still listening.</div>';
+  els.personaDrawer.classList.add('open');
+  els.personaDrawer.setAttribute('aria-hidden', 'false');
+  els.drawerClose.focus();
+}
+
+function closePersonaDrawer() {
+  els.personaDrawer.classList.remove('open');
+  els.personaDrawer.setAttribute('aria-hidden', 'true');
+}
+
+function saveDebate() {
+  if (!state.topic) return;
+  saveActiveGame({
+    mode: 'conversation-debate',
+    topicId: state.topic.id,
+    messages: state.messages,
+    interruptions: state.interruptions,
+    interruptionCursor: state.interruptionCursor
+  });
+}
+
+function setBusy(busy) {
+  state.busy = busy;
+  els.sendBtn.disabled = busy;
+  els.userInput.disabled = busy;
+  els.composerHint.textContent = busy ? 'Professor Lennox is considering your argument…' : 'Be specific. You can disagree.';
+}
+
+async function submitUserTurn(event) {
+  event.preventDefault();
+  if (state.busy) return;
+  const text = els.userInput.value.trim();
+  if (!text) return;
+
+  els.userInput.value = '';
+  appendMessage('user', text);
+  maybeInterrupt('user');
+  setBusy(true);
+  showTyping();
+
+  const reply = await getProfessorResponse(text);
+  hideTyping();
+  appendMessage('professor', reply);
+  setBusy(false);
+  maybeInterrupt('professor');
+  els.userInput.focus();
 }
 
 async function init() {
-  const params = new URLSearchParams(window.location.search);
-  const resumeRequested = params.get('resume') === '1';
-  const activeGame = resumeRequested ? getActiveGame() : null;
-  if (resumeRequested && !activeGame) {
-    location.href = 'topics.html';
-    return;
-  }
-
-  const topicId = activeGame?.topicId || getSelectedTopic();
-  const personaId = activeGame?.personaId || getSelectedPersona();
-  const [{ personas }, { topics }, trialData] = await Promise.all([
-    loadJson('data/personas.json'),
+  const [topicData, personaData] = await Promise.all([
     loadJson('data/topics.json'),
-    loadJson('data/star-trials.json')
+    loadJson('data/personas.json')
   ]);
-  state.personas = personas;
-  state.topic = topics.find((t) => t.id === topicId) || topics[0];
-  state.trialData = trialData;
-  state.stars = activeGame ? Number(activeGame.stars ?? STARTING_STARS) : getStartingStars(trialData);
-  state.roundIndex = activeGame ? Number(activeGame.roundIndex ?? 0) : 0;
-  state.swapCount = activeGame ? Number(activeGame.swapCount ?? 0) : 0;
-  state.history = Array.isArray(activeGame?.history) ? activeGame.history : [];
-  state.badAnswers = Array.isArray(activeGame?.badAnswers) ? activeGame.badAnswers : [];
+  state.personas = personaData.personas || [];
 
-  els.categoryLabel.textContent = `${state.topic.categoryLabel} · Star Trial`;
+  const active = getActiveGame();
+  const wantsResume = new URLSearchParams(location.search).get('resume') === '1';
+  const selectedTopicId = wantsResume && active?.topicId ? active.topicId : getSelectedTopic();
+  state.topic = topicData.topics.find((topic) => topic.id === selectedTopicId) || topicData.topics[0];
+  if (!state.topic) throw new Error('No debate question is available.');
+
+  els.categoryLabel.textContent = state.topic.categoryLabel || 'Debate question';
   els.topicTitle.textContent = state.topic.title;
-  els.topicHook.textContent = state.topic.hook || state.topic.summary;
+  els.topicHook.textContent = state.topic.hook || state.topic.summary || state.topic.title;
+  renderAudience();
 
-  renderStars();
-  renderPersonaRail();
-  renderActivePersona();
-  renderSwapChip();
-  renderRound();
-
-  if (personaId) {
-    const startingPersona = personas.find((p) => p.id === personaId);
-    if (startingPersona) {
-      state.persona = startingPersona;
-      setSelectedPersona(startingPersona.id);
-      renderPersonaRail();
-      renderActivePersona();
-      renderSwapChip();
-      renderRound();
-    }
+  if (wantsResume && active?.mode === 'conversation-debate' && active.topicId === state.topic.id) {
+    state.messages = Array.isArray(active.messages) ? active.messages : [];
+    state.interruptions = Array.isArray(active.interruptions) ? active.interruptions : [];
+    state.interruptionCursor = Number(active.interruptionCursor || 0);
   }
 
-  saveCurrentGame();
-  showModal(els.roundIntroModal);
+  if (!state.messages.length) {
+    state.messages = [{ role: 'professor', text: initialProfessorPrompt(state.topic), time: nowTime(), createdAt: new Date().toISOString() }];
+    saveDebate();
+  }
+  renderMessages();
+  els.userInput.focus();
 }
 
-els.closeIntroBtn.addEventListener('click', () => hideModal(els.roundIntroModal));
-els.startRoundBtn.addEventListener('click', () => hideModal(els.roundIntroModal));
-els.forfeitBtn.addEventListener('click', finishTrial);
-els.nextRoundBtn.addEventListener('click', () => {
-  hideModal(els.resultModal);
-  if (state.stars <= 0 || state.roundIndex >= totalRounds() - 1) {
-    finishTrial();
-    return;
+els.debateForm.addEventListener('submit', submitUserTurn);
+els.userInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault();
+    els.debateForm.requestSubmit();
   }
-  state.roundIndex += 1;
-  state.locked = false;
-  saveCurrentGame();
-  renderSwapChip();
-  renderRound();
-  showModal(els.roundIntroModal);
+});
+els.drawerClose.addEventListener('click', closePersonaDrawer);
+els.drawerScrim.addEventListener('click', closePersonaDrawer);
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closePersonaDrawer();
+});
+els.forfeitBtn.addEventListener('click', () => {
+  if (!window.confirm('End this debate? Your current conversation will be cleared.')) return;
+  clearActiveGame();
+  window.location.href = 'index.html';
 });
 
-init().catch((err) => {
-  els.topicTitle.textContent = 'Could not start Star Trial';
-  els.topicHook.textContent = err.message;
+init().catch((error) => {
+  els.messageThread.innerHTML = `<div class="message-body"><strong>Could not start debate.</strong><p>${escapeHtml(error.message)}</p></div>`;
+  setBusy(true);
 });

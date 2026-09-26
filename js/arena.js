@@ -3,6 +3,7 @@ import {
   clearActiveGame,
   getActiveGame,
   getSelectedTopic,
+  getCustomQuestion,
   saveActiveGame
 } from './storage.js';
 
@@ -10,6 +11,7 @@ const els = {
   categoryLabel: document.getElementById('categoryLabel'),
   topicTitle: document.getElementById('topicTitle'),
   topicHook: document.getElementById('topicHook'),
+  customQuestionDisplay: document.getElementById('customQuestionDisplay'),
   turnCounter: document.getElementById('turnCounter'),
   messageThread: document.getElementById('messageThread'),
   debateForm: document.getElementById('debateForm'),
@@ -55,11 +57,11 @@ function nowTime() {
 }
 
 function turnNumber() {
-  return state.messages.filter((message) => message.role === 'user').length + 1;
+  return Math.max(1, state.messages.filter((message) => message.role === 'user').length);
 }
 
 function updateTurnCounter() {
-  els.turnCounter.textContent = `Turn ${turnNumber()}`;
+  els.turnCounter.textContent = `Exchange ${turnNumber()}`;
 }
 
 function scrollThread() {
@@ -75,7 +77,7 @@ function messageMarkup(message) {
     : '<div class="message-avatar"><img src="assets/portraits/professor-l.png" alt="" /></div>';
   const body = `
     <div class="message-body">
-      <div class="message-meta"><strong>${isUser ? 'You' : 'Professor Lennox'}</strong><span>${escapeHtml(message.time || '')}</span></div>
+      <div class="message-meta"><strong>${isUser ? 'You' : 'Professor L'}</strong><span>${escapeHtml(message.time || '')}</span></div>
       <p>${escapeHtml(message.text)}</p>
     </div>`;
   return `<article class="message ${isUser ? 'user' : 'professor'}">${isUser ? body + avatar : avatar + body}</article>`;
@@ -102,7 +104,7 @@ function showTyping() {
   node.id = 'typingMessage';
   node.innerHTML = `
     <div class="message-avatar"><img src="assets/portraits/professor-l.png" alt="" /></div>
-    <div class="message-body"><div class="message-meta"><strong>Professor Lennox</strong><span>considering</span></div><p>Formulating a challenge…</p></div>`;
+    <div class="message-body"><div class="message-meta"><strong>Professor L</strong><span>considering</span></div><p>Formulating a challenge…</p></div>`;
   els.messageThread.appendChild(node);
   scrollThread();
 }
@@ -111,9 +113,11 @@ function hideTyping() {
   document.getElementById('typingMessage')?.remove();
 }
 
-function initialProfessorPrompt(topic) {
+function initialProfessorPrompt(topic, question) {
+  const q = String(question || "").trim();
+  if (q) return `You asked: “${q}” Let us begin there. I will take the question seriously, separate what we know from what we assume, and test the answer against truth, human consequences, and the Christian worldview. What part of this question creates the most uncertainty for you?`;
   const scenario = topic.scenario ? `Consider this case: ${topic.scenario}. ` : '';
-  return `${topic.title} ${scenario}Take a position first. What do you think, and what principle are you relying on?`;
+  return `${topic.title}. ${scenario}What part of this question creates the most uncertainty for you?`;
 }
 
 function fallbackProfessorResponse(input) {
@@ -139,6 +143,7 @@ async function getProfessorResponse(userText) {
       body: JSON.stringify({
         mode: 'conversation',
         topic: state.topic,
+        userQuestion: getCustomQuestion(),
         customAnswer: userText,
         history
       })
@@ -299,7 +304,7 @@ function setBusy(busy) {
   state.busy = busy;
   els.sendBtn.disabled = busy;
   els.userInput.disabled = busy;
-  els.composerHint.textContent = busy ? 'Professor Lennox is considering your argument…' : 'Be specific. You can disagree.';
+  els.composerHint.textContent = busy ? 'Professor L is considering your question…' : 'You do not need to defend a side. Keep following what is true.';
 }
 
 async function submitUserTurn(event) {
@@ -335,9 +340,11 @@ async function init() {
   state.topic = topicData.topics.find((topic) => topic.id === selectedTopicId) || topicData.topics[0];
   if (!state.topic) throw new Error('No debate question is available.');
 
-  els.categoryLabel.textContent = state.topic.categoryLabel || 'Debate question';
+  const customQuestion = getCustomQuestion();
+  els.categoryLabel.textContent = state.topic.categoryLabel || 'Conversation topic';
   els.topicTitle.textContent = state.topic.title;
-  els.topicHook.textContent = state.topic.hook || state.topic.summary || state.topic.title;
+  els.customQuestionDisplay.textContent = customQuestion || 'No custom question was saved. You can continue from the selected topic.';
+  els.topicHook.textContent = state.topic.summary || state.topic.hook || state.topic.title;
   renderAudience();
 
   if (wantsResume && active?.mode === 'conversation-debate' && active.topicId === state.topic.id) {
@@ -347,10 +354,25 @@ async function init() {
   }
 
   if (!state.messages.length) {
-    state.messages = [{ role: 'professor', text: initialProfessorPrompt(state.topic), time: nowTime(), createdAt: new Date().toISOString() }];
-    saveDebate();
+    if (customQuestion) {
+      state.messages = [{ role: 'user', text: customQuestion, time: nowTime(), createdAt: new Date().toISOString() }];
+      saveDebate();
+      renderMessages();
+      setBusy(true);
+      showTyping();
+      const reply = await getProfessorResponse(customQuestion);
+      hideTyping();
+      appendMessage('professor', reply);
+      setBusy(false);
+      maybeInterrupt('professor');
+    } else {
+      state.messages = [{ role: 'professor', text: initialProfessorPrompt(state.topic, customQuestion), time: nowTime(), createdAt: new Date().toISOString() }];
+      saveDebate();
+      renderMessages();
+    }
+  } else {
+    renderMessages();
   }
-  renderMessages();
   els.userInput.focus();
 }
 

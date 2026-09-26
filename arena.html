@@ -22,19 +22,21 @@
     </header>
 
     <section class="debate-room">
-      <aside class="professor-column" aria-label="Professor Lennox">
+      <aside class="professor-column" aria-label="Professor L">
         <div class="opponent-card">
           <div class="opponent-status"><span class="status-dot"></span> Debate in session</div>
-          <img src="assets/portraits/professor-l.png" alt="Professor Lennox portrait" />
+          <img src="assets/portraits/professor-l.png" alt="Professor L portrait" />
           <div class="opponent-copy">
             <span class="eyebrow">Your opponent</span>
-            <h2>Professor Lennox</h2>
+            <h2>Professor L</h2>
             <p>Authoritative, fair, and difficult to bluff. He will press for definitions, evidence, consequences, and honest limits.</p>
           </div>
         </div>
 
         <div class="debate-brief">
-          <span class="eyebrow">Tonight's proposition</span>
+          <span class="eyebrow">Your question</span>
+          <p id="customQuestionDisplay">Loading your question…</p>
+          <span class="eyebrow brief-context-label">Topic context</span>
           <p id="topicHook">Loading debate brief…</p>
         </div>
       </aside>
@@ -43,7 +45,7 @@
         <div class="conversation-heading">
           <div>
             <span class="eyebrow">Live exchange</span>
-            <h1>Make the case. Take the challenge.</h1>
+            <h1>Ask honestly. Follow the reasoning.</h1>
           </div>
           <div class="turn-count" id="turnCounter">Turn 1</div>
         </div>
@@ -51,10 +53,10 @@
         <div class="message-thread" id="messageThread" aria-live="polite"></div>
 
         <form class="composer" id="debateForm">
-          <label for="userInput">Your response</label>
-          <textarea id="userInput" rows="3" maxlength="1400" placeholder="State your position, challenge the premise, or answer Professor Lennox…" required></textarea>
+          <label for="userInput">Your reply</label>
+          <textarea id="userInput" rows="3" maxlength="1400" placeholder="Respond, question the answer, push back, or explain what still feels unresolved…" required></textarea>
           <div class="composer-footer">
-            <span id="composerHint">Be specific. You can disagree.</span>
+            <span id="composerHint">You do not need to defend a side. Ask what you genuinely want to understand.</span>
             <button class="debate-btn primary" id="sendBtn" type="submit">Send response <span aria-hidden="true">↗</span></button>
           </div>
         </form>

@@ -182,3 +182,12 @@ body:not(.debate-start-body):not(.conversation-body) .btn.primary { background:v
   .interruption-layer { right:10px; bottom:10px; width:calc(100vw - 20px); }
 }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:.001ms!important; transition-duration:.001ms!important; scroll-behavior:auto!important; } }
+
+
+/* Guided question builder */
+.question-label { display:block; margin:20px 0 8px; color:#ddd3c5; font-size:.76rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
+.question-input { width:100%; min-height:128px; resize:vertical; border:1px solid var(--debate-line); background:#101012; color:var(--debate-text); padding:12px 13px; font:inherit; line-height:1.5; outline:none; }
+.question-input:focus { border-color:rgba(217,179,108,.6); box-shadow:0 0 0 3px rgba(217,179,108,.06); }
+.question-input.needs-question { border-color:#b65b48; box-shadow:0 0 0 3px rgba(182,91,72,.09); }
+.question-help { margin:8px 0 14px; color:var(--debate-muted); font-size:.73rem; line-height:1.45; }
+.brief-context-label { margin-top:18px; }

@@ -1,5 +1,5 @@
 import { loadJson } from "./data-loader.js";
-import { setSelectedTopic } from "./storage.js";
+import { setCustomQuestion, setSelectedTopic } from "./storage.js";
 
 const topicGrid = document.getElementById("topicGrid");
 const dailyTitle = document.getElementById("dailyTitle");
@@ -11,6 +11,7 @@ const previewTitle = document.getElementById("previewTitle");
 const previewSummary = document.getElementById("previewSummary");
 const previewPlayBtn = document.getElementById("previewPlayBtn");
 const previewArt = document.querySelector(".preview-art");
+const customQuestion = document.getElementById("customQuestion");
 
 const state = { topics: [], categories: [], activeCategory: "all", selectedTopic: null, query: "" };
 
@@ -27,16 +28,23 @@ function categoryCode(label = "") {
 function selectTopic(topic) {
   state.selectedTopic = topic;
   previewTitle.textContent = topic.title;
-  previewSummary.textContent = `${topic.summary} Professor Lennox will challenge your reasoning in a live conversation while the audience listens in.`;
+  previewSummary.textContent = `${topic.summary} Professor L will use this as the context for your own question, then challenge your reasoning in a live conversation while the audience listens in.`;
   previewArt.textContent = categoryCode(topic.categoryLabel);
-  previewPlayBtn.disabled = false;
+  previewPlayBtn.disabled = !String(customQuestion?.value || "").trim();
   document.querySelectorAll(".topic-row").forEach((row) => {
     row.classList.toggle("selected", row.dataset.topicId === topic.id);
   });
 }
 
 function play(topic) {
+  const question = String(customQuestion?.value || "").trim();
+  if (!question) {
+    customQuestion?.focus();
+    customQuestion?.classList.add("needs-question");
+    return;
+  }
   setSelectedTopic(topic.id);
+  setCustomQuestion(question);
   location.href = "arena.html";
 }
 
@@ -102,8 +110,12 @@ async function init() {
   const dailyTopic = state.topics[getDailyIndex(state.topics.length)];
   dailyTitle.textContent = dailyTopic.title;
   dailySummary.textContent = `${dailyTopic.categoryLabel} · A focused question for a live Socratic debate.`;
-  playDailyBtn.addEventListener("click", () => play(dailyTopic));
+  playDailyBtn.addEventListener("click", () => { selectTopic(dailyTopic); customQuestion?.focus(); });
   previewPlayBtn.addEventListener("click", () => state.selectedTopic && play(state.selectedTopic));
+  customQuestion?.addEventListener("input", () => {
+    customQuestion.classList.remove("needs-question");
+    previewPlayBtn.disabled = !state.selectedTopic || !customQuestion.value.trim();
+  });
   topicSearch.addEventListener("input", () => {
     state.query = topicSearch.value;
     state.selectedTopic = null;

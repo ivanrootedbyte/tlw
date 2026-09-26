@@ -2,6 +2,8 @@ import { STORAGE_KEYS } from "./game-config.js";
 
 const ACTIVE_GAME_KEY = "tlw.activeGame";
 
+const CUSTOM_QUESTION_KEY = "tlw.customQuestion";
+
 function read(key, fallback = null) {
   try {
     const value = localStorage.getItem(key);
@@ -32,6 +34,13 @@ export function getSelectedTopic() { return read(STORAGE_KEYS.selectedTopic, nul
 export function setSelectedTopic(id) {
   if (id === null || id === undefined) remove(STORAGE_KEYS.selectedTopic);
   else write(STORAGE_KEYS.selectedTopic, id);
+}
+
+export function getCustomQuestion() { return read(CUSTOM_QUESTION_KEY, ""); }
+export function setCustomQuestion(question) {
+  const value = String(question || "").trim();
+  if (!value) remove(CUSTOM_QUESTION_KEY);
+  else write(CUSTOM_QUESTION_KEY, value);
 }
 
 export function setLastResult(result) { write(STORAGE_KEYS.lastResult, result); pushHistory(result); }

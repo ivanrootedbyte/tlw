@@ -52,7 +52,8 @@ CONVERSATION STYLE
 - Do not manufacture false balance when evidence is strong.
 - Do not shame the user for doubt or disagreement.
 - Prefer plain language over academic display.
-- Usually 90-180 words. Use shorter replies when the issue is simple.
+- Usually 110-220 words. Use shorter replies when the issue is simple.
+- Always finish the current sentence and thought. Never stop mid-sentence.
 - Normally end with ONE useful question that advances clarity, not a generic debate prompt.
 
 SELECTED TOPIC
@@ -74,18 +75,35 @@ ${payload.customAnswer || '[none]'}
 
 Respond now as Professor L. Give the clearest truthful answer you can within the framework above, then invite the next meaningful step in the conversation.`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.55, maxOutputTokens: 320 }
-      })
-    });
+    async function callGemini(contents, maxOutputTokens = 768) {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents,
+          generationConfig: { temperature: 0.55, maxOutputTokens }
+        })
+      });
+      if (!response.ok) throw new Error(await response.text() || 'Gemini request failed');
+      return response.json();
+    }
 
-    if (!response.ok) throw new Error(await response.text() || 'Gemini request failed');
-    const json = await response.json();
-    const professorResponse = json?.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join(' ').trim() || fallbackProfessor(payload);
+    const firstJson = await callGemini([{ parts: [{ text: prompt }] }], 768);
+    const candidate = firstJson?.candidates?.[0];
+    let professorResponse = candidate?.content?.parts?.map((part) => part.text || '').join('').trim() || fallbackProfessor(payload);
+
+    // Gemini can occasionally stop because the output-token budget was exhausted.
+    // If that happens, request only the missing continuation so users never see a cut-off thought.
+    if (candidate?.finishReason === 'MAX_TOKENS' && professorResponse) {
+      const continuationPrompt = `Continue the Professor L answer below from exactly where it stopped. Do not repeat earlier wording. Finish the incomplete thought in no more than 120 words, then end with one useful clarity question.
+
+INCOMPLETE ANSWER:
+${professorResponse}`;
+      const continuationJson = await callGemini([{ parts: [{ text: continuationPrompt }] }], 320);
+      const continuation = continuationJson?.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('').trim();
+      if (continuation) professorResponse = `${professorResponse}${/\s$/.test(professorResponse) ? '' : ' '}${continuation}`;
+    }
+
     res.status(200).json({ ok: true, mode: 'gemini', professorResponse });
   } catch (error) {
     res.status(200).json({ ok: true, mode: 'fallback', professorResponse: fallbackProfessor(req.body), debug: String(error.message || error) });

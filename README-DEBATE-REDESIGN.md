@@ -39,3 +39,11 @@ The topic screen now requires two layers before entering the conversation:
 The selected topic and custom question are stored locally and sent with each `/api/debate` request. The AI is instructed to act as an original fictional Christian academic called Professor L. Biblical truth governs the worldview, but replies are intentionally conversational rather than sermon-like and Scripture is quoted only when it materially clarifies the issue.
 
 No new Supabase SQL is required for this local-session version. Supabase would only be needed if custom questions/transcripts should persist across devices/accounts.
+
+## Curated clarity library update
+
+The topic library is now version 5 and contains 80 curated starting questions across 10 clarity-first areas. The previous generic `Should X do Y?` structure has been replaced by questions framed around real uncertainty, doubt, moral tension, and everyday decisions.
+
+The topic screen now opens directly into the first subject area instead of dumping the full library. Each category contains 8 questions, has a short explanation, and can still be searched or viewed through `Explore all`.
+
+The conversation UI also includes the long-response clipping fix, safe basic bold/italic/code rendering for AI messages, and a visible status line identifying `Live AI response` versus `Local fallback response`.

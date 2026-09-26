@@ -34,23 +34,25 @@
 
     <section class="panel arcade-panel topic-selector-shell">
       <div class="topic-sidebar">
-        <div class="kicker">Categories</div>
+        <div class="kicker">Start with an area</div>
+        <p class="small topic-sidebar-note">You are not choosing a side. You are choosing where the uncertainty begins.</p>
         <div id="categoryTabs" class="category-tabs"></div>
       </div>
       <div class="topic-main">
         <div class="topic-main-head">
           <div>
-            <div class="kicker">Debate library</div>
-            <h2>Choose a direction</h2>
-            <p class="small">Start broad, then make it personal. Pick a topic that frames the conversation; your own question will become the real debate.</p>
+            <div class="kicker">Conversation library</div>
+            <h2>Choose a starting question</h2>
+            <p id="categoryIntro" class="small">Pick an area to see focused questions people genuinely wrestle with.</p>
+            <p id="topicCount" class="topic-count small"></p>
           </div>
-          <input id="topicSearch" class="search-input" type="search" placeholder="Search questions..." />
+          <input id="topicSearch" class="search-input" type="search" placeholder="Search this area..." />
         </div>
         <div id="topicGrid" class="topic-list"></div>
       </div>
       <aside class="topic-preview arcade-monitor">
         <div class="monitor-glow"></div>
-        <div class="kicker">Selected question</div>
+        <div class="kicker">Your starting point</div>
         <h3 id="previewTitle">Pick a question</h3>
         <p id="previewSummary">The setup will appear here.</p>
         <div class="preview-art">?</div>

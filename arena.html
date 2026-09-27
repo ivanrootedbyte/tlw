@@ -3,73 +3,82 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Debate | The Last Word</title>
+  <title>Studio | The Last Word</title>
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/debate.css" />
 </head>
-<body class="conversation-body">
-  <main class="conversation-app">
-    <header class="debate-topbar">
+<body class="conversation-body podcast-room-body">
+  <main class="conversation-app podcast-conversation-app">
+    <header class="debate-topbar podcast-topbar">
       <a class="debate-wordmark" href="index.html">THE LAST WORD</a>
-      <div class="topic-pill">
-        <span id="categoryLabel">Debate question</span>
+      <div class="topic-pill podcast-topic-pill">
+        <span id="categoryLabel">Open conversation</span>
         <strong id="topicTitle">Loading…</strong>
       </div>
       <nav class="conversation-nav">
-        <a href="topics.html">Change question</a>
-        <button id="forfeitBtn" type="button">End debate</button>
+        <a href="index.html">New episode</a>
+        <button id="forfeitBtn" type="button">End</button>
       </nav>
     </header>
 
-    <section class="debate-room">
-      <aside class="professor-column" aria-label="Professor L">
-        <div class="opponent-card">
-          <div class="opponent-status"><span class="status-dot"></span> Debate in session</div>
+    <section class="podcast-studio" aria-label="Podcast debate studio">
+      <div class="studio-video-card professor-feed">
+        <div class="feed-bar"><span><i class="feed-live-dot"></i> ON AIR</span><span>CAM 01</span></div>
+        <div class="feed-image">
           <img src="assets/portraits/professor-l.png" alt="Professor L portrait" />
-          <div class="opponent-copy">
-            <span class="eyebrow">Your opponent</span>
-            <h2>Professor L</h2>
-            <p>Authoritative, fair, and difficult to bluff. He will press for definitions, evidence, consequences, and honest limits.</p>
+          <div class="monitor-scanlines"></div>
+          <div class="feed-lower-third">
+            <strong>Professor L</strong>
+            <span>Host / conversation partner</span>
           </div>
         </div>
+      </div>
 
-        <div class="debate-brief">
+      <div class="studio-video-card user-feed">
+        <div class="feed-bar"><span>GUEST</span><span>MIC 02</span></div>
+        <div class="guest-feed-inner">
+          <div class="guest-monogram">YOU</div>
           <span class="eyebrow">Your question</span>
           <p id="customQuestionDisplay">Loading your question…</p>
-          <span class="eyebrow brief-context-label">Topic context</span>
-          <p id="topicHook">Loading debate brief…</p>
+          <div class="guest-stance"><span>Starting point</span><strong id="stanceDisplay">Loading…</strong></div>
         </div>
+      </div>
+
+      <aside class="episode-notes" aria-label="Episode notes">
+        <span class="eyebrow">Episode notes</span>
+        <p id="topicHook">Loading conversation context…</p>
+        <div class="signal-line"><span>LIVE TRANSCRIPT</span><i></i></div>
       </aside>
-
-      <section class="conversation-column" aria-label="Debate conversation">
-        <div class="conversation-heading">
-          <div>
-            <span class="eyebrow">Live exchange</span>
-            <h1>Ask honestly. Follow the reasoning.</h1>
-          </div>
-          <div class="turn-count" id="turnCounter">Turn 1</div>
-        </div>
-
-        <div class="message-thread" id="messageThread" aria-live="polite"></div>
-
-        <form class="composer" id="debateForm">
-          <label for="userInput">Your reply</label>
-          <textarea id="userInput" rows="3" maxlength="1400" placeholder="Respond, question the answer, push back, or explain what still feels unresolved…" required></textarea>
-          <div class="composer-footer">
-            <span id="composerHint">You do not need to defend a side. Ask what you genuinely want to understand.</span>
-            <button class="debate-btn primary" id="sendBtn" type="submit">Send response <span aria-hidden="true">↗</span></button>
-          </div>
-        </form>
-      </section>
     </section>
 
-    <section class="audience-dock" aria-labelledby="audienceTitle">
+    <section class="conversation-column podcast-transcript" aria-label="Conversation transcript">
+      <div class="conversation-heading podcast-transcript-head">
+        <div>
+          <span class="eyebrow">Transcript</span>
+          <h1>Stay with the question.</h1>
+        </div>
+        <div class="turn-count" id="turnCounter">Exchange 1</div>
+      </div>
+
+      <div class="message-thread" id="messageThread" aria-live="polite"></div>
+
+      <form class="composer podcast-composer" id="debateForm">
+        <label for="userInput">Your mic</label>
+        <textarea id="userInput" rows="3" maxlength="1400" placeholder="Push back, ask the next question, or say what still does not add up…" required></textarea>
+        <div class="composer-footer">
+          <span id="composerHint">No need to perform. Say what you actually think.</span>
+          <button class="debate-btn primary" id="sendBtn" type="submit">Speak <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+    </section>
+
+    <section class="audience-dock podcast-audience" aria-labelledby="audienceTitle">
       <div class="audience-head">
         <div>
-          <span class="eyebrow">The gallery</span>
-          <h2 id="audienceTitle">Audience reactions</h2>
+          <span class="eyebrow">Live room</span>
+          <h2 id="audienceTitle">Audience bench</h2>
         </div>
-        <p>They may interrupt after either side speaks. Click anyone to inspect their point of view.</p>
+        <p>They may cut in when the conversation reaches a pressure point.</p>
       </div>
       <div class="audience-row" id="personaRail"></div>
     </section>

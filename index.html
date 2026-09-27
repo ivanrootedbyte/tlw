@@ -3,44 +3,85 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Last Word | Debate Professor L</title>
+  <title>The Last Word | Professor L</title>
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/debate.css" />
 </head>
-<body class="debate-start-body">
+<body class="debate-start-body podcast-home">
   <main class="debate-start-shell" aria-labelledby="gameTitle">
     <header class="debate-brandbar">
       <a class="debate-wordmark" href="index.html">THE LAST WORD</a>
-      <a class="quiet-link" href="account.html">Debate archive</a>
+      <div class="home-channel-tag"><span class="live-dot"></span> CONVERSATION SERIES</div>
+      <a class="quiet-link" href="account.html">Archive</a>
     </header>
 
-    <section class="debate-start-card">
-      <div class="start-copy">
-        <div class="eyebrow">A live Socratic debate</div>
-        <h1 id="gameTitle">Begin your debate with <span>Professor L.</span></h1>
-        <p class="start-lede">Choose a question, make your case in your own words, and defend it under pressure. The audience is listening — and they do not always stay quiet.</p>
-        <div class="start-actions">
-          <button class="debate-btn primary" id="newGameBtn" type="button">Begin the debate <span aria-hidden="true">→</span></button>
-          <button class="debate-btn secondary" id="loadGameBtn" type="button">Resume last debate</button>
-        </div>
-        <p class="start-status" id="saveStatus" aria-live="polite">Checking for an unfinished debate…</p>
+    <section class="podcast-hero">
+      <div class="podcast-intro">
+        <div class="eyebrow">Sit down with Professor L</div>
+        <h1 id="gameTitle">Bring the question.<br><span>Follow the truth.</span></h1>
+        <p class="podcast-tagline">Ask what you actually wrestle with. Tell him where you stand. Then talk it through.</p>
+
+        <form class="opening-chat-form podcast-question-card" id="openingChatForm">
+          <div class="opening-message-shell">
+            <div class="opening-avatar"><img src="assets/portraits/professor-l.png" alt="Professor L" /></div>
+            <div class="opening-prompt">
+              <strong>Professor L</strong>
+              <span>What do you want to talk about?</span>
+            </div>
+            <span class="studio-rec">REC</span>
+          </div>
+
+          <label class="sr-only" for="openingQuestion">Your question</label>
+          <textarea id="openingQuestion" class="opening-question" rows="4" maxlength="1600" placeholder="Ask the question you cannot quite settle…" required></textarea>
+
+          <div class="example-questions compact-examples" aria-label="Example questions">
+            <button type="button" data-example="If God is good, why is there so much suffering?">Suffering</button>
+            <button type="button" data-example="Can objective morality exist without God?">Morality</button>
+            <button type="button" data-example="If AI can reason and create, what still makes human beings unique?">AI & humanity</button>
+            <a href="topics.html">More ideas →</a>
+          </div>
+
+          <fieldset class="stance-fieldset podcast-stance">
+            <legend>Where are you leaning?</legend>
+            <div class="stance-options stance-chips">
+              <label><input type="radio" name="stance" value="mostly-agree" required><span>Mostly agree</span></label>
+              <label><input type="radio" name="stance" value="mostly-disagree"><span>Mostly disagree</span></label>
+              <label><input type="radio" name="stance" value="unsure"><span>Unsure</span></label>
+              <label><input type="radio" name="stance" value="both-sides"><span>Both sides</span></label>
+              <label><input type="radio" name="stance" value="explain"><span>I'll explain</span></label>
+            </div>
+          </fieldset>
+
+          <div class="stance-detail-wrap" id="stanceDetailWrap" hidden>
+            <label for="stanceDetail">Your starting point</label>
+            <textarea id="stanceDetail" rows="2" maxlength="900" placeholder="Tell Professor L where you're coming from…"></textarea>
+          </div>
+
+          <div class="opening-actions podcast-actions">
+            <button class="debate-btn primary" id="startConversationBtn" type="submit">Take a seat <span aria-hidden="true">→</span></button>
+            <button class="debate-btn secondary" id="loadGameBtn" type="button">Resume</button>
+            <span class="start-status" id="saveStatus" aria-live="polite"></span>
+          </div>
+        </form>
       </div>
 
-      <div class="start-stage" aria-label="Professor L and the debate audience">
-        <div class="stage-glow"></div>
-        <figure class="professor-hero">
-          <img src="assets/portraits/professor-l.png" alt="Professor L portrait" />
-          <figcaption>
-            <strong>Professor L</strong>
-            <span>Your debate opponent</span>
-          </figcaption>
-        </figure>
+      <aside class="podcast-stage-preview" aria-label="Professor L studio preview">
+        <div class="retro-monitor">
+          <div class="monitor-topline"><span>STUDIO A</span><span>CH 01</span></div>
+          <div class="monitor-image-wrap">
+            <img src="assets/portraits/professor-l.png" alt="Professor L portrait" />
+            <div class="monitor-scanlines"></div>
+            <div class="monitor-caption"><strong>PROFESSOR L</strong><span>HOST / DEBATE PARTNER</span></div>
+          </div>
+          <div class="monitor-meter"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="audience-preview-label">IN THE ROOM</div>
         <div class="audience-preview" id="audiencePreview" aria-label="Audience members"></div>
-      </div>
+      </aside>
     </section>
 
-    <footer class="start-footer">
-      <span>Reason clearly.</span><span>Challenge assumptions.</span><span>Keep people in the argument.</span>
+    <footer class="start-footer minimalist-footer">
+      <span>Clarity over performance.</span><span>Truth over winning.</span>
     </footer>
   </main>
 

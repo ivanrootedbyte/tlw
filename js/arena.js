@@ -4,6 +4,8 @@ import {
   getActiveGame,
   getSelectedTopic,
   getCustomQuestion,
+  getUserStance,
+  getUserStanceDetail,
   saveActiveGame
 } from './storage.js';
 
@@ -113,7 +115,7 @@ function showTyping() {
   node.id = 'typingMessage';
   node.innerHTML = `
     <div class="message-avatar"><img src="assets/portraits/professor-l.png" alt="" /></div>
-    <div class="message-body"><div class="message-meta"><strong>Professor L</strong><span>considering</span></div><p>Formulating a challenge…</p></div>`;
+    <div class="message-body"><div class="message-meta"><strong>Professor L</strong><span>considering</span></div><p>Thinking that through…</p></div>`;
   els.messageThread.appendChild(node);
   scrollThread();
 }
@@ -153,6 +155,8 @@ async function getProfessorResponse(userText) {
         mode: 'conversation',
         topic: state.topic,
         userQuestion: getCustomQuestion(),
+        userStance: getUserStance(),
+        userStanceDetail: getUserStanceDetail(),
         customAnswer: userText,
         history
       })
@@ -306,7 +310,9 @@ function saveDebate() {
     topicId: state.topic.id,
     messages: state.messages,
     interruptions: state.interruptions,
-    interruptionCursor: state.interruptionCursor
+    interruptionCursor: state.interruptionCursor,
+    userStance: getUserStance(),
+    userStanceDetail: getUserStanceDetail()
   });
 }
 
@@ -315,15 +321,15 @@ function setBusy(busy) {
   els.sendBtn.disabled = busy;
   els.userInput.disabled = busy;
   if (busy) {
-    els.composerHint.textContent = 'Professor L is considering your question…';
+    els.composerHint.textContent = 'Professor L is thinking that through…';
     return;
   }
   if (state.responseMode === 'gemini') {
-    els.composerHint.textContent = 'Live AI response · Continue by questioning, challenging, or refining the point.';
+    els.composerHint.textContent = 'Live AI · Keep the conversation going — question it, challenge it, or take it deeper.';
   } else if (state.responseMode === 'fallback') {
     els.composerHint.textContent = 'Local fallback response · Live AI is currently unavailable.';
   } else {
-    els.composerHint.textContent = 'You do not need to defend a side. Keep following what is true.';
+    els.composerHint.textContent = 'No need to perform. Say what you actually think.';
   }
 }
 
@@ -356,16 +362,37 @@ async function init() {
   state.personas = personaData.personas || [];
 
   const active = getActiveGame();
-  const wantsResume = new URLSearchParams(location.search).get('resume') === '1';
+  const params = new URLSearchParams(location.search);
+  const wantsResume = params.get('resume') === '1';
   const selectedTopicId = wantsResume && active?.topicId ? active.topicId : getSelectedTopic();
-  state.topic = topicData.topics.find((topic) => topic.id === selectedTopicId) || topicData.topics[0];
-  if (!state.topic) throw new Error('No debate question is available.');
+  const selectedTopic = topicData.topics.find((topic) => topic.id === selectedTopicId);
+  state.topic = selectedTopic || {
+    id: 'open-conversation',
+    title: 'Open conversation',
+    categoryLabel: 'Your question',
+    summary: 'Professor L will begin from the question you brought rather than forcing it into a preset debate topic.',
+    scenario: '',
+    stakeholder: '',
+    risk: ''
+  };
 
   const customQuestion = getCustomQuestion();
   els.categoryLabel.textContent = state.topic.categoryLabel || 'Conversation topic';
   els.topicTitle.textContent = state.topic.title;
-  els.customQuestionDisplay.textContent = customQuestion || 'No custom question was saved. You can continue from the selected topic.';
+  els.customQuestionDisplay.textContent = customQuestion || 'No opening question was saved. You can continue from the selected topic.';
   els.topicHook.textContent = state.topic.summary || state.topic.hook || state.topic.title;
+  const stanceMap = {
+    'mostly-agree': 'Mostly agrees',
+    'mostly-disagree': 'Mostly disagrees',
+    'unsure': 'Genuinely unsure',
+    'both-sides': 'Sees both sides',
+    'explain': 'Explained in own words'
+  };
+  const stanceValue = wantsResume && active?.userStance ? active.userStance : getUserStance();
+  const stanceDetailValue = wantsResume && active?.userStanceDetail ? active.userStanceDetail : getUserStanceDetail();
+  const stanceText = stanceMap[stanceValue] || 'Not specified';
+  const stanceEl = document.getElementById('stanceDisplay');
+  if (stanceEl) stanceEl.textContent = stanceDetailValue ? `${stanceText} — ${stanceDetailValue}` : stanceText;
   renderAudience();
 
   if (wantsResume && active?.mode === 'conversation-debate' && active.topicId === state.topic.id) {
@@ -411,7 +438,7 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') closePersonaDrawer();
 });
 els.forfeitBtn.addEventListener('click', () => {
-  if (!window.confirm('End this debate? Your current conversation will be cleared.')) return;
+  if (!window.confirm('End this conversation? Your current transcript will be cleared.')) return;
   clearActiveGame();
   window.location.href = 'index.html';
 });

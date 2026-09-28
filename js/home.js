@@ -3,13 +3,19 @@ import {
   clearActiveGame,
   clearCurrentSelection,
   getActiveGame,
-  hasActiveGame
+  hasActiveGame,
+  setCustomQuestion,
+  setUserStance,
+  setUserStanceDetail
 } from './storage.js';
 
-const newGameBtn = document.getElementById('newGameBtn');
+const openingChatForm = document.getElementById('openingChatForm');
+const openingQuestion = document.getElementById('openingQuestion');
 const loadGameBtn = document.getElementById('loadGameBtn');
 const saveStatus = document.getElementById('saveStatus');
 const audiencePreview = document.getElementById('audiencePreview');
+const stanceDetailWrap = document.getElementById('stanceDetailWrap');
+const stanceDetail = document.getElementById('stanceDetail');
 
 function timeAgo(iso) {
   if (!iso) return '';
@@ -28,15 +34,14 @@ function updateLoadState() {
   const active = getActiveGame();
   if (!active) {
     loadGameBtn.disabled = true;
-    saveStatus.textContent = 'No unfinished debate in this browser.';
+    saveStatus.textContent = 'No unfinished conversation in this browser.';
     return;
   }
-
   loadGameBtn.disabled = false;
   const turns = Array.isArray(active.messages)
     ? active.messages.filter((message) => message.role === 'user').length
-    : Number(active.roundIndex || 0);
-  saveStatus.textContent = `Resume your unfinished debate · ${Math.max(1, turns)} turn${turns === 1 ? '' : 's'} · ${timeAgo(active.savedAt)}.`;
+    : 0;
+  saveStatus.textContent = `Resume your unfinished conversation · ${Math.max(1, turns)} turn${turns === 1 ? '' : 's'} · ${timeAgo(active.savedAt)}.`;
 }
 
 async function renderAudiencePreview() {
@@ -53,14 +58,48 @@ async function renderAudiencePreview() {
   }
 }
 
-newGameBtn?.addEventListener('click', () => {
+function selectedStance() {
+  return openingChatForm?.querySelector('input[name="stance"]:checked')?.value || '';
+}
+
+openingChatForm?.addEventListener('change', (event) => {
+  if (event.target?.name !== 'stance') return;
+  const explain = event.target.value === 'explain';
+  stanceDetailWrap.hidden = !explain;
+  if (explain) stanceDetail.focus();
+});
+
+openingChatForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const question = openingQuestion?.value.trim() || '';
+  const stance = selectedStance() || 'unsure';
+
+  if (!question) {
+    saveStatus.textContent = 'Type a question first.';
+    openingQuestion?.focus();
+    return;
+  }
+
+  saveStatus.textContent = 'Opening the studio…';
+
   if (hasActiveGame()) {
-    const ok = window.confirm('Start a new debate? This will replace the unfinished debate saved in this browser.');
+    const ok = window.confirm('Start a new conversation? This will replace the unfinished conversation saved in this browser.');
     if (!ok) return;
   }
+
   clearActiveGame();
   clearCurrentSelection();
-  window.location.href = 'topics.html';
+  setCustomQuestion(question);
+  setUserStance(stance);
+  setUserStanceDetail(stance === 'explain' ? stanceDetail.value.trim() : '');
+  window.location.assign('arena.html?open=1');
+});
+
+document.querySelectorAll('[data-example]').forEach((button) => {
+  button.addEventListener('click', () => {
+    openingQuestion.value = button.dataset.example || '';
+    openingQuestion.focus();
+  });
 });
 
 loadGameBtn?.addEventListener('click', () => {

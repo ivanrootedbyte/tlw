@@ -1,8 +1,9 @@
 import { STORAGE_KEYS } from "./game-config.js";
 
 const ACTIVE_GAME_KEY = "tlw.activeGame";
-
 const CUSTOM_QUESTION_KEY = "tlw.customQuestion";
+const USER_STANCE_KEY = "tlw.userStance";
+const USER_STANCE_DETAIL_KEY = "tlw.userStanceDetail";
 
 function read(key, fallback = null) {
   try {
@@ -43,6 +44,19 @@ export function setCustomQuestion(question) {
   else write(CUSTOM_QUESTION_KEY, value);
 }
 
+export function getUserStance() { return read(USER_STANCE_KEY, "unsure"); }
+export function setUserStance(value) {
+  const normalized = String(value || "unsure").trim();
+  write(USER_STANCE_KEY, normalized || "unsure");
+}
+
+export function getUserStanceDetail() { return read(USER_STANCE_DETAIL_KEY, ""); }
+export function setUserStanceDetail(value) {
+  const normalized = String(value || "").trim();
+  if (!normalized) remove(USER_STANCE_DETAIL_KEY);
+  else write(USER_STANCE_DETAIL_KEY, normalized);
+}
+
 export function setLastResult(result) { write(STORAGE_KEYS.lastResult, result); pushHistory(result); }
 export function getLastResult() { return read(STORAGE_KEYS.lastResult, null); }
 
@@ -64,17 +78,9 @@ export function saveActiveGame(state) {
   });
 }
 
-export function getActiveGame() {
-  return read(ACTIVE_GAME_KEY, null);
-}
-
-export function clearActiveGame() {
-  remove(ACTIVE_GAME_KEY);
-}
-
-export function hasActiveGame() {
-  return Boolean(getActiveGame());
-}
+export function getActiveGame() { return read(ACTIVE_GAME_KEY, null); }
+export function clearActiveGame() { remove(ACTIVE_GAME_KEY); }
+export function hasActiveGame() { return Boolean(getActiveGame()); }
 
 export function clearCurrentSelection() {
   setSelectedPersona(null);

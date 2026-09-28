@@ -3,87 +3,98 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Studio | The Last Word</title>
+  <title>Live Stage | The Last Word</title>
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/debate.css" />
 </head>
-<body class="conversation-body podcast-room-body">
-  <main class="conversation-app podcast-conversation-app">
-    <header class="debate-topbar podcast-topbar">
+<body class="conversation-body game-stage round-1">
+  <div class="stage-world" aria-hidden="true"><div class="stage-stars"></div><div class="stage-architecture"></div><div class="stage-floor"></div></div>
+
+  <main class="game-shell">
+    <header class="game-topbar">
       <a class="debate-wordmark" href="index.html">THE LAST WORD</a>
-      <div class="topic-pill podcast-topic-pill">
-        <span id="categoryLabel">Open conversation</span>
-        <strong id="topicTitle">Loading…</strong>
-      </div>
-      <nav class="conversation-nav">
-        <a href="index.html">New episode</a>
-        <button id="forfeitBtn" type="button">End</button>
-      </nav>
+      <div class="round-chip"><span id="roundNumber">ROUND 1 / 5</span><strong id="roundName">OPENING POSITION</strong></div>
+      <div class="score-chip" aria-label="Current score"><span>SCORE</span><strong id="totalScore">0 ★</strong></div>
+      <nav class="conversation-nav"><button id="forfeitBtn" type="button">End</button></nav>
     </header>
 
-    <section class="podcast-studio" aria-label="Podcast debate studio">
-      <div class="studio-video-card professor-feed">
-        <div class="feed-bar"><span><i class="feed-live-dot"></i> ON AIR</span><span>CAM 01</span></div>
-        <div class="feed-image">
-          <img src="assets/portraits/professor-l.png" alt="Professor L portrait" />
-          <div class="monitor-scanlines"></div>
-          <div class="feed-lower-third">
-            <strong>Professor L</strong>
-            <span>Host / conversation partner</span>
-          </div>
-        </div>
-      </div>
+    <section class="stage-title-card">
+      <div><span id="categoryLabel">Open conversation</span><h1 id="topicTitle">Your question</h1></div>
+      <p id="roundPrompt">State what you believe and why.</p>
+    </section>
 
-      <div class="studio-video-card user-feed">
-        <div class="feed-bar"><span>GUEST</span><span>MIC 02</span></div>
-        <div class="guest-feed-inner">
-          <div class="guest-monogram">YOU</div>
-          <span class="eyebrow">Your question</span>
+    <section class="live-stage" aria-label="Live debate stage">
+      <article class="stage-seat professor-seat">
+        <div class="seat-status"><i></i> PROFESSOR L</div>
+        <div class="seat-portrait"><img src="assets/portraits/professor-l.png" alt="Professor L" /><div class="monitor-scanlines"></div></div>
+      </article>
+
+      <div class="stage-center">
+        <div class="on-air-badge"><i></i> ON AIR</div>
+        <div class="question-scroll">
+          <span>TONIGHT'S QUESTION</span>
           <p id="customQuestionDisplay">Loading your question…</p>
-          <div class="guest-stance"><span>Starting point</span><strong id="stanceDisplay">Loading…</strong></div>
         </div>
+        <div class="stance-line"><span>YOUR STARTING POINT</span><strong id="stanceDisplay">Loading…</strong></div>
       </div>
 
-      <aside class="episode-notes" aria-label="Episode notes">
-        <span class="eyebrow">Episode notes</span>
-        <p id="topicHook">Loading conversation context…</p>
-        <div class="signal-line"><span>LIVE TRANSCRIPT</span><i></i></div>
+      <article class="stage-seat guest-seat">
+        <div class="seat-status">GUEST</div>
+        <div class="guest-silhouette"><span>YOU</span></div>
+      </article>
+    </section>
+
+    <section class="round-track" aria-label="Five debate rounds">
+      <div data-round-step="1"><span>1</span><strong>Opening</strong></div>
+      <div data-round-step="2"><span>2</span><strong>Pressure</strong></div>
+      <div data-round-step="3"><span>3</span><strong>Crossfire</strong></div>
+      <div data-round-step="4"><span>4</span><strong>Hot Seat</strong></div>
+      <div data-round-step="5"><span>5</span><strong>Last Word</strong></div>
+    </section>
+
+    <section class="game-main-grid">
+      <section class="conversation-column game-transcript" aria-label="Live transcript">
+        <div class="conversation-heading game-transcript-head">
+          <div><span class="eyebrow">Live transcript</span><h2 id="transcriptHeading">Round 1 · Opening Position</h2></div>
+          <div class="turn-count" id="turnCounter">Exchange 1</div>
+        </div>
+
+        <div class="message-thread" id="messageThread" aria-live="polite"></div>
+
+        <form class="composer game-composer" id="debateForm">
+          <label for="userInput">Your mic</label>
+          <textarea id="userInput" rows="3" maxlength="1600" placeholder="Answer Professor L…" required></textarea>
+          <div class="composer-footer"><span id="composerHint">Your reasoning will be scored after you speak.</span><button class="debate-btn primary" id="sendBtn" type="submit">GO LIVE <span aria-hidden="true">↗</span></button></div>
+        </form>
+
+        <div class="game-complete" id="gameComplete" hidden>
+          <span class="eyebrow">Broadcast complete</span>
+          <h2>The Last Word</h2>
+          <p id="finalSummary"></p>
+          <div class="final-score"><span>FINAL SCORE</span><strong id="finalScore">0 / 25 ★</strong></div>
+          <a class="debate-btn primary" href="index.html">New debate</a>
+        </div>
+      </section>
+
+      <aside class="game-sidebar">
+        <section class="score-card">
+          <div class="score-card-head"><span>AI JUDGE</span><strong id="lastStars">—</strong></div>
+          <p id="scoreReason">After each answer, Professor L scores the reasoning—not whether you agree with him.</p>
+          <div class="criteria-list" id="criteriaList">
+            <span>Directness</span><span>Reasoning</span><span>Evidence</span><span>Fairness</span><span>Clarity</span>
+          </div>
+        </section>
+
+        <section class="audience-dock game-audience" aria-labelledby="audienceTitle">
+          <div class="audience-head"><div><span class="eyebrow">Live room</span><h2 id="audienceTitle">Audience bench</h2></div></div>
+          <div class="audience-row" id="personaRail"></div>
+        </section>
       </aside>
-    </section>
-
-    <section class="conversation-column podcast-transcript" aria-label="Conversation transcript">
-      <div class="conversation-heading podcast-transcript-head">
-        <div>
-          <span class="eyebrow">Transcript</span>
-          <h1>Stay with the question.</h1>
-        </div>
-        <div class="turn-count" id="turnCounter">Exchange 1</div>
-      </div>
-
-      <div class="message-thread" id="messageThread" aria-live="polite"></div>
-
-      <form class="composer podcast-composer" id="debateForm">
-        <label for="userInput">Your mic</label>
-        <textarea id="userInput" rows="3" maxlength="1400" placeholder="Push back, ask the next question, or say what still does not add up…" required></textarea>
-        <div class="composer-footer">
-          <span id="composerHint">No need to perform. Say what you actually think.</span>
-          <button class="debate-btn primary" id="sendBtn" type="submit">Speak <span aria-hidden="true">↗</span></button>
-        </div>
-      </form>
-    </section>
-
-    <section class="audience-dock podcast-audience" aria-labelledby="audienceTitle">
-      <div class="audience-head">
-        <div>
-          <span class="eyebrow">Live room</span>
-          <h2 id="audienceTitle">Audience bench</h2>
-        </div>
-        <p>They may cut in when the conversation reaches a pressure point.</p>
-      </div>
-      <div class="audience-row" id="personaRail"></div>
     </section>
   </main>
 
+  <div class="round-transition" id="roundTransition" aria-live="polite"><span></span><strong></strong></div>
+  <div class="score-pop" id="scorePop" aria-live="polite"></div>
   <div class="interruption-layer" id="interruptionLayer" aria-live="polite" aria-atomic="true"></div>
 
   <div class="persona-drawer" id="personaDrawer" aria-hidden="true">
@@ -91,17 +102,9 @@
     <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerName">
       <button class="drawer-close" id="drawerClose" type="button" aria-label="Close">×</button>
       <img id="drawerPortrait" src="" alt="" />
-      <span class="eyebrow">Audience member</span>
-      <h2 id="drawerName"></h2>
-      <p id="drawerIntro"></p>
-      <div class="profile-facts">
-        <div><span>Lens</span><strong id="drawerType"></strong></div>
-        <div><span>Blind spot</span><strong id="drawerBlindSpot"></strong></div>
-      </div>
-      <div class="history-block">
-        <h3>Interruption history</h3>
-        <div id="drawerHistory"></div>
-      </div>
+      <span class="eyebrow">Audience member</span><h2 id="drawerName"></h2><p id="drawerIntro"></p>
+      <div class="profile-facts"><div><span>Lens</span><strong id="drawerType"></strong></div><div><span>Blind spot</span><strong id="drawerBlindSpot"></strong></div></div>
+      <div class="history-block"><h3>Interruption history</h3><div id="drawerHistory"></div></div>
     </aside>
   </div>
 

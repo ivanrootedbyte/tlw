@@ -7,82 +7,59 @@
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/debate.css" />
 </head>
-<body class="debate-start-body podcast-home">
-  <main class="debate-start-shell" aria-labelledby="gameTitle">
-    <header class="debate-brandbar">
+<body class="debate-start-body magic-home">
+  <main class="magic-home-shell" aria-labelledby="gameTitle">
+    <header class="magic-nav">
       <a class="debate-wordmark" href="index.html">THE LAST WORD</a>
-      <div class="home-channel-tag"><span class="live-dot"></span> CONVERSATION SERIES</div>
+      <span class="magic-signal"><i></i> LIVE DEBATE</span>
       <a class="quiet-link" href="account.html">Archive</a>
     </header>
 
-    <section class="podcast-hero">
-      <div class="podcast-intro">
-        <div class="eyebrow">Sit down with Professor L</div>
-        <h1 id="gameTitle">Bring the question.<br><span>Follow the truth.</span></h1>
-        <p class="podcast-tagline">Ask what you actually wrestle with. Tell him where you stand. Then talk it through.</p>
+    <section class="magic-hero">
+      <div class="magic-crest" aria-hidden="true">✦</div>
+      <div class="magic-kicker">Professor L · Five rounds · One question</div>
+      <h1 id="gameTitle">THE LAST<br><span>WORD</span></h1>
+      <p class="magic-tagline">Bring the question you cannot settle.</p>
 
-        <form class="opening-chat-form podcast-question-card" id="openingChatForm" novalidate>
-          <div class="opening-message-shell">
-            <div class="opening-avatar"><img src="assets/portraits/professor-l.png" alt="Professor L" /></div>
-            <div class="opening-prompt">
-              <strong>Professor L</strong>
-              <span>What do you want to talk about?</span>
-            </div>
-            <span class="studio-rec">REC</span>
+      <form class="magic-entry" id="openingChatForm" novalidate>
+        <div class="magic-question-row">
+          <img src="assets/portraits/professor-l.png" alt="Professor L" />
+          <div>
+            <strong>Professor L</strong>
+            <span>What do you want to put on the table?</span>
           </div>
-
-          <label class="sr-only" for="openingQuestion">Your question</label>
-          <textarea id="openingQuestion" class="opening-question" rows="4" maxlength="1600" placeholder="Ask the question you cannot quite settle…" required></textarea>
-
-          <div class="example-questions compact-examples" aria-label="Example questions">
-            <button type="button" data-example="If God is good, why is there so much suffering?">Suffering</button>
-            <button type="button" data-example="Can objective morality exist without God?">Morality</button>
-            <button type="button" data-example="If AI can reason and create, what still makes human beings unique?">AI & humanity</button>
-            <a href="topics.html">More ideas →</a>
-          </div>
-
-          <fieldset class="stance-fieldset podcast-stance">
-            <legend>Where are you leaning?</legend>
-            <div class="stance-options stance-chips">
-              <label><input type="radio" name="stance" value="mostly-agree" required><span>Mostly agree</span></label>
-              <label><input type="radio" name="stance" value="mostly-disagree"><span>Mostly disagree</span></label>
-              <label><input type="radio" name="stance" value="unsure" checked><span>Unsure</span></label>
-              <label><input type="radio" name="stance" value="both-sides"><span>Both sides</span></label>
-              <label><input type="radio" name="stance" value="explain"><span>I'll explain</span></label>
-            </div>
-          </fieldset>
-
-          <div class="stance-detail-wrap" id="stanceDetailWrap" hidden>
-            <label for="stanceDetail">Your starting point</label>
-            <textarea id="stanceDetail" rows="2" maxlength="900" placeholder="Tell Professor L where you're coming from…"></textarea>
-          </div>
-
-          <div class="opening-actions podcast-actions">
-            <button class="debate-btn primary" id="startConversationBtn" type="submit">Take a seat <span aria-hidden="true">→</span></button>
-            <button class="debate-btn secondary" id="loadGameBtn" type="button">Resume</button>
-            <span class="start-status" id="saveStatus" aria-live="polite"></span>
-          </div>
-        </form>
-      </div>
-
-      <aside class="podcast-stage-preview" aria-label="Professor L studio preview">
-        <div class="retro-monitor">
-          <div class="monitor-topline"><span>STUDIO A</span><span>CH 01</span></div>
-          <div class="monitor-image-wrap">
-            <img src="assets/portraits/professor-l.png" alt="Professor L portrait" />
-            <div class="monitor-scanlines"></div>
-            <div class="monitor-caption"><strong>PROFESSOR L</strong><span>HOST / DEBATE PARTNER</span></div>
-          </div>
-          <div class="monitor-meter"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </div>
-        <div class="audience-preview-label">IN THE ROOM</div>
-        <div class="audience-preview" id="audiencePreview" aria-label="Audience members"></div>
-      </aside>
+
+        <label class="sr-only" for="openingQuestion">Your question</label>
+        <textarea id="openingQuestion" class="magic-question" rows="3" maxlength="1600" placeholder="Ask your question…" required></textarea>
+
+        <fieldset class="magic-stance">
+          <legend>Where are you leaning?</legend>
+          <div class="stance-options stance-chips">
+            <label><input type="radio" name="stance" value="mostly-agree"><span>Agree</span></label>
+            <label><input type="radio" name="stance" value="mostly-disagree"><span>Disagree</span></label>
+            <label><input type="radio" name="stance" value="unsure" checked><span>Unsure</span></label>
+            <label><input type="radio" name="stance" value="both-sides"><span>Both sides</span></label>
+            <label><input type="radio" name="stance" value="explain"><span>My own view</span></label>
+          </div>
+        </fieldset>
+
+        <div class="stance-detail-wrap" id="stanceDetailWrap" hidden>
+          <label for="stanceDetail">Your starting point</label>
+          <textarea id="stanceDetail" rows="2" maxlength="900" placeholder="Say where you're coming from…"></textarea>
+        </div>
+
+        <div class="magic-entry-actions">
+          <button class="magic-enter" id="startConversationBtn" type="submit">TAKE A SEAT <span>→</span></button>
+          <button class="magic-resume" id="loadGameBtn" type="button">Resume</button>
+        </div>
+        <div class="start-status" id="saveStatus" aria-live="polite"></div>
+      </form>
+
+      <a class="magic-ideas" href="topics.html">Need a question? Explore ideas →</a>
     </section>
 
-    <footer class="start-footer minimalist-footer">
-      <span>Clarity over performance.</span><span>Truth over winning.</span>
-    </footer>
+    <footer class="magic-footer"><span>05 ROUNDS</span><span>AI JUDGED REASONING</span><span>CLARITY OVER WINNING</span></footer>
   </main>
 
   <script src="js/env.js"></script>
